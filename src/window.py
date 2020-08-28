@@ -5,7 +5,8 @@ from PyQt5.QtCore import *
 from PyQt5.QtGui import *
 from PyQt5.QtQml import *
 from PyQt5.QtWidgets import (
-    QApplication, QMainWindow, QPushButton, QLineEdit, QSpinBox, QMessageBox, QFileDialog
+    QApplication, QMainWindow, QPushButton, QLineEdit, QSpinBox, QMessageBox, QFileDialog, QListWidgetItem,
+    QListWidget, QTreeWidget
 )
 
 from models.demo import Demo
@@ -33,7 +34,7 @@ class MainWindow(QMainWindow):
     def load_btn(self):
         self.run_btn = self.findChild(QPushButton, "runBtn")
         self.run_now_btn = self.findChild(QPushButton, "runNowBtn")
-        self.clear_btn = self.findChild(QPushButton, "clearBtn")
+        self.clear_btn = self.findChild(QPushButton, "resetBtn")
         self.add_step_btn = self.findChild(QPushButton, "addStepBtn")
         self.remove_step_btn = self.findChild(QPushButton, "removeStepBtn")
         self.add_op_btn = self.findChild(QPushButton, "addOpBtn")
@@ -65,6 +66,18 @@ class MainWindow(QMainWindow):
         self.shell_y = self.findChild(QSpinBox, "shellFgY")
         self.shell_w = self.findChild(QSpinBox, "shellFgW")
         self.shell_h = self.findChild(QSpinBox, "shellFgH")
+
+    def load_data(self):
+        self.steps = self.findChild(QListWidget, "stepListWidget")
+        self.apply_to = self.findChild(QListWidget, "applyToListWidget")
+        self.demo_tree = self.findChild(QTreeWidget, "demoTreeWidget")
+        self.metadata = self.findChild(QListWidget, "metadataListWidget")
+        self.step_options = self.findChild(QListWidget, "stepOptionsListWidget")
+        self.demo_sum = self.findChild(QListWidget, "demoSumListWidget")
+        self.script_sum = self.findChild(QListWidget, "scriptSumListWidget")
+        self.audio_sum = self.findChild(QListWidget, "audioSumListWidget")
+        self.cx.ops = self.ops
+
 
     def browse_demo(self):
         options = QFileDialog.Options()
@@ -111,6 +124,10 @@ class MainWindow(QMainWindow):
 
     def run_ops(self):
         pass
+
+    def add_operation(self):
+        op = QListWidgetItem("Item" + (len(self.cx.ops) + 1))
+
 
     def browse(self, target: str): #general browse fn instead of re-making over
         if target == "demo":

@@ -128,7 +128,7 @@
             <enum>QTabWidget::Rounded</enum>
            </property>
            <property name="currentIndex">
-            <number>0</number>
+            <number>2</number>
            </property>
            <property name="usesScrollButtons">
             <bool>false</bool>
@@ -160,7 +160,7 @@
             </attribute>
             <layout class="QVBoxLayout" name="verticalLayout_11">
              <item>
-              <layout class="QVBoxLayout" name="verticalLayout_10"/>
+              <widget class="QListWidget" name="demoSumListWidget"/>
              </item>
             </layout>
            </widget>
@@ -170,7 +170,7 @@
             </attribute>
             <layout class="QVBoxLayout" name="verticalLayout_13">
              <item>
-              <layout class="QVBoxLayout" name="verticalLayout_12"/>
+              <widget class="QListWidget" name="scriptSumListWidget"/>
              </item>
             </layout>
            </widget>
@@ -180,7 +180,7 @@
             </attribute>
             <layout class="QVBoxLayout" name="verticalLayout_15">
              <item>
-              <layout class="QVBoxLayout" name="verticalLayout_14"/>
+              <widget class="QListWidget" name="audioSumListWidget"/>
              </item>
             </layout>
            </widget>
@@ -222,7 +222,7 @@
             </size>
            </property>
            <property name="currentIndex">
-            <number>0</number>
+            <number>1</number>
            </property>
            <widget class="QWidget" name="stepsTab">
             <property name="sizePolicy">
@@ -245,7 +245,7 @@
             </attribute>
             <layout class="QVBoxLayout" name="verticalLayout_2">
              <item>
-              <widget class="QListView" name="stepListView"/>
+              <widget class="QListWidget" name="stepListWidget"/>
              </item>
              <item>
               <layout class="QHBoxLayout" name="horizontalLayout_3">
@@ -276,7 +276,7 @@
             </attribute>
             <layout class="QVBoxLayout" name="verticalLayout_17">
              <item>
-              <layout class="QVBoxLayout" name="verticalLayout_16"/>
+              <widget class="QListWidget" name="stepOptionsListWidget"/>
              </item>
             </layout>
            </widget>
@@ -756,7 +756,7 @@
         </property>
         <layout class="QVBoxLayout" name="verticalLayout_7">
          <item>
-          <widget class="QListWidget" name="applyToList"/>
+          <widget class="QListWidget" name="applyToListWidget"/>
          </item>
         </layout>
        </widget>
@@ -809,16 +809,12 @@
         </property>
         <layout class="QVBoxLayout" name="verticalLayout_6">
          <item>
-          <widget class="QTreeView" name="demoTree">
-           <property name="dragEnabled">
-            <bool>true</bool>
-           </property>
-           <property name="alternatingRowColors">
-            <bool>true</bool>
-           </property>
-           <property name="selectionMode">
-            <enum>QAbstractItemView::MultiSelection</enum>
-           </property>
+          <widget class="QTreeWidget" name="demoTreeWidget">
+           <column>
+            <property name="text">
+             <string notr="true">1</string>
+            </property>
+           </column>
           </widget>
          </item>
         </layout>
@@ -831,7 +827,7 @@
         </property>
         <layout class="QVBoxLayout" name="verticalLayout_8">
          <item>
-          <widget class="QListWidget" name="metadataView"/>
+          <widget class="QListWidget" name="metadataListWidget"/>
          </item>
         </layout>
        </widget>

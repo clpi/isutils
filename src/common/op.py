@@ -1,5 +1,6 @@
 from dataclasses import dataclass
 from typing import Tuple, List
+from PyQt5.QtWidgets import QListWidgetItem
 
 class OpType:
     def __init__(self):
@@ -10,6 +11,25 @@ class Operation:
     def __init__(self, op_type: OpType, steps: List[str]):
         print("DF")
 
+OP_TYPES = {
+    "shell": {
+        "path": str,
+    },
+    "insert": {
+        "path": str,
+    },
+    "crop": {
+    },
+    "resize": {
+        
+    },
+    "section": {
+
+    },
+    "audio": {
+
+    },
+}
 
 @dataclass
 class Insert(OpType):
