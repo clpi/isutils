@@ -1,0 +1,998 @@
+
+  <widget class="QMenuBar" name="menubar">
+   <property name="geometry">
+    <rect>
+     <x>0</x>
+     <y>0</y>
+     <width>1200</width>
+     <height>26</height>
+    </rect>
+   </property>
+   <property name="defaultUp">
+    <bool>false</bool>
+   </property>
+   <widget class="QMenu" name="menuFile">
+    <property name="title">
+     <string>File</string>
+    </property>
+    <widget class="QMenu" name="menuSave_demo">
+     <property name="title">
+      <string>Save Demo...</string>
+     </property>
+     <addaction name="actionOverwrite"/>
+     <addaction name="actionAs_new_version"/>
+     <addaction name="actionAs_new_round"/>
+    </widget>
+    <widget class="QMenu" name="menuExport">
+     <property name="title">
+      <string>Export...</string>
+     </property>
+     <widget class="QMenu" name="menuDemo_3">
+      <property name="title">
+       <string>Demo...</string>
+      </property>
+      <addaction name="actionTo_installer"/>
+      <addaction name="actionTo_Cloudguide"/>
+     </widget>
+     <widget class="QMenu" name="menuScript_2">
+      <property name="title">
+       <string>Script...</string>
+      </property>
+      <widget class="QMenu" name="menuAs_docx">
+       <property name="title">
+        <string>As .docx</string>
+       </property>
+       <addaction name="actionOverwrite_2"/>
+       <addaction name="actionAs_new_version_2"/>
+       <addaction name="actionAs_new_round_2"/>
+      </widget>
+      <addaction name="menuAs_docx"/>
+      <addaction name="actionAs_txt"/>
+     </widget>
+     <widget class="QMenu" name="menuAudio_4">
+      <property name="title">
+       <string>Audio...</string>
+      </property>
+      <addaction name="actionTo_new_directory"/>
+      <addaction name="actionOverwrite_3"/>
+     </widget>
+     <addaction name="menuAudio_4"/>
+     <addaction name="menuScript_2"/>
+     <addaction name="menuDemo_3"/>
+    </widget>
+    <widget class="QMenu" name="menuLoad_Demo">
+     <property name="title">
+      <string>Load Demo...</string>
+     </property>
+     <addaction name="actionFrom_demo_file"/>
+     <addaction name="actionFrom_exe_installer"/>
+    </widget>
+    <widget class="QMenu" name="menuLoad_Script">
+     <property name="title">
+      <string>Load Script...</string>
+     </property>
+     <addaction name="actionFrom_docx_file"/>
+     <addaction name="actionFrom_scripts_folder"/>
+    </widget>
+    <widget class="QMenu" name="menuLoad_Audio">
+     <property name="title">
+      <string>Load Audio...</string>
+     </property>
+     <addaction name="actionLoad_audio_directory"/>
+     <addaction name="actionLoad_soundbite"/>
+     <addaction name="actionLoad_SoundBite"/>
+     <addaction name="actionFrom_recording"/>
+    </widget>
+    <addaction name="menuLoad_Demo"/>
+    <addaction name="menuLoad_Script"/>
+    <addaction name="menuLoad_Audio"/>
+    <addaction name="separator"/>
+    <addaction name="menuSave_demo"/>
+    <addaction name="menuExport"/>
+    <addaction name="separator"/>
+    <addaction name="actionLoad_operation"/>
+    <addaction name="actionSave_operation"/>
+    <addaction name="actionClose_3"/>
+    <addaction name="separator"/>
+    <addaction name="actionClose_window"/>
+    <addaction name="actionReset_demo"/>
+   </widget>
+   <widget class="QMenu" name="menuEdit">
+    <property name="title">
+     <string>Edit</string>
+    </property>
+    <widget class="QMenu" name="menuSelect_all">
+     <property name="title">
+      <string>Select all...</string>
+     </property>
+     <addaction name="actionSections"/>
+     <addaction name="actionsteps"/>
+    </widget>
+    <widget class="QMenu" name="menuSelect_associated">
+     <property name="title">
+      <string>Select associated...</string>
+     </property>
+     <addaction name="actionSection"/>
+     <addaction name="actionSteps_in_section"/>
+     <addaction name="actionFirst_step_in_section"/>
+    </widget>
+    <addaction name="actionUndo"/>
+    <addaction name="actionRedo"/>
+    <addaction name="separator"/>
+    <addaction name="menuSelect_all"/>
+    <addaction name="separator"/>
+    <addaction name="menuSelect_associated"/>
+   </widget>
+   <widget class="QMenu" name="menuView">
+    <property name="title">
+     <string>View</string>
+    </property>
+    <widget class="QMenu" name="menuZoom">
+     <property name="title">
+      <string>Zoom...</string>
+     </property>
+     <addaction name="actionZoom_in"/>
+    </widget>
+    <addaction name="actionView_statusbar"/>
+    <addaction name="actionView_step_preview"/>
+    <addaction name="actionView_demo_in_folder"/>
+    <addaction name="separator"/>
+    <addaction name="menuZoom"/>
+   </widget>
+   <widget class="QMenu" name="menuTools">
+    <property name="title">
+     <string>Tools</string>
+    </property>
+    <widget class="QMenu" name="menuAudio">
+     <property name="title">
+      <string>Audio</string>
+     </property>
+     <addaction name="actionAttach_audio_to_demo_2"/>
+     <addaction name="actionBulk_edit_demo_audio"/>
+     <addaction name="actionEdit_step_audio"/>
+    </widget>
+    <widget class="QMenu" name="menuImage">
+     <property name="title">
+      <string>Image</string>
+     </property>
+     <widget class="QMenu" name="menuInsert">
+      <property name="title">
+       <string>Paste...</string>
+      </property>
+      <addaction name="actionSingle_image"/>
+      <addaction name="actionMultiple_images"/>
+      <addaction name="actionImage_insert_wizar"/>
+     </widget>
+     <widget class="QMenu" name="menuShell">
+      <property name="title">
+       <string>Shell...</string>
+      </property>
+      <addaction name="actionAdd_background_image"/>
+      <addaction name="actionAdd_background_and_wrapper"/>
+      <addaction name="actionShell_wizard"/>
+     </widget>
+     <addaction name="actionBulk_paste_image"/>
+     <addaction name="actionBulk_image_paste_wizard"/>
+     <addaction name="actionBulk_shell_demo_assets"/>
+     <addaction name="menuInsert"/>
+     <addaction name="menuShell"/>
+     <addaction name="actionCrop"/>
+     <addaction name="actionResize"/>
+    </widget>
+    <widget class="QMenu" name="menuDemo">
+     <property name="title">
+      <string>Demo</string>
+     </property>
+     <addaction name="actionSection_demo"/>
+     <addaction name="actionPacing_wizard"/>
+     <addaction name="actionCompose_demos"/>
+     <addaction name="actionBulk_edit_demo_metadata"/>
+     <addaction name="actionPackage_demo"/>
+     <addaction name="actionAdd_scroll_section"/>
+     <addaction name="actionAdd_step"/>
+    </widget>
+    <widget class="QMenu" name="menuScript">
+     <property name="title">
+      <string>Script</string>
+     </property>
+     <widget class="QMenu" name="menuCheck_script_for">
+      <property name="title">
+       <string>Check script for...</string>
+      </property>
+      <addaction name="actionSpelling_errors"/>
+      <addaction name="actionGrammar_errors"/>
+      <addaction name="actionProduction_notes"/>
+     </widget>
+     <widget class="QMenu" name="menuClear">
+      <property name="title">
+       <string>Clear...</string>
+      </property>
+      <addaction name="actionTalking_points"/>
+      <addaction name="actionClick_instructions"/>
+     </widget>
+     <addaction name="actionLoad_script"/>
+     <addaction name="actionConvert_script"/>
+     <addaction name="menuCheck_script_for"/>
+     <addaction name="menuClear"/>
+    </widget>
+    <widget class="QMenu" name="menuWeb">
+     <property name="title">
+      <string>Web</string>
+     </property>
+     <addaction name="actionUpload_to_CloudGuides"/>
+    </widget>
+    <widget class="QMenu" name="menuSection">
+     <property name="title">
+      <string>Section...</string>
+     </property>
+     <widget class="QMenu" name="menuPacing">
+      <property name="title">
+       <string>Pacing...</string>
+      </property>
+      <addaction name="actionDecrement_step_delay"/>
+      <addaction name="actionIncrement_step_delay"/>
+     </widget>
+     <widget class="QMenu" name="menuAudio_2">
+      <property name="title">
+       <string>Audio...</string>
+      </property>
+      <addaction name="actionAdd_audio_2"/>
+      <addaction name="actionDelete_audio"/>
+      <addaction name="actionEdit_audio_2"/>
+      <addaction name="actionReplace_audio"/>
+     </widget>
+     <addaction name="actionSet_section_as_animated"/>
+     <addaction name="actionSet_section_as_guided"/>
+     <addaction name="actionMove_2"/>
+     <addaction name="separator"/>
+     <addaction name="actionSet_as_animated"/>
+     <addaction name="actionSet_as_guided"/>
+     <addaction name="actionSet_as_scroll"/>
+     <addaction name="separator"/>
+     <addaction name="menuAudio_2"/>
+     <addaction name="menuPacing"/>
+     <addaction name="separator"/>
+     <addaction name="actionView_metadata"/>
+    </widget>
+    <widget class="QMenu" name="menuStep">
+     <property name="title">
+      <string>Step...</string>
+     </property>
+     <widget class="QMenu" name="menuAudio_3">
+      <property name="title">
+       <string>Audio...</string>
+      </property>
+      <addaction name="actionAdd_audio_3"/>
+      <addaction name="actionDelete_audio_2"/>
+      <addaction name="actionReplace_audio_2"/>
+      <addaction name="actionEdit_audio_3"/>
+     </widget>
+     <widget class="QMenu" name="menuPacing_2">
+      <property name="title">
+       <string>Pacing...</string>
+      </property>
+      <addaction name="actionIncrement_step_delay_2"/>
+      <addaction name="actionDecrement_step_delay_2"/>
+     </widget>
+     <widget class="QMenu" name="menuImage_2">
+      <property name="title">
+       <string>Image...</string>
+      </property>
+      <addaction name="actionPreview"/>
+      <addaction name="actionView_in_folder"/>
+      <addaction name="actionEdit"/>
+      <addaction name="actionReplace_image"/>
+     </widget>
+     <addaction name="actionDelete"/>
+     <addaction name="actionDuplicate"/>
+     <addaction name="actionDuplicate_as_pacing"/>
+     <addaction name="actionMove"/>
+     <addaction name="separator"/>
+     <addaction name="menuAudio_3"/>
+     <addaction name="menuPacing_2"/>
+     <addaction name="menuImage_2"/>
+     <addaction name="separator"/>
+     <addaction name="actionAdd_text_box"/>
+     <addaction name="actionAdd_highlight"/>
+     <addaction name="actionAdd_jump_box"/>
+     <addaction name="separator"/>
+     <addaction name="actionSet_animated"/>
+     <addaction name="actionSet_guided"/>
+    </widget>
+    <addaction name="menuAudio"/>
+    <addaction name="menuImage"/>
+    <addaction name="menuDemo"/>
+    <addaction name="menuScript"/>
+    <addaction name="menuWeb"/>
+    <addaction name="separator"/>
+    <addaction name="menuSection"/>
+    <addaction name="menuStep"/>
+    <addaction name="separator"/>
+    <addaction name="actionPreferences"/>
+   </widget>
+   <widget class="QMenu" name="menuWindow">
+    <property name="title">
+     <string>Window</string>
+    </property>
+    <addaction name="actionOpen_DemoMate"/>
+    <addaction name="actionOpen_Cloudguides_Packaging"/>
+    <addaction name="actionClose"/>
+    <addaction name="actionOpen_assets_folder"/>
+   </widget>
+   <widget class="QMenu" name="menuHelp">
+    <property name="title">
+     <string>Help</string>
+    </property>
+    <widget class="QMenu" name="menuHow_do_I">
+     <property name="title">
+      <string>How do I...</string>
+     </property>
+     <addaction name="actionBulk_insert_image"/>
+     <addaction name="actionBulk_shell_steps"/>
+     <addaction name="actionBulk_crop_step_assets"/>
+     <addaction name="actionAttach_audio_to_demo"/>
+    </widget>
+    <addaction name="actionAbout"/>
+    <addaction name="separator"/>
+    <addaction name="menuHow_do_I"/>
+    <addaction name="separator"/>
+   </widget>
+   <addaction name="menuFile"/>
+   <addaction name="menuEdit"/>
+   <addaction name="menuView"/>
+   <addaction name="menuTools"/>
+   <addaction name="menuWindow"/>
+   <addaction name="menuHelp"/>
+  </widget>
+  <widget class="QStatusBar" name="statusbar"/>
+  <action name="actionUndo">
+   <property name="text">
+    <string>Undo</string>
+   </property>
+  </action>
+  <action name="actionRedo">
+   <property name="text">
+    <string>Redo</string>
+   </property>
+  </action>
+  <action name="actionView_statusbar">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="checked">
+    <bool>true</bool>
+   </property>
+   <property name="text">
+    <string>View statusbar</string>
+   </property>
+  </action>
+  <action name="actionView_step_preview">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="checked">
+    <bool>true</bool>
+   </property>
+   <property name="text">
+    <string>View step preview</string>
+   </property>
+  </action>
+  <action name="actionInsert">
+   <property name="text">
+    <string>Insert Image</string>
+   </property>
+  </action>
+  <action name="actionShell_Image">
+   <property name="text">
+    <string>Shell Image</string>
+   </property>
+  </action>
+  <action name="actionSection_steps">
+   <property name="text">
+    <string>Section steps</string>
+   </property>
+  </action>
+  <action name="actionAttach_audio">
+   <property name="text">
+    <string>Attach audio</string>
+   </property>
+  </action>
+  <action name="actionBulk_crop">
+   <property name="text">
+    <string>Bulk crop</string>
+   </property>
+  </action>
+  <action name="actionView_demo_in_folder">
+   <property name="text">
+    <string>View demo in folder</string>
+   </property>
+  </action>
+  <action name="actionLoad_tool_state">
+   <property name="text">
+    <string>Load tool state</string>
+   </property>
+  </action>
+  <action name="actionSave_tool_state">
+   <property name="text">
+    <string>Save tool state</string>
+   </property>
+  </action>
+  <action name="actionOpen_DemoMate">
+   <property name="text">
+    <string>Open Demo in DemoMate</string>
+   </property>
+  </action>
+  <action name="actionOpen_Cloudguides_Packaging">
+   <property name="text">
+    <string>Open Cloudguides Packaging tool</string>
+   </property>
+  </action>
+  <action name="actionAbout">
+   <property name="text">
+    <string>About</string>
+   </property>
+  </action>
+  <action name="actionHelp_2">
+   <property name="text">
+    <string>Help</string>
+   </property>
+  </action>
+  <action name="actionImage_Insert">
+   <property name="text">
+    <string>Insert image</string>
+   </property>
+  </action>
+  <action name="actionImage_Shelling">
+   <property name="text">
+    <string>Shell image</string>
+   </property>
+  </action>
+  <action name="actionHelp_3">
+   <property name="text">
+    <string>Help</string>
+   </property>
+  </action>
+  <action name="actionBulk_insert_image">
+   <property name="text">
+    <string>Bulk insert image into step assets</string>
+   </property>
+  </action>
+  <action name="actionBulk_shell_steps">
+   <property name="text">
+    <string>Bulk shell step assets</string>
+   </property>
+  </action>
+  <action name="actionBulk_crop_step_assets">
+   <property name="text">
+    <string>Bulk crop step assets</string>
+   </property>
+  </action>
+  <action name="actionAttach_audio_to_demo">
+   <property name="text">
+    <string>Attach audio to demo</string>
+   </property>
+  </action>
+  <action name="actionClose">
+   <property name="text">
+    <string>Open folder containing demo</string>
+   </property>
+  </action>
+  <action name="actionClose_2">
+   <property name="text">
+    <string>Close</string>
+   </property>
+  </action>
+  <action name="actionFrom_demo_file">
+   <property name="text">
+    <string>From .demo file</string>
+   </property>
+  </action>
+  <action name="actionFrom_exe_installer">
+   <property name="text">
+    <string>From .exe installer</string>
+   </property>
+  </action>
+  <action name="actionFrom_docx_file">
+   <property name="text">
+    <string>From .docx file</string>
+   </property>
+  </action>
+  <action name="actionFrom_scripts_folder">
+   <property name="text">
+    <string>From scripts folder</string>
+   </property>
+  </action>
+  <action name="actionOverwrite">
+   <property name="text">
+    <string>Overwrite</string>
+   </property>
+  </action>
+  <action name="actionMerge_demos">
+   <property name="text">
+    <string>Merge demos</string>
+   </property>
+  </action>
+  <action name="actionLoad_audio_directory">
+   <property name="text">
+    <string>Load Audio</string>
+   </property>
+  </action>
+  <action name="actionLoad_soundbite">
+   <property name="text">
+    <string>Load from .zip</string>
+   </property>
+  </action>
+  <action name="actionEdit_audio">
+   <property name="text">
+    <string>Edit audio</string>
+   </property>
+  </action>
+  <action name="actionAttach_audio_to_demo_2">
+   <property name="text">
+    <string>Attach audio to demo</string>
+   </property>
+  </action>
+  <action name="actionBulk_edit_demo_audio">
+   <property name="text">
+    <string>Bulk edit demo audio</string>
+   </property>
+  </action>
+  <action name="actionEdit_step_audio">
+   <property name="text">
+    <string>Edit step audio</string>
+   </property>
+  </action>
+  <action name="actionBulk_paste_image">
+   <property name="text">
+    <string>Bulk paste image</string>
+   </property>
+  </action>
+  <action name="actionBulk_image_paste_wizard">
+   <property name="text">
+    <string>Bulk image paste wizard</string>
+   </property>
+  </action>
+  <action name="actionBulk_shell_demo_assets">
+   <property name="text">
+    <string>Bulk shell demo assets</string>
+   </property>
+  </action>
+  <action name="actionSection_demo">
+   <property name="text">
+    <string>Section demo</string>
+   </property>
+  </action>
+  <action name="actionBulk_resize_demo_assets">
+   <property name="text">
+    <string>Bulk resize demo assets</string>
+   </property>
+  </action>
+  <action name="actionBulk_crop_demo_assets">
+   <property name="text">
+    <string>Bulk crop demo assets</string>
+   </property>
+  </action>
+  <action name="actionPacing_wizard">
+   <property name="text">
+    <string>Open pacing wizard</string>
+   </property>
+  </action>
+  <action name="actionCompose_demos">
+   <property name="text">
+    <string>Compose demos</string>
+   </property>
+  </action>
+  <action name="actionBulk_edit_demo_metadata">
+   <property name="text">
+    <string>View/edit metadata</string>
+   </property>
+  </action>
+  <action name="actionLoad_script">
+   <property name="text">
+    <string>Load Script</string>
+   </property>
+   <property name="shortcut">
+    <string>Alt+Shift+S</string>
+   </property>
+  </action>
+  <action name="actionConvert_script">
+   <property name="text">
+    <string>Convert script</string>
+   </property>
+  </action>
+  <action name="actionSpelling_errors">
+   <property name="text">
+    <string>Spelling errors</string>
+   </property>
+  </action>
+  <action name="actionGrammar_errors">
+   <property name="text">
+    <string>Grammar errors</string>
+   </property>
+  </action>
+  <action name="actionProduction_notes">
+   <property name="text">
+    <string>Production notes</string>
+   </property>
+  </action>
+  <action name="actionTalking_points">
+   <property name="text">
+    <string>Talking points</string>
+   </property>
+  </action>
+  <action name="actionClick_instructions">
+   <property name="text">
+    <string>Click instructions</string>
+   </property>
+  </action>
+  <action name="actionPackage_demo">
+   <property name="text">
+    <string>Package demo</string>
+   </property>
+  </action>
+  <action name="actionSingle_image">
+   <property name="text">
+    <string>Single image</string>
+   </property>
+  </action>
+  <action name="actionMultiple_images">
+   <property name="text">
+    <string>Multiple images</string>
+   </property>
+  </action>
+  <action name="actionImage_insert_wizar">
+   <property name="text">
+    <string>From asset region</string>
+   </property>
+  </action>
+  <action name="actionAdd_background_image">
+   <property name="text">
+    <string>Add background image</string>
+   </property>
+  </action>
+  <action name="actionAdd_background_and_wrapper">
+   <property name="text">
+    <string>Add background and wrapper</string>
+   </property>
+  </action>
+  <action name="actionShell_wizard">
+   <property name="text">
+    <string>Shell wizard</string>
+   </property>
+  </action>
+  <action name="actionCrop">
+   <property name="text">
+    <string>Crop</string>
+   </property>
+  </action>
+  <action name="actionResize">
+   <property name="text">
+    <string>Resize</string>
+   </property>
+  </action>
+  <action name="actionLoad_operation">
+   <property name="text">
+    <string>Add operation...</string>
+   </property>
+  </action>
+  <action name="actionSave_operation">
+   <property name="text">
+    <string>Load operation...</string>
+   </property>
+  </action>
+  <action name="actionClose_3">
+   <property name="text">
+    <string>Save operation...</string>
+   </property>
+  </action>
+  <action name="actionZoom_in">
+   <property name="text">
+    <string>Zoom in</string>
+   </property>
+  </action>
+  <action name="actionAdd_scroll_section">
+   <property name="text">
+    <string>Add scroll section</string>
+   </property>
+  </action>
+  <action name="actionOpen_assets_folder">
+   <property name="text">
+    <string>Open assets folder</string>
+   </property>
+  </action>
+  <action name="actionUpload_to_CloudGuides">
+   <property name="text">
+    <string>Upload to CloudGuides</string>
+   </property>
+  </action>
+  <action name="actionSections">
+   <property name="text">
+    <string>Sections</string>
+   </property>
+  </action>
+  <action name="actionsteps">
+   <property name="text">
+    <string>Steps</string>
+   </property>
+  </action>
+  <action name="actionSection">
+   <property name="text">
+    <string>Section</string>
+   </property>
+  </action>
+  <action name="actionSteps_in_section">
+   <property name="text">
+    <string>Steps in section</string>
+   </property>
+  </action>
+  <action name="actionFirst_step_in_section">
+   <property name="text">
+    <string>First step in section</string>
+   </property>
+  </action>
+  <action name="actionSet_section_as_animated">
+   <property name="text">
+    <string>Delete</string>
+   </property>
+  </action>
+  <action name="actionSet_section_as_guided">
+   <property name="text">
+    <string>Duplicate</string>
+   </property>
+  </action>
+  <action name="actionDelete">
+   <property name="text">
+    <string>Delete</string>
+   </property>
+  </action>
+  <action name="actionDuplicate">
+   <property name="text">
+    <string>Duplicate</string>
+   </property>
+  </action>
+  <action name="actionDuplicate_as_pacing">
+   <property name="text">
+    <string>Duplicate as pacing</string>
+   </property>
+  </action>
+  <action name="actionMove">
+   <property name="text">
+    <string>Move</string>
+   </property>
+  </action>
+  <action name="actionMove_2">
+   <property name="text">
+    <string>Move</string>
+   </property>
+  </action>
+  <action name="actionSet_as_animated">
+   <property name="text">
+    <string>Set as animated</string>
+   </property>
+  </action>
+  <action name="actionSet_as_guided">
+   <property name="text">
+    <string>Set as guided</string>
+   </property>
+  </action>
+  <action name="actionSet_as_scroll">
+   <property name="text">
+    <string>Set as scroll</string>
+   </property>
+  </action>
+  <action name="actionDecrement_step_delay">
+   <property name="text">
+    <string>Decrement step delay</string>
+   </property>
+  </action>
+  <action name="actionIncrement_step_delay">
+   <property name="text">
+    <string>Increment step delay</string>
+   </property>
+  </action>
+  <action name="actionAdd_audio_2">
+   <property name="text">
+    <string>Add audio</string>
+   </property>
+  </action>
+  <action name="actionDelete_audio">
+   <property name="text">
+    <string>Delete audio</string>
+   </property>
+  </action>
+  <action name="actionEdit_audio_2">
+   <property name="text">
+    <string>Edit audio</string>
+   </property>
+  </action>
+  <action name="actionReplace_audio">
+   <property name="text">
+    <string>Replace audio</string>
+   </property>
+  </action>
+  <action name="actionView_metadata">
+   <property name="text">
+    <string>View metadata</string>
+   </property>
+  </action>
+  <action name="actionAdd_audio_3">
+   <property name="text">
+    <string>Add audio</string>
+   </property>
+  </action>
+  <action name="actionDelete_audio_2">
+   <property name="text">
+    <string>Delete audio</string>
+   </property>
+  </action>
+  <action name="actionReplace_audio_2">
+   <property name="text">
+    <string>Replace audio</string>
+   </property>
+  </action>
+  <action name="actionEdit_audio_3">
+   <property name="text">
+    <string>Edit audio</string>
+   </property>
+  </action>
+  <action name="actionIncrement_step_delay_2">
+   <property name="text">
+    <string>Increment step delay</string>
+   </property>
+  </action>
+  <action name="actionDecrement_step_delay_2">
+   <property name="text">
+    <string>Decrement step delay</string>
+   </property>
+  </action>
+  <action name="actionPreview">
+   <property name="text">
+    <string>Preview image</string>
+   </property>
+  </action>
+  <action name="actionView_in_folder">
+   <property name="text">
+    <string>View in folder</string>
+   </property>
+  </action>
+  <action name="actionEdit">
+   <property name="text">
+    <string>Edit image</string>
+   </property>
+  </action>
+  <action name="actionReplace_image">
+   <property name="text">
+    <string>Replace image</string>
+   </property>
+  </action>
+  <action name="actionView_metadata_2">
+   <property name="text">
+    <string>View metadata</string>
+   </property>
+  </action>
+  <action name="actionLoad_SoundBite">
+   <property name="text">
+    <string>Load soundbite</string>
+   </property>
+  </action>
+  <action name="actionFrom_recording">
+   <property name="text">
+    <string>From recording</string>
+   </property>
+  </action>
+  <action name="actionAs_new_version">
+   <property name="text">
+    <string>As new version</string>
+   </property>
+  </action>
+  <action name="actionAs_new_round">
+   <property name="text">
+    <string>As new round</string>
+   </property>
+  </action>
+  <action name="actionExport_to_installer">
+   <property name="text">
+    <string>Export to installer</string>
+   </property>
+  </action>
+  <action name="actionExport_to_Cloudguide">
+   <property name="text">
+    <string>Export to Cloudguide</string>
+   </property>
+  </action>
+  <action name="actionTo_installer">
+   <property name="text">
+    <string>To installer</string>
+   </property>
+  </action>
+  <action name="actionTo_Cloudguide">
+   <property name="text">
+    <string>To Cloudguide</string>
+   </property>
+  </action>
+  <action name="actionOverwrite_2">
+   <property name="text">
+    <string>Overwrite</string>
+   </property>
+  </action>
+  <action name="actionAs_new_version_2">
+   <property name="text">
+    <string>As new version</string>
+   </property>
+  </action>
+  <action name="actionAs_new_round_2">
+   <property name="text">
+    <string>As new round</string>
+   </property>
+  </action>
+  <action name="actionAs_txt">
+   <property name="text">
+    <string>As .txt</string>
+   </property>
+  </action>
+  <action name="actionTo_new_directory">
+   <property name="text">
+    <string>To new directory</string>
+   </property>
+  </action>
+  <action name="actionOverwrite_3">
+   <property name="text">
+    <string>Overwrite</string>
+   </property>
+  </action>
+  <action name="actionClose_window">
+   <property name="text">
+    <string>Close window</string>
+   </property>
+  </action>
+  <action name="actionReset_demo">
+   <property name="text">
+    <string>Reset demo</string>
+   </property>
+  </action>
+  <action name="actionNew">
+   <property name="text">
+    <string>New...</string>
+   </property>
+  </action>
+  <action name="actionNew_operation">
+   <property name="text">
+    <string>New operation...</string>
+   </property>
+  </action>
+  <action name="actionAdd_step">
+   <property name="text">
+    <string>Add step</string>
+   </property>
+  </action>
+  <action name="actionPreferences">
+   <property name="text">
+    <string>Preferences</string>
+   </property>
+  </action>
+  <action name="actionAdd_text_box">
+   <property name="text">
+    <string>Add text box</string>
+   </property>
+  </action>
+  <action name="actionAdd_highlight">
+   <property name="text">
+    <string>Add highlight</string>
+   </property>
+  </action>
+  <action name="actionAdd_jump_box">
+   <property name="text">
+    <string>Add jump box</string>
+   </property>
+  </action>
+  <action name="actionSet_animated">
+   <property name="text">
+    <string>Set animated</string>
+   </property>
+  </action>
+  <action name="actionSet_guided">
+   <property name="text">
+    <string>Set guided</string>
+   </property>
+  </action>
+ </widget>
