@@ -5,12 +5,12 @@ from typing import List, Tuple, Dict, Union, Optional, Iterable, Any
 from pathlib import Path, PurePath
 from itertools import islice
 from copy import deepcopy
-from models.section import Section
-from models.step import Step
-from models.script import Script, TextBox
-from models.audio import Audio
-from utils import validate_path, timefunc, logger
-import models.demo_tags as dt
+from models.demo.section import Section
+from models.demo.step import Step
+from models.demo.script import Script, TextBox
+from models.demo.audio import Audio
+from common.utils import validate_path, timefunc, logger
+import models.demo.demo_tags as dt
 from collections import deque, namedtuple
 from PIL import Image
 import shutil

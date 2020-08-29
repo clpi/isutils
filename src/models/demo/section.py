@@ -1,9 +1,9 @@
 from uuid import uuid4
 from typing import List, Tuple
-from models.step import Step
-from models.audio import SoundBite
-from models.script import Script
-from utils import timefunc
+from models.demo.step import Step
+from models.demo.audio import SoundBite
+from models.demo.script import Script
+from common.utils import timefunc
 from pathlib import Path, PurePath
 from copy import deepcopy
 import shutil

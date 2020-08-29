@@ -3,9 +3,9 @@ import re
 from uuid import uuid4
 from typing import List, Tuple, Dict, Optional, Any, Iterable, Union
 from pathlib import Path, PurePath
-import models.demo_tags as dt
-from models.audio import SoundBite
-from models.script import TextBox
+import models.demo.demo_tags as dt
+from models.demo.audio import SoundBite
+from models.demo.script import TextBox
 import shutil
 from copy import deepcopy
 

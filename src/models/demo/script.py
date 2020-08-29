@@ -3,7 +3,7 @@ from pathlib import Path, PurePath
 from itertools import islice
 from typing import List, Tuple
 import sys
-from utils import validate_path, logger
+from common.utils import validate_path, logger
 import re
 
 class Script:

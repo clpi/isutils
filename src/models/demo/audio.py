@@ -2,7 +2,7 @@ from pathlib import Path, PurePath
 from mutagen.mp3 import MP3
 from itertools import islice
 from typing import List, Tuple
-from utils import validate_path, logger
+from common.utils import validate_path, logger
 import lxml.etree as ET
 
 class Audio:

@@ -1,10 +1,10 @@
-from window import IscApp
+from ui.window import MainWindow, run
+from app import *
 
 import sys
-from PyQt5 import (uic, QApplication)
+
+def main():
+    run()
 
 if __name__ == "__main__":
-    app = QApplication(sys.argv)
-    win = IscApp()
-    win.show()
-    app.exec_()
+    main()

@@ -1,16 +1,17 @@
-import sys, os
+import sys, os, functools, typing
 from dataclasses import dataclass
 from typing import List, Tuple, Dict, Optional
-from PyQt5.QtCore import (
-    QObject, pyqtSlot, QFileSelector, QSaveFile, QFileSelector, QTemporaryDir, QTemporaryFile, QAbstractItemModel, QAbstractListModel)
-from PyQt5.QtGui import (QIcon, QImageIOHandler, QImage, QImageReader, QImageWriter, QStandardItemModel, QStandardItem)
-from PyQt5.QtWidgets import (
+from PyQt5.QtCore import ( Qt,
+    QObject, pyqtSlot, QFileSelector, QSaveFile, QFileSelector, QTemporaryDir, QTemporaryFile, QAbstractItemModel, QAbstractListModel, pyqtSignal)
+from PyQt5.QtGui import (QIcon, QImageIOHandler, QImage, QImageReader, QImageWriter, QStandardItemModel, QStandardItem, QPalette, QColor)
+from PyQt5.QtWidgets import ( QWidget,
     QApplication, QMainWindow, QPushButton, QLineEdit, QSpinBox, QMessageBox, QFileDialog, QListWidgetItem,
     QListWidget, QTreeWidget, QTableWidget, QLabel, QTabWidget, QComboBox, QTreeWidgetItem, QTableWidgetItem,
     QAction, QWizard, QWizardPage, QDialog, QUndoView, QProgressBar, QStyle
 )
+from PIL import Image
 
-from models.demo import Demo
+from models.demo.demo import Demo
 from models.op import Op, ShellOp, InsertOp, SectionOp, AudioOp, CropOp
 
 from PyQt5 import uic
@@ -18,15 +19,14 @@ from PyQt5 import uic
 #TODO make function/class which automatically goes thru list of widget names
 #     and attaches appropriate functions/functionality
 class MainWindow(QMainWindow):
-    
+
     def __init__(self, *args, **kwargs) -> None:
         super().__init__(*args, **kwargs)
-        path = os.path.join(os.path.dirname(__file__), "ui\\main.ui")
+        path = os.path.join(os.path.dirname(__file__), "main.ui")
         uic.loadUi(path, self)
         self.cx = Context()
         self.load_btn()
         self.load_input()
-        self.show()
 
     def load_btn(self) -> None:
         self.runBtn: QPushButton
@@ -45,7 +45,10 @@ class MainWindow(QMainWindow):
         self.browseDemoBtn.clicked.connect(self.browse_demo)
         self.browseAudioBtn.clicked.connect(self.browse_audio)
         self.browseScriptBtn.clicked.connect(self.browse_script)
-        #self.browseShellBtn.clicked.connect(self.browse_shell)
+        self.shellBrowseImgBtn.clicked.connect(self.browse_shell)
+        self.insertBrowseImgBtn.clicked.connect(self.browse_insert)
+        self.resetStepParamsBtn.clicked.connect(self.show_about)
+
        # self.browseInsertBtn.clicked.connect(self.browse_insert)
 
     # TODO: do this more programmatically
@@ -72,13 +75,25 @@ class MainWindow(QMainWindow):
         self.scriptSumListWidget: QListWidget
         self.audioSumListWidget: QListWidget
         self.opsParamsTabs: QTabWidget
+        self.centralTabs: QTabWidget
         self.opsCombo: QComboBox
         self.demoSumTitle: QLabel
+        self.centralWidget: QWidget
 
         #self.demoSumListWidget.setModel()
 
         self.ops_combo.textActivated.connect(self.changed_op)
         self.cx.ops = self.ops
+
+    def load_signals(self):
+        pass
+
+    def load_slots(self):
+        pass
+
+    def load_actions(self):
+        pass
+
 
     #TODO detach these from class
     def browse_demo(self):
@@ -143,12 +158,12 @@ class MainWindow(QMainWindow):
 
     def load_demo(self):
         self.cx.demo = Demo(path=self.cx.demo_path, script_path=self.cx.script_path, audio_dir=self.cx.audio_dir)
-        self.demoSumTitle.setText(self.cx.demo.tite)
+        self.demoSumTitle.setText(self.cx.demo.title)
         self.demo_sum_title.setText("DFDF")
-        self.demoTreeWidget.insertTopLevelItem(QTreeWidgetItem("Demo tite", self.cx.demo.titprint(self.cx.demo)))
+        self.demoTreeWidget.insertTopLevelItem(QTreeWidgetItem("Demo tite", self.cx.demo.title))
         tree: QTreeWidget = self.demoTreeWidget
         sect_items: List[QTreeWidgetItem] = []
-        step_items: List[List[QTreeWidgetItems]] = []
+        step_items: List[QTreeWidgetItem] = []
         for i, sect in enumerate(self.cx.demo.iter_sect()):
             for j, step in enumerate(sect):
                 if step.idx == 0:
@@ -157,11 +172,13 @@ class MainWindow(QMainWindow):
                     self.demoTreeWidget.addTopLevelItem(sect_item)
                 else:
                     step_item: QTreeWidgetItem = QTreeWidgetItem([str(j), "Step "+str(j), str(step.tp.text != ""), str(step.ci.text!="")])
-                    step_items[i].append(step_item)
+                    step_items.append(step_item)
                     sect_items[i].addChild(step_item)
         self.demoTreeWidget = tree
                 
-       
+    def add_util_tab(self):
+        pass
+
 
     def load_state(self):
         pass
@@ -218,7 +235,20 @@ class MainWindow(QMainWindow):
     def set_demo_tree(self, demo: Demo) -> None:
         tree_model: DemoModel = DemoModel(demo=demo)
 
+    def show_about(self):
+        text = "<center>" \
+               "<h1>ISCUtils</h1>" \
+               "&#8291;" \
+               "</center>" \
+               "<p>Version 0.0.1<br/>" \
+               "Chris P.</p>"
+        QMessageBox.about(self, "About Text Editor", text)
 
+class AboutDialog(QDialog):
+    def __init__(self, *args, **kwargs):
+        super(AboutDialog, self).__init__(*args, **kwargs)
+
+@pyqtSlot(MainWindow)
 def msg(txt: str, inf: str, title: str, det: str = ""):
     msg = QMessageBox()
     msg.setIcon(QMessageBox.Information)
@@ -237,11 +267,11 @@ class OpsModel(QAbstractItemModel):
 
 class Step(QStandardItem):
 
-    def __init__(self, op_type: Op): 
+    def __init__(self, op_type: Op):
         pass
 
 class Steps(QStandardItemModel):
-    def __init__(self): 
+    def __init__(self):
         pass
 
     def add_step(self, step: Step):
@@ -282,7 +312,32 @@ class Context:
         active_op = False
 
 
+def run():
+    app = QApplication(sys.argv)
+    app.setStyle("Fusion")
+    palette = QPalette()
+    palette.setColor(QPalette.Window, QColor(53, 53, 53))
+    palette.setColor(QPalette.WindowText, Qt.white)
+    palette.setColor(QPalette.Base, QColor(25, 25, 25))
+    palette.setColor(QPalette.AlternateBase, QColor(53, 53, 53))
+    palette.setColor(QPalette.ToolTipBase, Qt.white)
+    palette.setColor(QPalette.ToolTipText, Qt.white)
+    palette.setColor(QPalette.Text, Qt.white)
+    palette.setColor(QPalette.Button, QColor(53, 53, 53))
+    palette.setColor(QPalette.ButtonText, Qt.white)
+    palette.setColor(QPalette.BrightText, Qt.red)
+    palette.setColor(QPalette.Link, QColor(42, 130, 218))
+    palette.setColor(QPalette.Highlight, QColor(42, 130, 218))
+    palette.setColor(QPalette.HighlightedText, Qt.black)
+    app.setPalette(palette)
+    window = MainWindow()
+    window.show()
+    app.exec_()
+    
+
+"""
 app = QApplication(sys.argv)
-app.setStyle("Fusion")
+#app.setStyle("Fusion")
 window = MainWindow()
 app.exec_()
+"""
