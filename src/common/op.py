@@ -8,6 +8,10 @@ class OpType:
 
 class Operation:
 
+    op_type: OpType
+    current: bool
+    index: int
+
     def __init__(self, op_type: OpType, steps: List[str]):
         print("DF")
 

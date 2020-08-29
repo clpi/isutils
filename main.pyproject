@@ -1,3 +1,3 @@
 {
-    "files": ["src/ui/window.py","src/form.ui","src/ui/window.ui","src/models/script.py","src/models/demo.py",".gitignore","src/models/step.py","src/models/__init__.py","src/main.py","main.pyproject.user","src/models/audio.py","src/models/section.py","src/ui/__init__.py","src/ui/__init__.py","src/ui/main.ui","src/ui/window.py"]
+    "files": ["src/ui/main.ui","src/form.ui","src/main.py","src/window.py","src/models/__init__.py","src/ui/window.ui","src/models/section.py","main.pyproject.user","src/utils.py",".gitignore","src/models/script.py","src/models/step.py","src/models/demo.py","src/models/audio.py","src/main.ui","src/test.py","src/ui/__init__.py","src/ui/window.py","src/__init__.py","src/__init__.py","src/main.py","src/test.py","src/utils.py","src/window.py"]
 }

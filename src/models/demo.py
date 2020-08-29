@@ -25,6 +25,7 @@ class Demo:
                 audio_dir: str = "", 
                 is_sectioned: bool = False,
                 audio_attached: bool = False):
+        print("Demo loading...")
         self.file = path
         self.script_path = script_path
         self.audio_dir = audio_dir
