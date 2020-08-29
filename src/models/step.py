@@ -1,7 +1,7 @@
 from PIL import Image
 import re
 from uuid import uuid4
-from typing import List, Tuple, Dict
+from typing import List, Tuple, Dict, Optional, Any, Iterable, Union
 from pathlib import Path, PurePath
 import models.demo_tags as dt
 from models.audio import SoundBite

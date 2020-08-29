@@ -1,17 +1,17 @@
 import sys, os
 from dataclasses import dataclass
-from typing import List, Tuple, Dict 
+from typing import List, Tuple, Dict, Optional
 from PyQt5.QtCore import (
-    QObject, pyqtSlot, QFileSelector, QSaveFile, QFileSelector, QTemporaryDir, QTemporaryFile)
-from PyQt5.QtGui import (QIcon, QImageIOHandler, QImage, QImageReader, QImageWriter, QStandardItemModel, QStandardItem,)
+    QObject, pyqtSlot, QFileSelector, QSaveFile, QFileSelector, QTemporaryDir, QTemporaryFile, QAbstractItemModel, QAbstractListModel)
+from PyQt5.QtGui import (QIcon, QImageIOHandler, QImage, QImageReader, QImageWriter, QStandardItemModel, QStandardItem)
 from PyQt5.QtWidgets import (
     QApplication, QMainWindow, QPushButton, QLineEdit, QSpinBox, QMessageBox, QFileDialog, QListWidgetItem,
     QListWidget, QTreeWidget, QTableWidget, QLabel, QTabWidget, QComboBox, QTreeWidgetItem, QTableWidgetItem,
-    QAction, QWizard, QWizardPage, QDialog, QUndoView, QProgressBar,
+    QAction, QWizard, QWizardPage, QDialog, QUndoView, QProgressBar, QStyle
 )
 
 from models.demo import Demo
-from common.op import Operation
+from models.op import Op, ShellOp, InsertOp, SectionOp, AudioOp, CropOp
 
 from PyQt5 import uic
 
@@ -19,7 +19,7 @@ from PyQt5 import uic
 #     and attaches appropriate functions/functionality
 class MainWindow(QMainWindow):
     
-    def __init__(self, *args, **kwargs):
+    def __init__(self, *args, **kwargs) -> None:
         super().__init__(*args, **kwargs)
         path = os.path.join(os.path.dirname(__file__), "ui\\main.ui")
         uic.loadUi(path, self)
@@ -28,11 +28,20 @@ class MainWindow(QMainWindow):
         self.load_input()
         self.show()
 
-    def load_btn(self):
-        self.runBtn: QPushButton = self.runBtn
-        self.addStepBtn: QPushButton = self.addStepBtn
+    def load_btn(self) -> None:
+        self.runBtn: QPushButton
+        self.addStepBtn: QPushButton
+        self.browseDemoBtn: QPushButton
+        self.browseAudioBtn: QPushButton
+        self.browseScriptBtn: QPushButton
+        self.shellBrowseImgBtn: QPushButton
+        self.saveStepParamsBtn: QPushButton
+        self.insertBrowseImgBtn: QPushButton
+        self.resetStepParamsBtn: QPushButton
+
         self.runBtn.clicked.connect(self.run_ops)
         self.addStepBtn.clicked.connect(self.add_step)
+        self.saveStepParamsBtn.clicked.connect(self.save_params)
         self.browseDemoBtn.clicked.connect(self.browse_demo)
         self.browseAudioBtn.clicked.connect(self.browse_audio)
         self.browseScriptBtn.clicked.connect(self.browse_script)
@@ -40,33 +49,33 @@ class MainWindow(QMainWindow):
        # self.browseInsertBtn.clicked.connect(self.browse_insert)
 
     # TODO: do this more programmatically
-    def load_input(self):
-        #insert
-        self.insert_img: QLineEdit = self.findChild(QLineEdit, "insertImgPath")
-        self.insert_x: QSpinBox = self.findChild(QSpinBox, "insertFgX")
-        self.insert_y: QSpinBox = self.findChild(QSpinBox, "insertFgY")
-        self.insert_w: QSpinBox = self.findChild(QSpinBox, "insertFgW")
-        self.insert_h: QSpinBox = self.findChild(QSpinBox, "insertFgH")
-        #shell
-        self.shell_img: QLineEdit = self.findChild(QLineEdit, "shellImgPath")
-        self.shell_x: QSpinBox = self.findChild(QSpinBox, "shellFgX")
-        self.shell_y: QSpinBox = self.findChild(QSpinBox, "shellFgY")
-        self.shell_w: QSpinBox = self.findChild(QSpinBox, "shellFgW")
-        self.shell_h: QSpinBox = self.findChild(QSpinBox, "shellFgH")
+    def load_input(self) -> None:
+        self.insertImgPath: QLineEdit
+        self.shellImgPath: QLineEdit
+        self.insertFgX: QSpinBox
+        self.insertFgY: QSpinBox
+        self.insertFgW: QSpinBox
+        self.insertFgH: QSpinBox
+        self.shellFgX: QSpinBox
+        self.shellFgY: QSpinBox
+        self.shellFgW: QSpinBox
+        self.shellFgH: QSpinBox
 
 
     def load_data(self):
-        self.steps: QListWidget = self.findChild(QListWidget, "stepListWidget")
-        self.apply_to: QListWidget = self.findChild(QListWidget, "applyToListWidget")
-        self.demo_tree: QTreeWidget = self.findChild(QTreeWidget, "demoTreeWidget")
-        self.metadata: QTreeWidget = self.findChild(QTreeWidget, "metadataTreeWidget")
-        self.step_options: QListWidget = self.findChild(QListWidget, "stepOptionsListWidget")
-        self.demo_sum: QListWidget = self.findChild(QListWidget, "demoSumListWidget")
-        self.demo_sum_title: QLabel = self.findChild(QLabel, "demoSumTitle")
-        self.script_sum: QListWidget = self.findChild(QListWidget, "scriptSumListWidget")
-        self.audio_sum: QListWidget = self.findChild(QListWidget, "audioSumListWidget")
-        self.ops_params_tabs: QTabWidget = self.findChild(QTabWidget, "opsParamsTabs")
-        self.ops_combo: QComboBox = self.findChild(QComboBox, "opsCombo")
+        self.stepsListWidget: QListWidget
+        self.applyToListWidget: QListWidget
+        self.metadataTreeWidget: QTreeWidget
+        self.demoTreeWidget: QTreeWidget
+        self.stepOptionsListWidget: QListWidget
+        self.demoSumListWidget: QListWidget
+        self.scriptSumListWidget: QListWidget
+        self.audioSumListWidget: QListWidget
+        self.opsParamsTabs: QTabWidget
+        self.opsCombo: QComboBox
+        self.demoSumTitle: QLabel
+
+        #self.demoSumListWidget.setModel()
 
         self.ops_combo.textActivated.connect(self.changed_op)
         self.cx.ops = self.ops
@@ -170,6 +179,9 @@ class MainWindow(QMainWindow):
         s.addItem(op)
         self.opsParamsTabs.setEnabled(True)
 
+    def save_params(self):
+        pass
+
     def add_demo_row(self):
         # checkif sect or step
         row = ""
@@ -203,6 +215,10 @@ class MainWindow(QMainWindow):
 
         pass
 
+    def set_demo_tree(self, demo: Demo) -> None:
+        tree_model: DemoModel = DemoModel(demo=demo)
+
+
 def msg(txt: str, inf: str, title: str, det: str = ""):
     msg = QMessageBox()
     msg.setIcon(QMessageBox.Information)
@@ -212,6 +228,40 @@ def msg(txt: str, inf: str, title: str, det: str = ""):
     if det != "":
         msg.setDetailedText(det)
     msg.setStandardButtons(QMessageBox.Ok | QMessageBox.Cancel)
+    msg.exec_()
+
+class OpsModel(QAbstractItemModel):
+
+    def __init__(self, demo: Demo):
+        pass
+
+class Step(QStandardItem):
+
+    def __init__(self, op_type: Op): 
+        pass
+
+class Steps(QStandardItemModel):
+    def __init__(self): 
+        pass
+
+    def add_step(self, step: Step):
+        pass
+
+class DemoModel(QStandardItemModel):
+
+    def __init__(self, demo: Demo):
+        pass
+
+class StepMetadata(QStandardItemModel):
+
+    def __init__(self):
+        pass
+
+class SectMetadata(QStandardItemModel):
+
+    def __init__(self):
+        pass
+
 
 class Context:
     demo_path: str
@@ -220,7 +270,7 @@ class Context:
     audio_dir: str
     current_op: str
     active_op: bool
-    ops: List[Operation]
+    ops: List[Op]
 
     def __init__(self):
         self.demo_path = ""
@@ -233,5 +283,6 @@ class Context:
 
 
 app = QApplication(sys.argv)
+app.setStyle("Fusion")
 window = MainWindow()
 app.exec_()

@@ -1,7 +1,7 @@
 import sys, os
 import lxml.etree as ET
 import re
-from typing import List, Tuple, Dict
+from typing import List, Tuple, Dict, Union, Optional, Iterable, Any
 from pathlib import Path, PurePath
 from itertools import islice
 from copy import deepcopy
@@ -24,14 +24,14 @@ class Demo:
                 script_path: str = "", 
                 audio_dir: str = "", 
                 is_sectioned: bool = False,
-                audio_attached: bool = False):
+                audio_attached: bool = False) -> None:
         print("Demo loading...")
-        self.file = path
-        self.script_path = script_path
-        self.audio_dir = audio_dir
-        self.is_sectioned = is_sectioned
-        self.audio_attached = audio_attached
-        self.title = "" 
+        self.file: str = path
+        self.script_path: str = script_path
+        self.audio_dir: str = audio_dir
+        self.is_sectioned: bool = is_sectioned
+        self.audio_attached: bool = audio_attached
+        self.title: str = "" 
         self.res: Tuple[int, int] = (0, 0) #TODO make changeable?
         self.len, self.sect_len = 0, 0
         self.sections: List[Section] = []
@@ -46,7 +46,7 @@ class Demo:
             self.loaded = False
 
     @validate_path #~329ms
-    def load(self, path: str = ""): #w/o dq: 584ms, dq:
+    def load(self, path: str = "") -> None: #w/o dq: 584ms, dq:
         """
         Takes a directory path pointing to a DemoMate script .doc file as input
         Returns a list of tuples for each step in demo, where first element of pair contains
@@ -59,7 +59,7 @@ class Demo:
             self.root = self.tree.getroot()
         except:
             print("Demo failed to import. Demo file might be corrupted or in use.")
-            return False
+            return
         else:
             self.dir = str(Path(path).parent)
             self.assets = Path(path + "_Assets")
@@ -96,7 +96,7 @@ class Demo:
                 self.set_audio(self.audio)
         self.set_res()
 
-    def matches_script(self, script: Script = None, naive: bool = True) -> bool:
+    def matches_script(self, script: Optional[Script] = None, naive: bool = True) -> bool:
         # make advanced algorithm to check non strict sect idx and step idx, optional
         if script is None:
             script = self.script
@@ -122,7 +122,7 @@ class Demo:
         print("Script length, demo length: " + str(len(script)) + ", " + str(self.len))
         return True
 
-    def matches_audio(self, audio: Audio = None, by_tp: bool = True):
+    def matches_audio(self, audio: Optional[Audio] = None, by_tp: bool = True):
         if not self.is_sectioned:
             self.process_sections()
         if audio is None:
@@ -159,14 +159,14 @@ class Demo:
             audio_i += 1
         self.audio_attached = True
 
-    def set_text(self, script: Script = None):
+    def set_text(self, script: Optional[Script] = None) -> None:
         print('setting text')
         if script is None:
             script = self.script
         for step, (ci, tp) in zip(self.iter_step(), script):
             step.set_text(ci=ci.text, tp=tp.text)
 
-    def set_audio(self, audio: Audio = None):
+    def set_audio(self, audio: Optional[Audio] = None) -> None:
         if audio is None:
             audio = self.audio
         for step, soundbite in zip(self.iter_audio_step(by_tp=True), audio):
