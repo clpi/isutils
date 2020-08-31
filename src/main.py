@@ -1,7 +1,6 @@
 from ui.window import MainWindow, run
 from app import *
-
-import sys
+import os, sys
 
 def main():
     run()

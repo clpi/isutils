@@ -27,6 +27,7 @@ class MainWindow(QMainWindow):
         self.cx = Context()
         self.load_btn()
         self.load_input()
+        
 
     def load_btn(self) -> None:
         self.runBtn: QPushButton
@@ -66,8 +67,8 @@ class MainWindow(QMainWindow):
 
 
     def load_data(self):
-        self.stepsListWidget: QListWidget
-        self.applyToListWidget: QListWidget
+        self.stepsTreeWidget: QListWidget
+        self.applyToTreeWidget: QListWidget
         self.metadataTreeWidget: QTreeWidget
         self.demoTreeWidget: QTreeWidget
         self.stepOptionsListWidget: QListWidget
@@ -315,6 +316,7 @@ class Context:
 def run():
     app = QApplication(sys.argv)
     app.setStyle("Fusion")
+    """
     palette = QPalette()
     palette.setColor(QPalette.Window, QColor(53, 53, 53))
     palette.setColor(QPalette.WindowText, Qt.white)
@@ -330,6 +332,7 @@ def run():
     palette.setColor(QPalette.Highlight, QColor(42, 130, 218))
     palette.setColor(QPalette.HighlightedText, Qt.black)
     app.setPalette(palette)
+    """
     window = MainWindow()
     window.show()
     app.exec_()

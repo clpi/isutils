@@ -1,5 +1,5 @@
-from models.demo import Demo
-from common.op import Operation
+from models.demo.demo import Demo
+from models.op import Op
 
 p = r"C:/Users/Jess/Documents/My Demos/CodePipeline with Multi-Account Architectures [ R1 - V1 ].demo"
 d = Demo(path=p)
