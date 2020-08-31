@@ -13,6 +13,8 @@ from PIL import Image
 
 from models.demo.demo import Demo
 from models.op import Op, ShellOp, InsertOp, SectionOp, AudioOp, CropOp
+from ui.comp.op import OpWidget
+from ui.comp.prefs import Prefs
 
 from PyQt5 import uic
 
@@ -244,6 +246,10 @@ class MainWindow(QMainWindow):
                "<p>Version 0.0.1<br/>" \
                "Chris P.</p>"
         QMessageBox.about(self, "About Text Editor", text)
+
+    def show_prefs(self):
+        prefs = Prefs(parent=self)
+        prefs.show()
 
 class AboutDialog(QDialog):
     def __init__(self, *args, **kwargs):

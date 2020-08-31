@@ -44,7 +44,7 @@
       <property name="movable">
        <bool>true</bool>
       </property>
-      <widget class="QWidget" name="tab_3">
+      <widget class="QWidget" name="opTab">
        <attribute name="title">
         <string>Demo Utils</string>
        </attribute>
@@ -210,7 +210,7 @@
                 <enum>QTabWidget::Rounded</enum>
                </property>
                <property name="currentIndex">
-                <number>2</number>
+                <number>1</number>
                </property>
                <property name="usesScrollButtons">
                 <bool>false</bool>

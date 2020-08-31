@@ -23,26 +23,29 @@ class Script:
         
     @validate_path
     def load(self, path: str = "") -> bool:
-        self.path = Path(path)
-        try:
-            self.doc = docx.Document(self.path)
-        except:
-            raise NameError("Script is not a valid DemoMate script document.")
-        for i, table in enumerate(self.doc.tables):
-            prev_len = 0
-            data = islice(zip(table.column_cells(1), table.column_cells(2)), 1, None)
-            self.num_sections += 1
-            for j, (ci, tp) in enumerate(data):
-                self.tp.append(TextBox(tp.text))
-                self.ci.append(TextBox(ci.text))
-                self.length += 1
-                if ci.text:
-                    self.num_ci += 1
-                if tp.text:
-                    self.num_tp += 1
-        print("Script: Finished loading, with {} sectons, {} steps"
+        if path != "":
+            try:
+                self.path = Path(path)
+                self.doc = docx.Document(self.path)
+                for i, table in enumerate(self.doc.tables):
+                    prev_len = 0
+                    data = islice(zip(table.column_cells(1), table.column_cells(2)), 1, None)
+                    self.num_sections += 1
+                    for j, (ci, tp) in enumerate(data):
+                        self.tp.append(TextBox(tp.text))
+                        self.ci.append(TextBox(ci.text))
+                        self.length += 1
+                        if ci.text:
+                            self.num_ci += 1
+                        if tp.text:
+                            self.num_tp += 1
+            except:
+                raise NameError("Script is not a valid DemoMate script document.")
+                return False
+            print("Script: Finished loading, with {} sectons, {} steps"
                     .format(self.num_sections, len(self.tp)))
-        return True
+            return True
+        return False
 
     def duplicate_step(self, idx: int):
         pass
