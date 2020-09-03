@@ -12,7 +12,7 @@ from PyQt5.QtWidgets import ( QWidget,
 from PIL import Image
 
 from models.demo.demo import Demo
-from models.op import Op, ShellOp, InsertOp, SectionOp, AudioOp, CropOp
+from models.operation import Op, ShellOp, InsertOp, SectionOp, AudioOp, CropOp
 from ui.comp.op import OpWidget
 from ui.comp.prefs import Prefs
 

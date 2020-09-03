@@ -1,3 +1,24 @@
 {
-    "files": ["src/ui/main.ui","src/qml/img_view/main.py","src/main.ui","src/qml/operations.h","src/qml/img_view/main.qml","src/qml/ops.qml","src/qml/operations.cpp","src/form.ui","src/models/demo.py","src/ui/prefs.ui","src/window.py","src/models/demo/demo_tags.py","main.pyproject.user","src/models/op.py","src/models/demo/step.py","src/models/demo/script.py","src/__init__.py","src/models/section.py","src/app.py","src/models/step.py","src/models/demo/audio.py","src/models/__init__.py","src/main.py","src/models/script.py","src/models/demo/demo.py","src/qml/menubar.ui","src/ui/window.py","src/models/demo/section.py","src/models/audio.py","src/utils.py","src/ui/comp/__init__.py","src/ui/window.ui","src/ui/prefs.py","src/ui/__init__.py","src/models/demo/__init__.py",".gitignore","src/test.py","src/ui/comp/prefs.ui","src/ui/comp/prefs.py","src/ui/comp/op.ui","src/ui/comp/op.py","src/ui/comp/__init__.py"]
+    "files":
+        [
+            "src/ui/main.ui",
+            "src/qml/img_view/main.py",
+            "src/qml/operations.h",
+            "src/qml/img_view/main.qml",
+            "src/qml/ops.qml",
+            "src/qml/operations.cpp",
+            "src/form.ui",
+            "src/models/demo.py",
+            "src/ui/prefs.ui",
+            "src/window.py",
+            "src/models/demo/demo_tags.py",
+            "main.pyproject.user",
+            "src/models/op.py",
+            "src/models/demo/step.py",
+            "src/models/demo/script.py",
+            "src/__init__.py",
+            "src/models/section.py",
+            "src/app.py",
+            "src/models/step.py",
+            "src/models/demo/audio.py","src/models/__init__.py","src/main.py","src/models/script.py","src/models/demo/demo.py","src/qml/menubar.ui","src/ui/window.py","src/models/demo/section.py","src/models/audio.py","src/utils.py","src/ui/comp/__init__.py","src/ui/window.ui","src/ui/prefs.py","src/ui/__init__.py","src/models/demo/__init__.py",".gitignore","src/test.py","src/ui/comp/prefs.ui","src/ui/comp/prefs.py","src/ui/comp/op.ui","src/ui/comp/op.py","src/ui/comp/__init__.py"]
 }
