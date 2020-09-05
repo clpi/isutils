@@ -1,9 +1,12 @@
+"""
+
+"""
 import sys, os
 from typing import Optional, List, Dict
 from PyQt5 import uic
 from PyQt5.QtCore import (Qt, QObject, pyqtSlot, pyqtSignal)
 from PyQt5.QtWidgets import (QWidget, QDialog, QListWidget, QComboBox, QListWidgetItem, QTreeWidget, QTreeWidgetItem, QApplication, QLineEdit, QSpinBox)
-from models.op import Op, ShellOp, InsertOp, SectionOp, AudioOp, CropOp
+from models.operation import Op, ShellOp, InsertOp, SectionOp, AudioOp, CropOp
 
 class OpWidget(QWidget):
 
@@ -35,3 +38,8 @@ class OpWidget(QWidget):
         self.shellFgY: QSpinBox
         self.shellFgW: QSpinBox
         self.shellFgH: QSpinBox
+
+class OpState:
+
+    def __init__(self, op: Op):
+        self.op = op

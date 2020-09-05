@@ -100,43 +100,32 @@ class MainWindow(QMainWindow):
 
     #TODO detach these from class
     def browse_demo(self):
-        options = QFileDialog.Options()
-        options |= QFileDialog.DontUseNativeDialog
         try:
-            self.cx.demo_path, _ = QFileDialog.getOpenFileName(self,"Browse for .demo files", "","Demo files (*.demo);;All Files (*)", options=options)
+            self.cx.demo_path, _ = QFileDialog.getOpenFileName(self,"Browse for .demo files", "","Demo files (*.demo);;All Files (*)")
             self.load_demo()
         except:
             msg("Must select a demo file", "Error while selecting demo", "Must select demo")
             self.cx.demo_path = ""
 
     def browse_script(self):
-        options = QFileDialog.Options()
-        options |= QFileDialog.DontUseNativeDialog
         try:
-            self.cx.script_path, _ = QFileDialog.getOpenFileName(self,"Browse for .docx files", "","Word files (*.docx);;All Files (*)",
-            options=options)
+            self.cx.script_path, _ = QFileDialog.getOpenFileName(self,"Browse for .docx files", "","Word files (*.docx);;All Files (*)")
             if self.cx.demo_path != "":
                 self.load_demo()
         except:
             msg("Must select a script file", "Error while selecting script", "Must select script")
-            return
 
     def browse_audio(self):
-        options = QFileDialog.Options()
-        options |= QFileDialog.DontUseNativeDialog
         try:
-            self.cx.audio_dir, _ = QFileDialog.getExistingDirectory(self, "Browse for audio folder", options=options)
+            self.cx.audio_dir = QFileDialog.getExistingDirectory(self, "Browse for audio folder")
             if self.cx.demo_path != "":
                 self.load_demo()
         except:
             msg("Must select a script file", "Error while selecting script", "Must select script")
-            return
 
     def browse_insert(self):
-        options = QFileDialog.Options()
-        options |= QFileDialog.DontUseNativeDialog
         try:
-            fileName, _ = QFileDialog.getOpenFileName(self,"Browse for image files", "","All Files (*);;PNG files (*.png)", options=options)
+            fileName, _ = QFileDialog.getOpenFileName(self,"Browse for image files", "","All Files (*);;PNG files (*.png)")
             img_tmp = Image.open(fileName)
             iwidth, iheight = img_tmp.size
             if self.demo is not None:
@@ -147,10 +136,8 @@ class MainWindow(QMainWindow):
             pass
 
     def browse_shell(self):
-        options = QFileDialog.Options()
-        options |= QFileDialog.DontUseNativeDialog
         try:
-            fileName, _ = QFileDialog.getOpenFileName(self,"Browse for image files", "","All Files (*);;PNG files (*.png)", options=options)
+            fileName, _ = QFileDialog.getOpenFileName(self,"Browse for image files", "","All Files (*);;PNG files (*.png)")
             img_tmp = Image.open(fileName)
             iwidth, iheight = img_tmp.size
             if self.demo is not None:
@@ -194,6 +181,7 @@ class MainWindow(QMainWindow):
 
     def add_step(self):
         ops = self.cx.ops
+        op_widget = OpWidget(parent=self)
         s: QListWidget = self.stepsListWidget
         op = QListWidgetItem("Item" + str(len(self.cx.ops) + 1))
         s.addItem(op)
