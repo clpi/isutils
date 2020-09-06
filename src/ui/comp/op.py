@@ -21,8 +21,20 @@ class OpWidget(QWidget):
         path = os.path.join(os.path.dirname(__file__), "op.ui")
         uic.loadUi(path, self)
         self.set_op(op_idx)
+        self.load_btn()
         self.load_stack()
         self.load_data()
+
+    def load_btn(self): 
+        self.insertBrowseImgBtn: QPushButton
+        self.shellBrowseImgBtn: QPushButton
+        self.resetStepParamsBtn: QPushButton
+        self.saveStepParamsBtn: QPushButton
+
+        self.shellBrowseImgBtn.clicked.connect(self.browse_shell)
+        self.insertBrowseImgBtn.clicked.connect(self.browse_insert)
+        self.resetStepParamsBtn.clicked.connect(self.reset_step_params)
+        self.saveStepParamsBtn.clicked.connect(self.save_step_params)
 
     def load_stack(self):
         self.opsParamsStack: QStackedWidget
@@ -93,6 +105,35 @@ class OpWidget(QWidget):
         pass
 
     def add_sect(self) -> None:
+        pass
+
+    def browse_insert(self):
+        try:
+            fileName, _ = QFileDialog.getOpenFileName(self,"Browse for image files", "","All Files (*);;PNG files (*.png)")
+            img_tmp = Image.open(fileName)
+            iwidth, iheight = img_tmp.size
+            if self.demo is not None:
+                if iwidth > self.demo.res[0] or iheight > self.demo.res[1]:
+                    pass
+            #set op img path, def dims
+        except:
+            pass
+
+    def browse_shell(self):
+        try:
+            fileName, _ = QFileDialog.getOpenFileName(self,"Browse for image files", "","All Files (*);;PNG files (*.png)")
+            img_tmp = Image.open(fileName)
+            iwidth, iheight = img_tmp.size
+            if self.demo is not None:
+                if iwidth > self.demo.res[0] or iheight > self.demo.res[1]:
+                    pass
+            #set op img path, def dims
+        except: pass
+
+    def save_step_params(self):
+        pass
+
+    def reset_step_params(self):
         pass
 
 class OpContext:

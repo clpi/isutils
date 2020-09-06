@@ -5,7 +5,7 @@ import sys, os, functools, typing
 from dataclasses import dataclass
 from typing import List, Tuple, Dict, Optional, Type
 from PyQt5.QtCore import ( Qt,
-    QObject, pyqtSlot, QFileSelector, QSaveFile, QFileSelector, QTemporaryDir, QTemporaryFile, QAbstractItemModel, QAbstractListModel, pyqtSignal)
+    QObject, pyqtSlot, QFileSelector, QSaveFile, QFileSelector, QTemporaryDir, QTemporaryFile, QAbstractItemModel, QAbstractListModel, pyqtSignal, QModelIndex)
 from PyQt5.QtGui import (QIcon, QImageIOHandler, QImage, QImageReader, QImageWriter, QStandardItemModel, QStandardItem, QPalette, QColor)
 from PyQt5.QtWidgets import ( QWidget,
     QApplication, QMainWindow, QPushButton, QLineEdit, QSpinBox, QMessageBox, QFileDialog, QListWidgetItem,
@@ -37,23 +37,17 @@ class MainWindow(QMainWindow):
     def load_btn(self) -> None:
         self.runBtn: QPushButton
         self.addStepBtn: QPushButton
+        self.removeStepBtn: QPushButton
         self.browseDemoBtn: QPushButton
         self.browseAudioBtn: QPushButton
         self.browseScriptBtn: QPushButton
-        self.shellBrowseImgBtn: QPushButton
-        self.saveStepParamsBtn: QPushButton
-        self.insertBrowseImgBtn: QPushButton
-        self.resetStepParamsBtn: QPushButton
 
         self.runBtn.clicked.connect(self.run_ops)
         self.addStepBtn.clicked.connect(self.add_step)
-        self.saveStepParamsBtn.clicked.connect(self.save_params)
+        self.removeStepBtn.clicked.connect(self.remove_step)
         self.browseDemoBtn.clicked.connect(self.browse_demo)
         self.browseAudioBtn.clicked.connect(self.browse_audio)
         self.browseScriptBtn.clicked.connect(self.browse_script)
-        self.shellBrowseImgBtn.clicked.connect(self.browse_shell)
-        self.insertBrowseImgBtn.clicked.connect(self.browse_insert)
-        self.resetStepParamsBtn.clicked.connect(self.show_about)
 
        # self.browseInsertBtn.clicked.connect(self.browse_insert)
 
@@ -76,9 +70,11 @@ class MainWindow(QMainWindow):
         self.metadataTreeWidget: QTreeWidget
         self.demoTreeWidget: QTreeWidget
         self.stepOptionsListWidget: QListWidget
-        self.demoSumListWidget: QListWidget
-        self.scriptSumListWidget: QListWidget
-        self.audioSumListWidget: QListWidget
+
+        self.demoListTreeWidget: QTreeWidget #TODO if num items == 0, disable add_step
+        self.scriptListTreeWidget: QTreeWidget
+        self.audioListTreeWidget: QTreeWidget
+
         self.opsParamsTabs: QTabWidget
         self.centralTabs: QTabWidget
         self.opCombo: QComboBox #in op.py
@@ -91,15 +87,8 @@ class MainWindow(QMainWindow):
         self.opsStack.removeWidget(self.opsWidget)
 
         #self.demoSumListWidget.setModel()
-
         #self.opCombo.textActivated.connect(self.changed_op)
         self.stepsTreeWidget.currentItemChanged.connect( self.changed_op )
-
-    def load_signals(self):
-        pass
-
-    def load_slots(self):
-        pass
 
     def load_actions(self):
         pass
@@ -129,29 +118,6 @@ class MainWindow(QMainWindow):
         except:
             msg("Must select a script file", "Error while selecting script", "Must select script")
 
-    def browse_insert(self):
-        try:
-            fileName, _ = QFileDialog.getOpenFileName(self,"Browse for image files", "","All Files (*);;PNG files (*.png)")
-            img_tmp = Image.open(fileName)
-            iwidth, iheight = img_tmp.size
-            if self.demo is not None:
-                if iwidth > self.demo.res[0] or iheight > self.demo.res[1]:
-                    pass
-            #set op img path, def dims
-        except:
-            pass
-
-    def browse_shell(self):
-        try:
-            fileName, _ = QFileDialog.getOpenFileName(self,"Browse for image files", "","All Files (*);;PNG files (*.png)")
-            img_tmp = Image.open(fileName)
-            iwidth, iheight = img_tmp.size
-            if self.demo is not None:
-                if iwidth > self.demo.res[0] or iheight > self.demo.res[1]:
-                    pass
-            #set op img path, def dims
-        except: pass
-
     def load_demo(self):
         self.cx.demo = Demo(path=self.cx.demo_path, script_path=self.cx.script_path, audio_dir=self.cx.audio_dir)
         self.demoSumTitle.setText(self.cx.demo.title)
@@ -175,46 +141,52 @@ class MainWindow(QMainWindow):
     def add_util_tab(self):
         pass
 
-
     def load_state(self):
         print("BEGIN load_state")
 
     def save_state(self):
         print("BEGIN save_state")
+        print("END save_state")
 
     def run_ops(self):
         print("BEGIN run_ops")
+        print("END run_ops")
 
     def add_step(self):
         #TODO create model for new steps QTreeWidgetItem
         #TODO create model for list of steps 
         print("BEGIN add_step")
         op_widget = OpWidget(parent=self, op_idx=0)
-        lab = QLabel("Item " + str(len(self.cx.ops)))
-        #op = QTreeWidgetItem("Item" + str(len(self.cx.ops) + 1))
-        #self.stepsTreeWidget.addItem(op)
+        self.cx.ops.append(op_widget)
+        op = QTreeWidgetItem(["TEST"])
+        self.stepsTreeWidget.addTopLevelItem(op)
         self.opsStack.addWidget(op_widget)
         self.opsStack.setCurrentWidget(op_widget)
         self.opsParamsTabs.setEnabled(True)
         print("END add_step")
 
-    def save_params(self):
-        pass
+    #TODO fix this
+    def remove_step(self):
+        print("BEGIN remove_step")
+        sel_step: int = self.stepsTreeWidget.currentIndex().row()
+        sel_widget: QWidget = self.opsStack.currentWidget()
+        sel_tree_item: QTreeWidgetItem = self.stepsTreeWidget.currentItem()
+        self.cx.ops.pop(sel_step)
+        self.stepsTreeWidget.removeItemWidget(sel_tree_item, 0)
+        self.stepsTreeWidget.removeItemWidget(sel_tree_item, 1)
+        self.stepsTreeWidget.removeItemWidget(sel_tree_item, 2)
+        self.opsStack.currentWidget().destroy()
+        print("END remove_step")
 
     def add_demo_row(self):
         # checkif sect or step
         row = ""
 
     def changed_op(self):
-        curr = self.ops_combo.currentText()
-        curr_idx = self.opCombo.currentIndex()
-        if curr == "Shell": self.ops_params_tabs.setCurrentIndex(0)
-        if curr == "Insert": self.ops_params_tabs.setCurrentIndex(1)
-        if curr == "Section": self.ops_params_tabs.setCurrentIndex(2)
-        if curr == "Audio": self.ops_params_tabs.setCurrentIndex(3)
-        if curr == "Crop": self.ops_params_tabs.setCurrentIndex(4)
-        #if curr == "Move pixels": self.ops_params_tabs.setCurrentIndex(4)
-        #if curr == "Resize": self.ops_params_tabs.setCurrentIndex(4)
+        curr_step: QModelIndex = self.stepsTreeWidget.currentIndex()
+        self.opsStack.setCurrentIndex(curr_step.row())
+        curr_op: int = self.opCombo.currentIndex()
+        print(f"CURR_STEP: {curr_step.row()}, CURR_OP: {curr_op}")
 
     def browse(self, target: str): #general browse fn instead of re-making over
         if target == "demo":
