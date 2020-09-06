@@ -338,7 +338,7 @@
                 </size>
                </property>
                <property name="currentIndex">
-                <number>1</number>
+                <number>0</number>
                </property>
                <widget class="QWidget" name="stepsTab">
                 <property name="sizePolicy">
@@ -716,7 +716,7 @@
                   <bool>false</bool>
                  </property>
                  <property name="currentIndex">
-                  <number>4</number>
+                  <number>0</number>
                  </property>
                  <widget class="QWidget" name="shellTab">
                   <property name="autoFillBackground">

@@ -15,14 +15,16 @@ from models.operation import OP_TYPES, Op, ShellOp, InsertOp, SectionOp, AudioOp
 
 class OpWidget(QWidget):
 
-    def __init__(self, op: str = "shell", parent: Optional[QWidget] = None):
+    def __init__(self, op_idx: int=0, parent: Optional[QWidget] = None):
         """Initializes """
         super().__init__(parent)
         path = os.path.join(os.path.dirname(__file__), "op.ui")
         uic.loadUi(path, self)
-        self.op = self.set_op(op)
+        self.set_op(op_idx)
+        self.load_stack()
+        self.load_data()
 
-    def load_tabs(self):
+    def load_stack(self):
         self.opsParamsStack: QStackedWidget
         self.shellTab: QWidget
         self.insertTab: QWidget
@@ -48,6 +50,8 @@ class OpWidget(QWidget):
         # Audio ----------------->
         # Crop ------------------>
         # Section --------------->
+
+        self.opCombo.currentIndexChanged.connect(self.op_changed)
 
     def get_op_params(self):
         pass
@@ -76,8 +80,23 @@ class OpWidget(QWidget):
         self.shellFgW: QSpinBox
         self.shellFgH: QSpinBox
 
+    def op_changed(self) -> None:
+        self.op_idx = self.opCombo.currentIndex()
+        self.op = OP_TYPES[self.op_idx]
+        print(self.op_idx)
+        print(self.op)
+
+    def get_params(self) -> Op:
+        pass
+
+    def add_step(self) -> None:
+        pass
+
+    def add_sect(self) -> None:
+        pass
+
 class OpContext:
 
-    def __init__(self, op: Op):
-        self.op = op
+    def __init__(self, op_idx: int):
+        self.op_idx = op_idx
 

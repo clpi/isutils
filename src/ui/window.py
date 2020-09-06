@@ -3,7 +3,7 @@ TODO: Separate App Window + tabs from Tab content view + create new tab view
 """
 import sys, os, functools, typing
 from dataclasses import dataclass
-from typing import List, Tuple, Dict, Optional
+from typing import List, Tuple, Dict, Optional, Type
 from PyQt5.QtCore import ( Qt,
     QObject, pyqtSlot, QFileSelector, QSaveFile, QFileSelector, QTemporaryDir, QTemporaryFile, QAbstractItemModel, QAbstractListModel, pyqtSignal)
 from PyQt5.QtGui import (QIcon, QImageIOHandler, QImage, QImageReader, QImageWriter, QStandardItemModel, QStandardItem, QPalette, QColor)
@@ -32,7 +32,7 @@ class MainWindow(QMainWindow):
         self.cx = Context()
         self.load_btn()
         self.load_input()
-        
+        self.load_data()
 
     def load_btn(self) -> None:
         self.runBtn: QPushButton
@@ -70,10 +70,9 @@ class MainWindow(QMainWindow):
         self.shellFgW: QSpinBox
         self.shellFgH: QSpinBox
 
-
     def load_data(self):
-        self.stepsTreeWidget: QListWidget
-        self.applyToTreeWidget: QListWidget
+        self.stepsTreeWidget: QTreeWidget
+        self.applyToTreeWidget: QTreeWidget
         self.metadataTreeWidget: QTreeWidget
         self.demoTreeWidget: QTreeWidget
         self.stepOptionsListWidget: QListWidget
@@ -82,18 +81,19 @@ class MainWindow(QMainWindow):
         self.audioSumListWidget: QListWidget
         self.opsParamsTabs: QTabWidget
         self.centralTabs: QTabWidget
-        self.opsCombo: QComboBox
+        self.opCombo: QComboBox #in op.py
         self.demoSumTitle: QLabel
         self.centralWidget: QWidget
 
         self.opsStack: QStackedWidget
         self.opsWidget: QWidget #TODO Make this empty w/o a current step active
+        self.opsWidget.destroy()
         self.opsStack.removeWidget(self.opsWidget)
 
         #self.demoSumListWidget.setModel()
 
-        self.ops_combo.textActivated.connect(self.changed_op)
-        self.cx.ops = self.ops
+        #self.opCombo.textActivated.connect(self.changed_op)
+        self.stepsTreeWidget.currentItemChanged.connect( self.changed_op )
 
     def load_signals(self):
         pass
@@ -103,7 +103,6 @@ class MainWindow(QMainWindow):
 
     def load_actions(self):
         pass
-
 
     #TODO detach these from class
     def browse_demo(self):
@@ -178,21 +177,26 @@ class MainWindow(QMainWindow):
 
 
     def load_state(self):
-        pass
+        print("BEGIN load_state")
 
     def save_state(self):
-        pass
+        print("BEGIN save_state")
 
     def run_ops(self):
-        pass
+        print("BEGIN run_ops")
 
     def add_step(self):
-        ops = self.cx.ops
-        op_widget = OpWidget(parent=self)
-        s: QListWidget = self.stepsListWidget
-        op = QListWidgetItem("Item" + str(len(self.cx.ops) + 1))
-        s.addItem(op)
+        #TODO create model for new steps QTreeWidgetItem
+        #TODO create model for list of steps 
+        print("BEGIN add_step")
+        op_widget = OpWidget(parent=self, op_idx=0)
+        lab = QLabel("Item " + str(len(self.cx.ops)))
+        #op = QTreeWidgetItem("Item" + str(len(self.cx.ops) + 1))
+        #self.stepsTreeWidget.addItem(op)
+        self.opsStack.addWidget(op_widget)
+        self.opsStack.setCurrentWidget(op_widget)
         self.opsParamsTabs.setEnabled(True)
+        print("END add_step")
 
     def save_params(self):
         pass
@@ -203,6 +207,7 @@ class MainWindow(QMainWindow):
 
     def changed_op(self):
         curr = self.ops_combo.currentText()
+        curr_idx = self.opCombo.currentIndex()
         if curr == "Shell": self.ops_params_tabs.setCurrentIndex(0)
         if curr == "Insert": self.ops_params_tabs.setCurrentIndex(1)
         if curr == "Section": self.ops_params_tabs.setCurrentIndex(2)
@@ -214,15 +219,12 @@ class MainWindow(QMainWindow):
     def browse(self, target: str): #general browse fn instead of re-making over
         if target == "demo":
             self.cx.demo_path, _ = QFileDialog.getOpenFileName(self,"Browse for .docx files", "","Word files (*.docx);;All Files (*)")
-
         elif target == "script":
             self.cx.script_path, _ = QFileDialog.getOpenFileName(self,"Browse for .docx files", "","Word files (*.docx);;All Files (*)")
-
         elif target == "audio":
             pass
         elif target == "shell":
             pass
-
         elif target == "insert":
             pass
         else: pass
@@ -246,6 +248,7 @@ class MainWindow(QMainWindow):
         prefs.show()
 
     def set_op_widget(self, op: str):
+        op_wid = OpWidget()
         """Consider making op param non-string, enum or something"""
         pass
         
@@ -298,7 +301,26 @@ class SectMetadata(QStandardItemModel):
     def __init__(self):
         pass
 
+def set_fusion(app: QApplication, dark: bool = False):
+    app.setStyle("Fusion")
+    if dark:
+        palette = QPalette()
+        palette.setColor(QPalette.Window, QColor(53, 53, 53))
+        palette.setColor(QPalette.WindowText, Qt.white)
+        palette.setColor(QPalette.Base, QColor(25, 25, 25))
+        palette.setColor(QPalette.AlternateBase, QColor(53, 53, 53))
+        palette.setColor(QPalette.ToolTipBase, Qt.white)
+        palette.setColor(QPalette.ToolTipText, Qt.white)
+        palette.setColor(QPalette.Text, Qt.white)
+        palette.setColor(QPalette.Button, QColor(53, 53, 53))
+        palette.setColor(QPalette.ButtonText, Qt.white)
+        palette.setColor(QPalette.BrightText, Qt.red)
+        palette.setColor(QPalette.Link, QColor(42, 130, 218))
+        palette.setColor(QPalette.Highlight, QColor(42, 130, 218))
+        palette.setColor(QPalette.HighlightedText, Qt.black)
+        app.setPalette(palette)
 
+@dataclass
 class Context:
     demo_path: str
     demo: Demo
@@ -306,7 +328,7 @@ class Context:
     audio_dir: str
     current_op: str
     active_op: bool
-    ops: List[Op]
+    ops: List[QWidget]
 
     def __init__(self):
         self.demo_path = ""
@@ -320,32 +342,7 @@ class Context:
 
 def run():
     app = QApplication(sys.argv)
-    app.setStyle("Fusion")
-    """
-    palette = QPalette()
-    palette.setColor(QPalette.Window, QColor(53, 53, 53))
-    palette.setColor(QPalette.WindowText, Qt.white)
-    palette.setColor(QPalette.Base, QColor(25, 25, 25))
-    palette.setColor(QPalette.AlternateBase, QColor(53, 53, 53))
-    palette.setColor(QPalette.ToolTipBase, Qt.white)
-    palette.setColor(QPalette.ToolTipText, Qt.white)
-    palette.setColor(QPalette.Text, Qt.white)
-    palette.setColor(QPalette.Button, QColor(53, 53, 53))
-    palette.setColor(QPalette.ButtonText, Qt.white)
-    palette.setColor(QPalette.BrightText, Qt.red)
-    palette.setColor(QPalette.Link, QColor(42, 130, 218))
-    palette.setColor(QPalette.Highlight, QColor(42, 130, 218))
-    palette.setColor(QPalette.HighlightedText, Qt.black)
-    app.setPalette(palette)
-    """
+    set_fusion(app)
     window = MainWindow()
     window.show()
     app.exec_()
-    
-
-"""
-app = QApplication(sys.argv)
-#app.setStyle("Fusion")
-window = MainWindow()
-app.exec_()
-"""
