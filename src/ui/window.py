@@ -1,3 +1,6 @@
+"""
+TODO: Separate App Window + tabs from Tab content view + create new tab view
+"""
 import sys, os, functools, typing
 from dataclasses import dataclass
 from typing import List, Tuple, Dict, Optional
@@ -7,7 +10,7 @@ from PyQt5.QtGui import (QIcon, QImageIOHandler, QImage, QImageReader, QImageWri
 from PyQt5.QtWidgets import ( QWidget,
     QApplication, QMainWindow, QPushButton, QLineEdit, QSpinBox, QMessageBox, QFileDialog, QListWidgetItem,
     QListWidget, QTreeWidget, QTableWidget, QLabel, QTabWidget, QComboBox, QTreeWidgetItem, QTableWidgetItem,
-    QAction, QWizard, QWizardPage, QDialog, QUndoView, QProgressBar, QStyle
+    QAction, QWizard, QWizardPage, QDialog, QUndoView, QProgressBar, QStyle, QStackedWidget
 )
 from PIL import Image
 
@@ -82,6 +85,10 @@ class MainWindow(QMainWindow):
         self.opsCombo: QComboBox
         self.demoSumTitle: QLabel
         self.centralWidget: QWidget
+
+        self.opsStack: QStackedWidget
+        self.opsWidget: QWidget #TODO Make this empty w/o a current step active
+        self.opsStack.removeWidget(self.opsWidget)
 
         #self.demoSumListWidget.setModel()
 
@@ -204,7 +211,6 @@ class MainWindow(QMainWindow):
         #if curr == "Move pixels": self.ops_params_tabs.setCurrentIndex(4)
         #if curr == "Resize": self.ops_params_tabs.setCurrentIndex(4)
 
-
     def browse(self, target: str): #general browse fn instead of re-making over
         if target == "demo":
             self.cx.demo_path, _ = QFileDialog.getOpenFileName(self,"Browse for .docx files", "","Word files (*.docx);;All Files (*)")
@@ -239,12 +245,17 @@ class MainWindow(QMainWindow):
         prefs = Prefs(parent=self)
         prefs.show()
 
+    def set_op_widget(self, op: str):
+        """Consider making op param non-string, enum or something"""
+        pass
+        
+
 class AboutDialog(QDialog):
     def __init__(self, *args, **kwargs):
         super(AboutDialog, self).__init__(*args, **kwargs)
 
 @pyqtSlot(MainWindow)
-def msg(txt: str, inf: str, title: str, det: str = ""):
+def msg(txt: str, inf: str, title: str, det: str = "") -> None:
     msg = QMessageBox()
     msg.setIcon(QMessageBox.Information)
     msg.setText(txt)

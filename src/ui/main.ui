@@ -502,7 +502,7 @@
         </item>
         <item>
          <widget class="QStackedWidget" name="opsStack">
-          <widget class="QWidget" name="opsWidget" native="true">
+          <widget class="QWidget" name="opsWidget">
            <layout class="QVBoxLayout" name="opLayout">
             <item>
              <widget class="QGroupBox" name="operationSelect">
@@ -716,7 +716,7 @@
                   <bool>false</bool>
                  </property>
                  <property name="currentIndex">
-                  <number>5</number>
+                  <number>4</number>
                  </property>
                  <widget class="QWidget" name="shellTab">
                   <property name="autoFillBackground">
