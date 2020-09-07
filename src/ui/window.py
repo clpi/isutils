@@ -1,7 +1,8 @@
 """
 TODO: Separate App Window + tabs from Tab content view + create new tab view
 TODO: Add op_type indicator for qtreewidgetitems in step list
-TODO: Make separate model / item classes for step list
+TODO: Make separate model / item classes for step list OR sep. QTreeWidget for stepsListTreeWidget
+TODO: Figure out script/audio/demo association functionality
 """
 import sys, os, functools, typing
 from dataclasses import dataclass, field
@@ -34,6 +35,7 @@ class MainWindow(QMainWindow):
         self.cx = Context()
         self.load_btn()
         self.load_data()
+        self.menubar.setVisible(True)
 
     def load_btn(self) -> None:
         self.runBtn: QPushButton
@@ -42,6 +44,8 @@ class MainWindow(QMainWindow):
         self.browseDemoBtn: QPushButton
         self.browseAudioBtn: QPushButton
         self.browseScriptBtn: QPushButton
+        self.stepUpBtn: QPushButton
+        self.stepDownBtn: QPushButton
 
         self.runBtn.clicked.connect(self.run_ops)
         self.addStepBtn.clicked.connect(self.add_step)
@@ -53,6 +57,7 @@ class MainWindow(QMainWindow):
        # self.browseInsertBtn.clicked.connect(self.browse_insert)
 
     def load_data(self):
+        self.centralTabs: QTabWidget
         self.stepsTreeWidget: QTreeWidget
         self.applyToTreeWidget: QTreeWidget
         self.metadataTreeWidget: QTreeWidget
@@ -140,6 +145,13 @@ class MainWindow(QMainWindow):
 
     def run_ops(self):
         print("BEGIN run_ops")
+        out = ""
+        for i in range(self.stepsTreeWidget.topLevelItemCount()):
+            step = self.stepTabs.widget(i)
+            op_type = str(step.op)
+            out += op_type
+            out += "\n"
+        msg(txt=out, inf=out, title="Run")
         print("END run_ops")
 
     def add_step(self):
@@ -154,7 +166,8 @@ class MainWindow(QMainWindow):
         self.stepTabs.setCurrentIndex(step_num)
         self.opsParamsTabs.setEnabled(True)
         self.stepsTreeWidget.setCurrentItem(self.stepsTreeWidget.topLevelItem(step_num-1))
-        #self.cx.ops[-1].opCombo.currentIndexChanged.connect(self.update_step_op(self.stepTabs.currentWidget().opCombo.currentIndex(), step_num-1))
+        self.update_steps()
+        self.stepTabs.widget(step_num-1).opCombo.currentIndexChanged.connect(self.update_steps)
         #self.stepsTreeWidget.currentItem().
         print("END add_step")
 
@@ -165,11 +178,30 @@ class MainWindow(QMainWindow):
         self.stepTabs.removeTab(sel_step.row())
         self.stepsTreeWidget.takeTopLevelItem(sel_step.row())
         self.cx.ops.pop(sel_step.row())
+        self.update_steps()
         for i in range(self.stepsTreeWidget.topLevelItemCount()):
             self.stepsTreeWidget.topLevelItem(i).setData(0,0,i+1)
+            self.stepTabs.setTabText(i, "Step " + str(i+1))
+        
         #self.stepsTreeWidget.setCurrentIndex(sel_step.siblingAtRow(sel_step.row()-1))
         #self.opsStack.setCurrentIndex(sel_step.row()-1)
         print("END remove_step")
+
+    def update_steps(self):
+        for i in range(self.stepsTreeWidget.topLevelItemCount()):
+            step = self.stepTabs.widget(i)
+            op_type = str(step.op)
+            op_target = str(step.opCombo.currentText())
+            demo_target = str(step.demoTargetCombo.currentText())
+            self.stepsTreeWidget.topLevelItem(i).setData(0,0,i+1)
+            self.stepsTreeWidget.topLevelItem(i).setData(1,0,op_target)
+            if demo_target is not None:
+                self.stepsTreeWidget.topLevelItem(i).setData(2,0,demo_target)
+            else:
+                self.stepsTreeWidget.topLevelItem(i).setData(2,0,"No demo")
+            self.stepTabs.setTabText(i, "Step " + str(i+1))
+            self.stepTabs.setCurrentIndex(self.stepsTreeWidget.currentIndex().row())
+
 
     def add_demo_row(self):
         # checkif sect or step
@@ -186,6 +218,13 @@ class MainWindow(QMainWindow):
 
     def update_step_op(self, op_idx: int, step_num: int):
         self.stepsTreeWidget.topLevelItem(step_num).setData(1, 0, str(OP_TYPES[op_idx]()))
+
+    def new_central_tab(self, tab_idx: int):
+        if tab_idx == self.centralTabs.count()-1:
+            self.centralTabs.addTab(QLabel("Hello!"), "New...")
+        #if tab_idx == self.centralTabs.:
+            #self.centralTabs.addTab(QLabel("Hello!")) #add new util/browse tab
+        pass
 
     def browse(self, target: str): #general browse fn instead of re-making over
         if target == "demo":
@@ -303,7 +342,7 @@ class Context:
 
 def run():
     app = QApplication(sys.argv)
-    set_fusion(app)
+    set_fusion(app, dark=False)
     window = MainWindow()
     window.show()
     app.exec_()

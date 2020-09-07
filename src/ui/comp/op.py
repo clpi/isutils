@@ -96,7 +96,7 @@ class OpWidget(QWidget):
         self.shellFgW: QSpinBox
         self.shellFgH: QSpinBox
 
-    @pyqtSlot(int)
+    #@pyqtSignal(int)
     def op_changed(self, op_idx: int) -> None:
         #self.op_idx = self.opCombo.currentIndex()
         #idx = self.parentWidget().parentWidget().parentWidget().stepsTreeWidget.indexFromItem(self)

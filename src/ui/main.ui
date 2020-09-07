@@ -384,14 +384,14 @@
                    <item>
                     <widget class="QPushButton" name="stepDownBtn">
                      <property name="text">
-                      <string>Move down</string>
+                      <string>Down</string>
                      </property>
                     </widget>
                    </item>
                    <item>
                     <widget class="QPushButton" name="stepUpBtn">
                      <property name="text">
-                      <string>Move up</string>
+                      <string>Up</string>
                      </property>
                     </widget>
                    </item>
@@ -516,6 +516,12 @@
         </item>
         <item>
          <widget class="QTabWidget" name="stepTabs">
+          <property name="tabsClosable">
+           <bool>true</bool>
+          </property>
+          <property name="movable">
+           <bool>true</bool>
+          </property>
           <widget class="QWidget" name="opsWidget" native="true">
            <attribute name="title">
             <string/>
@@ -1287,9 +1293,16 @@
                  <item>
                   <layout class="QHBoxLayout" name="horizontalLayout_5">
                    <item>
-                    <widget class="QPushButton" name="demoAddStepBtn">
+                    <widget class="QPushButton" name="demoDuplicateBtn">
                      <property name="text">
-                      <string>Add step</string>
+                      <string>Duplicate</string>
+                     </property>
+                    </widget>
+                   </item>
+                   <item>
+                    <widget class="QPushButton" name="demoInsertSectionBtn">
+                     <property name="text">
+                      <string>Insert section</string>
                      </property>
                     </widget>
                    </item>
@@ -1301,16 +1314,9 @@
                     </widget>
                    </item>
                    <item>
-                    <widget class="QPushButton" name="demoDuplicateBtn">
+                    <widget class="QPushButton" name="demoAddStepBtn">
                      <property name="text">
-                      <string>Duplicate</string>
-                     </property>
-                    </widget>
-                   </item>
-                   <item>
-                    <widget class="QPushButton" name="demoInsertSectionBtn">
-                     <property name="text">
-                      <string>Insert section</string>
+                      <string>Add step</string>
                      </property>
                     </widget>
                    </item>
