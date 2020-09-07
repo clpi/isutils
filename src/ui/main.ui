@@ -210,7 +210,7 @@
                 <enum>QTabWidget::Rounded</enum>
                </property>
                <property name="currentIndex">
-                <number>1</number>
+                <number>0</number>
                </property>
                <property name="usesScrollButtons">
                 <bool>false</bool>
@@ -382,6 +382,20 @@
                  <item>
                   <layout class="QHBoxLayout" name="horizontalLayout_3">
                    <item>
+                    <widget class="QPushButton" name="stepDownBtn">
+                     <property name="text">
+                      <string>Move down</string>
+                     </property>
+                    </widget>
+                   </item>
+                   <item>
+                    <widget class="QPushButton" name="stepUpBtn">
+                     <property name="text">
+                      <string>Move up</string>
+                     </property>
+                    </widget>
+                   </item>
+                   <item>
                     <widget class="QPushButton" name="removeStepBtn">
                      <property name="text">
                       <string>Remove</string>
@@ -501,8 +515,11 @@
          </layout>
         </item>
         <item>
-         <widget class="QStackedWidget" name="opsStack">
-          <widget class="QWidget" name="opsWidget">
+         <widget class="QTabWidget" name="stepTabs">
+          <widget class="QWidget" name="opsWidget" native="true">
+           <attribute name="title">
+            <string/>
+           </attribute>
            <layout class="QVBoxLayout" name="opLayout">
             <item>
              <widget class="QGroupBox" name="operationSelect">
@@ -1220,7 +1237,7 @@
           <item>
            <widget class="QTabWidget" name="objectViewTabW">
             <property name="currentIndex">
-             <number>1</number>
+             <number>0</number>
             </property>
             <widget class="QWidget" name="demoViewTabW">
              <attribute name="title">
@@ -2480,22 +2497,5 @@
   </action>
  </widget>
  <resources/>
- <connections>
-  <connection>
-   <sender>opCombo</sender>
-   <signal>currentIndexChanged(int)</signal>
-   <receiver>opsParamsTabs</receiver>
-   <slot>setCurrentIndex(int)</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>627</x>
-     <y>178</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>605</x>
-     <y>399</y>
-    </hint>
-   </hints>
-  </connection>
- </connections>
+ <connections/>
 </ui>

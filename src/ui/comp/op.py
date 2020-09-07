@@ -10,7 +10,7 @@ from PyQt5 import uic
 from PyQt5.QtCore import (Qt, QObject, pyqtSlot, pyqtSignal)
 from PyQt5.QtWidgets import (QWidget, QDialog, QListWidget, QPushButton,
     QComboBox, QListWidgetItem, QTreeWidget, QTreeWidgetItem, 
-    QApplication, QLineEdit, QSpinBox, QStackedWidget)
+    QApplication, QLineEdit, QSpinBox, QStackedWidget, QFileDialog, QCheckBox)
 from models.operation import OP_TYPES, Op, ShellOp, InsertOp, SectionOp, AudioOp, CropOp, get_op
 
 class OpWidget(QWidget):
@@ -47,14 +47,16 @@ class OpWidget(QWidget):
     def load_data(self):
         self.demoTargetCombo: QComboBox
         self.opCombo: QComboBox
+        self.allStepsCheck: QCheckBox
+        self.matchSubstringCheck: QCheckBox
         # Shell ------------------->
-        self.shellBrowseImgBtn: QPushButton
+        self.shellImgPath: QPushButton
         self.shellFgX: QSpinBox
         self.shellFgY: QSpinBox
         self.shellFgW: QSpinBox
         self.shellFgH: QSpinBox
         # Insert ----------------->
-        self.insertBrowseImgBtn: QPushButton
+        self.insertImgPath: QPushButton
         self.insertFgX: QSpinBox
         self.insertFgY: QSpinBox
         self.insertFgW: QSpinBox
@@ -62,8 +64,11 @@ class OpWidget(QWidget):
         # Audio ----------------->
         # Crop ------------------>
         # Section --------------->
+        # Apply to -------------->
+        self.applyToTreeWidget: QTreeWidget
 
         self.opCombo.currentIndexChanged.connect(self.op_changed)
+
 
     def get_op_params(self):
         pass
@@ -74,7 +79,6 @@ class OpWidget(QWidget):
     def set_op(self, op_idx: int):
         self.op = get_op(op_idx)()
         self.opsParamsStack.setCurrentIndex(op_idx)
-
 
     def set_op_kind(self, op: str):
 
@@ -92,10 +96,13 @@ class OpWidget(QWidget):
         self.shellFgW: QSpinBox
         self.shellFgH: QSpinBox
 
-    def op_changed(self) -> None:
-        self.op_idx = self.opCombo.currentIndex()
-        self.op = OP_TYPES[self.op_idx]
-        print(self.op_idx)
+    @pyqtSlot(int)
+    def op_changed(self, op_idx: int) -> None:
+        #self.op_idx = self.opCombo.currentIndex()
+        #idx = self.parentWidget().parentWidget().parentWidget().stepsTreeWidget.indexFromItem(self)
+        #self.parentWidget().parentWidget().parentWidget().stepsTreeWidget.topLevelItem(idx.row()).setData(1,0,get_op(op_idx))
+        self.op = OP_TYPES[op_idx]()
+        print(op_idx)
         print(self.op)
 
     def get_params(self) -> Op:
@@ -135,6 +142,7 @@ class OpWidget(QWidget):
 
     def reset_step_params(self):
         pass
+
 
 class OpContext:
 

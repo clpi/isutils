@@ -1,8 +1,10 @@
 """
 TODO: Separate App Window + tabs from Tab content view + create new tab view
+TODO: Add op_type indicator for qtreewidgetitems in step list
+TODO: Make separate model / item classes for step list
 """
 import sys, os, functools, typing
-from dataclasses import dataclass
+from dataclasses import dataclass, field
 from typing import List, Tuple, Dict, Optional, Type
 from PyQt5.QtCore import ( Qt,
     QObject, pyqtSlot, QFileSelector, QSaveFile, QFileSelector, QTemporaryDir, QTemporaryFile, QAbstractItemModel, QAbstractListModel, pyqtSignal, QModelIndex)
@@ -15,7 +17,7 @@ from PyQt5.QtWidgets import ( QWidget,
 from PIL import Image
 
 from models.demo.demo import Demo
-from models.operation import Op, ShellOp, InsertOp, SectionOp, AudioOp, CropOp
+from models.operation import Op, ShellOp, InsertOp, SectionOp, AudioOp, CropOp, OP_TYPES
 from ui.comp.op import OpWidget
 from ui.comp.prefs import Prefs
 
@@ -31,7 +33,6 @@ class MainWindow(QMainWindow):
         uic.loadUi(path, self)
         self.cx = Context()
         self.load_btn()
-        self.load_input()
         self.load_data()
 
     def load_btn(self) -> None:
@@ -51,19 +52,6 @@ class MainWindow(QMainWindow):
 
        # self.browseInsertBtn.clicked.connect(self.browse_insert)
 
-    # TODO: do this more programmatically
-    def load_input(self) -> None:
-        self.insertImgPath: QLineEdit
-        self.shellImgPath: QLineEdit
-        self.insertFgX: QSpinBox
-        self.insertFgY: QSpinBox
-        self.insertFgW: QSpinBox
-        self.insertFgH: QSpinBox
-        self.shellFgX: QSpinBox
-        self.shellFgY: QSpinBox
-        self.shellFgW: QSpinBox
-        self.shellFgH: QSpinBox
-
     def load_data(self):
         self.stepsTreeWidget: QTreeWidget
         self.applyToTreeWidget: QTreeWidget
@@ -81,14 +69,16 @@ class MainWindow(QMainWindow):
         self.demoSumTitle: QLabel
         self.centralWidget: QWidget
 
-        self.opsStack: QStackedWidget
+        self.stepTabs: QTabWidget
         self.opsWidget: QWidget #TODO Make this empty w/o a current step active
         self.opsWidget.destroy()
-        self.opsStack.removeWidget(self.opsWidget)
+        self.stepTabs.removeTab(0)
+        self.stepTabs.clear()
 
         #self.demoSumListWidget.setModel()
         #self.opCombo.textActivated.connect(self.changed_op)
         self.stepsTreeWidget.currentItemChanged.connect( self.changed_op )
+        self.stepTabs.currentChanged.connect(self.changed_step_tab)
 
     def load_actions(self):
         pass
@@ -156,26 +146,29 @@ class MainWindow(QMainWindow):
         #TODO create model for new steps QTreeWidgetItem
         #TODO create model for list of steps 
         print("BEGIN add_step")
-        op_widget = OpWidget(parent=self, op_idx=0)
-        self.cx.ops.append(op_widget)
-        op = QTreeWidgetItem(["TEST"])
+        step_num: int = len(self.cx.ops) + 1
+        self.cx.ops.append(OpWidget(parent=self, op_idx=0))
+        op = QTreeWidgetItem([str(step_num), str(OP_TYPES[0]()), str(OP_TYPES[0])])
         self.stepsTreeWidget.addTopLevelItem(op)
-        self.opsStack.addWidget(op_widget)
-        self.opsStack.setCurrentWidget(op_widget)
+        self.stepTabs.addTab(self.cx.ops[-1], "Step " + str(step_num))
+        self.stepTabs.setCurrentIndex(step_num)
         self.opsParamsTabs.setEnabled(True)
+        self.stepsTreeWidget.setCurrentItem(self.stepsTreeWidget.topLevelItem(step_num-1))
+        #self.cx.ops[-1].opCombo.currentIndexChanged.connect(self.update_step_op(self.stepTabs.currentWidget().opCombo.currentIndex(), step_num-1))
+        #self.stepsTreeWidget.currentItem().
         print("END add_step")
 
     #TODO fix this
     def remove_step(self):
         print("BEGIN remove_step")
-        sel_step: int = self.stepsTreeWidget.currentIndex().row()
-        sel_widget: QWidget = self.opsStack.currentWidget()
-        sel_tree_item: QTreeWidgetItem = self.stepsTreeWidget.currentItem()
-        self.cx.ops.pop(sel_step)
-        self.stepsTreeWidget.removeItemWidget(sel_tree_item, 0)
-        self.stepsTreeWidget.removeItemWidget(sel_tree_item, 1)
-        self.stepsTreeWidget.removeItemWidget(sel_tree_item, 2)
-        self.opsStack.currentWidget().destroy()
+        sel_step: QModelIndex = self.stepsTreeWidget.currentIndex()
+        self.stepTabs.removeTab(sel_step.row())
+        self.stepsTreeWidget.takeTopLevelItem(sel_step.row())
+        self.cx.ops.pop(sel_step.row())
+        for i in range(self.stepsTreeWidget.topLevelItemCount()):
+            self.stepsTreeWidget.topLevelItem(i).setData(0,0,i+1)
+        #self.stepsTreeWidget.setCurrentIndex(sel_step.siblingAtRow(sel_step.row()-1))
+        #self.opsStack.setCurrentIndex(sel_step.row()-1)
         print("END remove_step")
 
     def add_demo_row(self):
@@ -184,9 +177,15 @@ class MainWindow(QMainWindow):
 
     def changed_op(self):
         curr_step: QModelIndex = self.stepsTreeWidget.currentIndex()
-        self.opsStack.setCurrentIndex(curr_step.row())
-        curr_op: int = self.opCombo.currentIndex()
-        print(f"CURR_STEP: {curr_step.row()}, CURR_OP: {curr_op}")
+        self.stepTabs.setCurrentIndex(curr_step.row())
+
+    def changed_step_tab(self):
+        curr_tab: int = self.stepTabs.currentIndex()
+        self.stepsTreeWidget.setCurrentItem(self.stepsTreeWidget.topLevelItem(curr_tab))
+        #self.stepsTreeWidget.setCurrentIndex(curr_tab)
+
+    def update_step_op(self, op_idx: int, step_num: int):
+        self.stepsTreeWidget.topLevelItem(step_num).setData(1, 0, str(OP_TYPES[op_idx]()))
 
     def browse(self, target: str): #general browse fn instead of re-making over
         if target == "demo":
@@ -294,22 +293,12 @@ def set_fusion(app: QApplication, dark: bool = False):
 
 @dataclass
 class Context:
-    demo_path: str
-    demo: Demo
-    script_path: str
-    audio_dir: str
-    current_op: str
-    active_op: bool
-    ops: List[QWidget]
-
-    def __init__(self):
-        self.demo_path = ""
-        self.demo = None
-        self.script_path = ""
-        self.audio_dir = ""
-        self.current_op = ""
-        self.ops = []
-        active_op = False
+    demo_load: List[Demo] = field(default_factory=list)
+    demo_paths: List[str] = field(default_factory=list)
+    script_load: List[str] = field(default_factory=list)
+    audio_load: List[str] = field(default_factory=list)
+    ops: List[QWidget] = field(default_factory=list)
+    current_op: int = 0
 
 
 def run():

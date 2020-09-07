@@ -36,31 +36,52 @@ class ShellOp(Op):
     fg_coord: Tuple[int, int] = (0, 0)
     fg_dim: Tuple[int, int] = (0, 0) #TODO set to demo dims on init
 
+    def __str__(self) -> str:
+        return "shell"
+
 @dataclass
 class InsertOp(Op):
     img_path: str = ""
     fg_coord: Tuple[int, int] = (0, 0)
     fg_dim: Tuple[int, int] = (0, 0) #TODO set to demo dims on init
 
+    def __str__(self) -> str:
+        return "insert"
+
 @dataclass
 class SectionOp(Op):
     section_rules: Optional[List[str]] = None
+
+    def __str__(self) -> str:
+        return "section"
 
 @dataclass
 class AudioOp(Op):
     audio_rules: Optional[List[str]] = None
 
+    def __str__(self) -> str:
+        return "audio"
+
 @dataclass
 class CropOp(Op):
     dims: Tuple[int, int, int, int] = (0, 0, 0, 0) #TODO set to demo dims 
+
+    def __str__(self) -> str:
+        return "crop"
 
 @dataclass
 class ComposeOp(Op):
     other_path: Optional[str] = None
 
+    def __str__(self) -> str:
+        return "compose"
+
 @dataclass
 class ResizeOp(Op):
     new_dim: Tuple[int, int] = (0, 0)
+
+    def __str__(self) -> str:
+        return "resize"
 
 @dataclass
 class MoveOp(Op):
@@ -68,6 +89,9 @@ class MoveOp(Op):
     r1_dims: Tuple[int, int] = (0, 0)
     r2_coord: Tuple[int, int] = (0, 0)
     r2_dims: Tuple[int, int] = (0, 0)
+
+    def __str__(self) -> str:
+        return "move"
 
 class OpData:
 
