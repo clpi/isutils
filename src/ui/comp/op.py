@@ -5,7 +5,7 @@ TODO: Consider having op-type params be non-str
 TODO: Make default op view be blank, only show params view when one is selected
 """
 import sys, os
-from typing import Optional, List, Dict
+from typing import Optional, List, Dict, Any
 from PyQt5 import uic
 from PyQt5.QtCore import (Qt, QObject, pyqtSlot, pyqtSignal)
 from PyQt5.QtWidgets import (QWidget, QDialog, QListWidget, QPushButton,
@@ -106,7 +106,10 @@ class OpWidget(QWidget):
         print(self.op)
 
     def get_params(self) -> Op:
-        pass
+        demo_idx: int = self.demoTargetCombo.currentIndex() #get corr. demo
+        op_idx: int = self.opCombo.currentIndex() 
+        op_type: Op = get_op(op_idx)
+        params: Dict[str, Any] = op_type.get_params()
 
     def add_step(self) -> None:
         pass

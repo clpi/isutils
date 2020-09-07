@@ -8,7 +8,10 @@ import sys, os, functools, typing
 from dataclasses import dataclass, field
 from typing import List, Tuple, Dict, Optional, Type
 from PyQt5.QtCore import ( Qt,
-    QObject, pyqtSlot, QFileSelector, QSaveFile, QFileSelector, QTemporaryDir, QTemporaryFile, QAbstractItemModel, QAbstractListModel, pyqtSignal, QModelIndex)
+    QObject, pyqtSlot, QFileSelector, QSaveFile, QFileSelector, QTemporaryDir, 
+    QTemporaryFile, QAbstractItemModel, QAbstractListModel, pyqtSignal, QModelIndex,
+    QSignalMapper
+)
 from PyQt5.QtGui import (QIcon, QImageIOHandler, QImage, QImageReader, QImageWriter, QStandardItemModel, QStandardItem, QPalette, QColor)
 from PyQt5.QtWidgets import ( QWidget,
     QApplication, QMainWindow, QPushButton, QLineEdit, QSpinBox, QMessageBox, QFileDialog, QListWidgetItem,
@@ -278,6 +281,13 @@ def msg(txt: str, inf: str, title: str, det: str = "") -> None:
         msg.setDetailedText(det)
     msg.setStandardButtons(QMessageBox.Ok | QMessageBox.Cancel)
     msg.exec_()
+
+class DemoTreeWidget(QTreeWidget):
+
+    def __init__(self, demo_model: DemoModel):
+        signal_mapper = QSignalMapper(self)
+        self.model = demo_model
+        pass
 
 class OpsModel(QAbstractItemModel):
 

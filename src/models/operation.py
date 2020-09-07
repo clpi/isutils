@@ -3,7 +3,7 @@
 """
 from abc import abstractmethod, abstractproperty, ABC, ABCMeta
 from enum import Enum, auto
-from typing import Tuple, Optional, List, Union, Type
+from typing import Tuple, Optional, List, Union, Type, Any
 from dataclasses import dataclass
 
 SECTION_RULES = []
@@ -30,6 +30,9 @@ class Op:
     def add_sect(self):
         pass
 
+    def get_params(self) -> Dict[str, Any]:
+        pass
+
 @dataclass
 class ShellOp(Op):
     img_path: str = ""
@@ -38,6 +41,9 @@ class ShellOp(Op):
 
     def __str__(self) -> str:
         return "shell"
+
+    def get_params(self) -> Dict[str, Any]:
+        pass
 
 @dataclass
 class InsertOp(Op):
@@ -48,12 +54,18 @@ class InsertOp(Op):
     def __str__(self) -> str:
         return "insert"
 
+    def get_params(self) -> Dict[str, Any]:
+        pass
+
 @dataclass
 class SectionOp(Op):
     section_rules: Optional[List[str]] = None
 
     def __str__(self) -> str:
         return "section"
+
+    def get_params(self) -> Dict[str, Any]:
+        pass
 
 @dataclass
 class AudioOp(Op):
@@ -62,12 +74,18 @@ class AudioOp(Op):
     def __str__(self) -> str:
         return "audio"
 
+    def get_params(self) -> Dict[str, Any]:
+        pass
+
 @dataclass
 class CropOp(Op):
     dims: Tuple[int, int, int, int] = (0, 0, 0, 0) #TODO set to demo dims 
 
     def __str__(self) -> str:
         return "crop"
+
+    def get_params(self) -> Dict[str, Any]:
+        pass
 
 @dataclass
 class ComposeOp(Op):
@@ -76,12 +94,18 @@ class ComposeOp(Op):
     def __str__(self) -> str:
         return "compose"
 
+    def get_params(self) -> Dict[str, Any]:
+        pass
+
 @dataclass
 class ResizeOp(Op):
     new_dim: Tuple[int, int] = (0, 0)
 
     def __str__(self) -> str:
         return "resize"
+
+    def get_params(self) -> dict[str, any]:
+        pass
 
 @dataclass
 class MoveOp(Op):
@@ -92,6 +116,9 @@ class MoveOp(Op):
 
     def __str__(self) -> str:
         return "move"
+
+    def get_params(self) -> Dict[str, Any]:
+        pass
 
 class OpData:
 
