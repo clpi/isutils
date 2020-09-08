@@ -3,7 +3,7 @@
 """
 from abc import abstractmethod, abstractproperty, ABC, ABCMeta
 from enum import Enum, auto
-from typing import Tuple, Optional, List, Union, Type, Any
+from typing import Tuple, Optional, List, Union, Type, Any, Dict
 from dataclasses import dataclass
 
 SECTION_RULES = []
@@ -104,7 +104,7 @@ class ResizeOp(Op):
     def __str__(self) -> str:
         return "resize"
 
-    def get_params(self) -> dict[str, any]:
+    def get_params(self) -> Dict[str, any]:
         pass
 
 @dataclass

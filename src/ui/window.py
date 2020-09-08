@@ -1,5 +1,6 @@
 """
-TODO: Separate App Window + tabs from Tab content view + create new tab view
+TODO: Separate App Window + tabs from Tab  view + create new tab view
+
 TODO: Add op_type indicator for qtreewidgetitems in step list
 TODO: Make separate model / item classes for step list OR sep. QTreeWidget for stepsListTreeWidget
 TODO: Figure out script/audio/demo association functionality
@@ -185,7 +186,6 @@ class MainWindow(QMainWindow):
         for i in range(self.stepsTreeWidget.topLevelItemCount()):
             self.stepsTreeWidget.topLevelItem(i).setData(0,0,i+1)
             self.stepTabs.setTabText(i, "Step " + str(i+1))
-        
         #self.stepsTreeWidget.setCurrentIndex(sel_step.siblingAtRow(sel_step.row()-1))
         #self.opsStack.setCurrentIndex(sel_step.row()-1)
         print("END remove_step")
@@ -204,7 +204,6 @@ class MainWindow(QMainWindow):
                 self.stepsTreeWidget.topLevelItem(i).setData(2,0,"No demo")
             self.stepTabs.setTabText(i, "Step " + str(i+1))
             self.stepTabs.setCurrentIndex(self.stepsTreeWidget.currentIndex().row())
-
 
     def add_demo_row(self):
         # checkif sect or step
@@ -282,12 +281,6 @@ def msg(txt: str, inf: str, title: str, det: str = "") -> None:
     msg.setStandardButtons(QMessageBox.Ok | QMessageBox.Cancel)
     msg.exec_()
 
-class DemoTreeWidget(QTreeWidget):
-
-    def __init__(self, demo_model: DemoModel):
-        signal_mapper = QSignalMapper(self)
-        self.model = demo_model
-        pass
 
 class OpsModel(QAbstractItemModel):
 
@@ -309,6 +302,13 @@ class Steps(QStandardItemModel):
 class DemoModel(QStandardItemModel):
 
     def __init__(self, demo: Demo):
+        pass
+
+class DemoTreeWidget(QTreeWidget):
+
+    def __init__(self, demo_model: DemoModel):
+        signal_mapper = QSignalMapper(self)
+        self.model = demo_model
         pass
 
 class StepMetadata(QStandardItemModel):
