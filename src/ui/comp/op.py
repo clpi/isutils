@@ -5,7 +5,7 @@ TODO: Consider having op-type params be non-str
 TODO: Make default op view be blank, only show params view when one is selected
 """
 import sys, os
-from typing import Optional, List, Dict, Any
+from typing import Optional, List, Dict, Any, Type
 from PyQt5 import uic
 from PyQt5.QtCore import (Qt, QObject, pyqtSlot, pyqtSignal)
 from PyQt5.QtWidgets import (QWidget, QDialog, QListWidget, QPushButton,
@@ -84,18 +84,6 @@ class OpWidget(QWidget):
 
         pass
 
-    def load_input(self) -> None:
-        self.insertImgPath: QLineEdit
-        self.shellImgPath: QLineEdit
-        self.insertFgX: QSpinBox
-        self.insertFgY: QSpinBox
-        self.insertFgW: QSpinBox
-        self.insertFgH: QSpinBox
-        self.shellFgX: QSpinBox
-        self.shellFgY: QSpinBox
-        self.shellFgW: QSpinBox
-        self.shellFgH: QSpinBox
-
     #@pyqtSignal(int)
     def op_changed(self, op_idx: int) -> None:
         #self.op_idx = self.opCombo.currentIndex()
@@ -105,11 +93,12 @@ class OpWidget(QWidget):
         print(op_idx)
         print(self.op)
 
-    def get_params(self) -> Op:
+    def get_params(self) -> Dict[str, Any]:
         demo_idx: int = self.demoTargetCombo.currentIndex() #get corr. demo
         op_idx: int = self.opCombo.currentIndex() 
-        op_type: Op = get_op(op_idx)
-        params: Dict[str, Any] = op_type.get_params()
+        op_type: Type[Op] = get_op(op_idx)
+        params: Dict[str, Any] = op_type().get_params()
+        return params
 
     def add_step(self) -> None:
         pass

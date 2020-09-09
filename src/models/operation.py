@@ -6,8 +6,8 @@ from enum import Enum, auto
 from typing import Tuple, Optional, List, Union, Type, Any, Dict
 from dataclasses import dataclass
 
-SECTION_RULES = []
-AUDIO_RULES = []
+SECTION_RULES: list = []
+AUDIO_RULES: list = []
 
 class OpKind(Enum):
     Shell = auto()
@@ -104,7 +104,7 @@ class ResizeOp(Op):
     def __str__(self) -> str:
         return "resize"
 
-    def get_params(self) -> Dict[str, any]:
+    def get_params(self) -> Dict[str, Any]:
         pass
 
 @dataclass

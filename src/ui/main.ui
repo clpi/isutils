@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>1440</width>
-    <height>900</height>
+    <height>923</height>
    </rect>
   </property>
   <property name="cursor">
@@ -517,12 +517,12 @@
         <item>
          <widget class="QTabWidget" name="stepTabs">
           <property name="tabsClosable">
-           <bool>true</bool>
+           <bool>false</bool>
           </property>
           <property name="movable">
-           <bool>true</bool>
+           <bool>false</bool>
           </property>
-          <widget class="QWidget" name="opsWidget" native="true">
+          <widget class="QWidget" name="opsWidget">
            <attribute name="title">
             <string/>
            </attribute>
@@ -1500,7 +1500,7 @@
      <x>0</x>
      <y>0</y>
      <width>1440</width>
-     <height>24</height>
+     <height>25</height>
     </rect>
    </property>
    <property name="defaultUp">

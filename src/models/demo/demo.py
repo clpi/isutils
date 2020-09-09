@@ -24,7 +24,7 @@ class Demo:
                 script_path: str = "", 
                 audio_dir: str = "", 
                 is_sectioned: bool = False,
-                audio_attached: bool = False) -> None:
+                audio_attached: bool = False):
         print("Demo loading...")
         self.file: str = path
         self.script_path: str = script_path
@@ -46,7 +46,7 @@ class Demo:
             self.loaded = False
 
     @validate_path #~329ms
-    def load(self, path: str = "") -> None: #w/o dq: 584ms, dq:
+    def load(self, path: str = ""): #w/o dq: 584ms, dq:
         """
         Takes a directory path pointing to a DemoMate script .doc file as input
         Returns a list of tuples for each step in demo, where first element of pair contains
@@ -77,7 +77,7 @@ class Demo:
                 self.len += len(section)
                 self.sections.append(section)
             self.steps =[step for sect in self for step in sect]
-            print(f"Imported demo with {len(self)} sections and {len(self.steps)} steps.")
+            print(f"Imported demo with {len(self.sections)} sections and {len(self.steps)} steps.")
         self.script = Script(self.script_path)
         if self.script.loaded:
             if self.matches_script(self.script):

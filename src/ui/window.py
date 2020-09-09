@@ -96,6 +96,7 @@ class MainWindow(QMainWindow):
     def browse_demo(self):
         try:
             self.cx.demo_path, _ = QFileDialog.getOpenFileName(self,"Browse for .demo files", "","Demo files (*.demo);;All Files (*)")
+            print(self.cx.demo_path)
             self.load_demo()
         except:
             msg("Must select a demo file", "Error while selecting demo", "Must select demo")
@@ -119,12 +120,13 @@ class MainWindow(QMainWindow):
 
     def load_demo(self):
         self.cx.demo = Demo(path=self.cx.demo_path, script_path=self.cx.script_path, audio_dir=self.cx.audio_dir)
-        self.demoSumTitle.setText(self.cx.demo.title)
-        self.demo_sum_title.setText("DFDF")
-        self.demoTreeWidget.insertTopLevelItem(QTreeWidgetItem("Demo tite", self.cx.demo.title))
-        tree: QTreeWidget = self.demoTreeWidget
+        #self.demoSumTitle.setText(self.cx.demo.title)
+        #self.demo_sum_title.setText("DFDF")
+        #self.demoTreeWidget.insertTopLevelItem(QTreeWidgetItem("Demo tite", self.cx.demo.title))
+        #tree: QTreeWidget = self.demoTreeWidget
         sect_items: List[QTreeWidgetItem] = []
         step_items: List[QTreeWidgetItem] = []
+        """
         for i, sect in enumerate(self.cx.demo.iter_sect()):
             for j, step in enumerate(sect):
                 if step.idx == 0:
@@ -136,6 +138,7 @@ class MainWindow(QMainWindow):
                     step_items.append(step_item)
                     sect_items[i].addChild(step_item)
         self.demoTreeWidget = tree
+        """
                 
     def add_util_tab(self):
         pass
@@ -226,21 +229,6 @@ class MainWindow(QMainWindow):
             self.centralTabs.addTab(QLabel("Hello!"), "New...")
         #if tab_idx == self.centralTabs.:
             #self.centralTabs.addTab(QLabel("Hello!")) #add new util/browse tab
-        pass
-
-    def browse(self, target: str): #general browse fn instead of re-making over
-        if target == "demo":
-            self.cx.demo_path, _ = QFileDialog.getOpenFileName(self,"Browse for .docx files", "","Word files (*.docx);;All Files (*)")
-        elif target == "script":
-            self.cx.script_path, _ = QFileDialog.getOpenFileName(self,"Browse for .docx files", "","Word files (*.docx);;All Files (*)")
-        elif target == "audio":
-            pass
-        elif target == "shell":
-            pass
-        elif target == "insert":
-            pass
-        else: pass
-
         pass
 
     def set_demo_tree(self, demo: Demo) -> None:
