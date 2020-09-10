@@ -359,13 +359,12 @@ class Demo:
         asset_new_size = (self.res[0] - dims[0] - dims[2], self.res[1] - dims[1] - dims[3]) 
         rx, ry = tuple(map(lambda z: z[0]/z[1], zip(asset_new_size, self.res)))
 
-        for step in self.iter_steps_in_sects(self.sections):
+        for step in self.iter_step():
             for img in step.assets.glob("*.png"):
                 asset = Image.open(img)
                 if dims is not None:
                     asset = asset.crop(dims)
                 asset.save(str(img))
-        
         self.res, dt.DEMO_RES = asset_new_size, asset_new_size
 
     def shell_assets(self, 

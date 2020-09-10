@@ -12,11 +12,15 @@ from PyQt5.QtWidgets import (QWidget, QDialog, QListWidget, QPushButton,
     QComboBox, QListWidgetItem, QTreeWidget, QTreeWidgetItem, 
     QApplication, QLineEdit, QSpinBox, QStackedWidget, QFileDialog, QCheckBox)
 from models.operation import OP_TYPES, Op, ShellOp, InsertOp, SectionOp, AudioOp, CropOp, get_op
+from models.demo.demo import Demo
 
 class OpWidget(QWidget):
 
     def __init__(self, op_idx: int=0, parent: Optional[QWidget] = None):
         """Initializes """
+
+        self.apply_to_demo: Optional[Demo] = None #Stores in memory the demo which the operation will be performed on
+        self.apply_to_mask: Optional[List[List[bool]]] = None #Maps every step in every section to True/false value to apply op to
         super().__init__(parent)
         path = os.path.join(os.path.dirname(__file__), "op.ui")
         uic.loadUi(path, self)
@@ -69,20 +73,13 @@ class OpWidget(QWidget):
 
         self.opCombo.currentIndexChanged.connect(self.op_changed)
 
-
-    def get_op_params(self):
-        pass
-
-    def set_demo(self):
-        pass
+    def set_demo(self, demo: Demo):
+        self.demo = demo
 
     def set_op(self, op_idx: int):
         self.op = get_op(op_idx)()
         self.opsParamsStack.setCurrentIndex(op_idx)
 
-    def set_op_kind(self, op: str):
-
-        pass
 
     #@pyqtSignal(int)
     def op_changed(self, op_idx: int) -> None:
@@ -93,6 +90,7 @@ class OpWidget(QWidget):
         print(op_idx)
         print(self.op)
 
+
     def get_params(self) -> Dict[str, Any]:
         demo_idx: int = self.demoTargetCombo.currentIndex() #get corr. demo
         op_idx: int = self.opCombo.currentIndex() 
@@ -100,11 +98,17 @@ class OpWidget(QWidget):
         params: Dict[str, Any] = op_type().get_params()
         return params
 
+    def run_op(self) -> None:
+        params = self.get_params()
+
+
     def add_step(self) -> None:
         pass
 
     def add_sect(self) -> None:
         pass
+
+    def get_apply_to
 
     def browse_insert(self):
         try:

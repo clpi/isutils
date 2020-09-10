@@ -1,6 +1,6 @@
 """
 TODO: Separate App Window + tabs from Tab  view + create new tab view
-
+TODO: Make right pane tabbed per-demo like the middle is (per step)
 TODO: Add op_type indicator for qtreewidgetitems in step list
 TODO: Make separate model / item classes for step list OR sep. QTreeWidget for stepsListTreeWidget
 TODO: Figure out script/audio/demo association functionality
@@ -72,20 +72,12 @@ class MainWindow(QMainWindow):
         self.scriptListTreeWidget: QTreeWidget
         self.audioListTreeWidget: QTreeWidget
 
-        self.opsParamsTabs: QTabWidget
         self.centralTabs: QTabWidget
-        self.opCombo: QComboBox #in op.py
         self.demoSumTitle: QLabel
         self.centralWidget: QWidget
 
         self.stepTabs: QTabWidget
-        self.opsWidget: QWidget #TODO Make this empty w/o a current step active
-        self.opsWidget.destroy()
-        self.stepTabs.removeTab(0)
-        self.stepTabs.clear()
 
-        #self.demoSumListWidget.setModel()
-        #self.opCombo.textActivated.connect(self.changed_op)
         self.stepsTreeWidget.currentItemChanged.connect( self.changed_op )
         self.stepTabs.currentChanged.connect(self.changed_step_tab)
 
@@ -95,13 +87,15 @@ class MainWindow(QMainWindow):
     #TODO detach these from class
     def browse_demo(self):
         try:
-            self.cx.demo_path, _ = QFileDialog.getOpenFileName(self,"Browse for .demo files", "","Demo files (*.demo);;All Files (*)")
-            print(self.cx.demo_path)
-            self.load_demo()
+            demo_path, _ = QFileDialog.getOpenFileName(self,"Browse for .demo files", "","Demo files (*.demo);;All Files (*)")
+            self.cx.demo_paths.append(demo_path)
+            print(demo_path)
+            self.load_demo(demo_path)
+            #msg("Loaded demo: " + repr(self.cx.load_demo[-1]), "Successfully loaded demo", "")
         except:
             msg("Must select a demo file", "Error while selecting demo", "Must select demo")
-            self.cx.demo_path = ""
 
+    #TODO implement correcty
     def browse_script(self):
         try:
             self.cx.script_path, _ = QFileDialog.getOpenFileName(self,"Browse for .docx files", "","Word files (*.docx);;All Files (*)")
@@ -110,22 +104,25 @@ class MainWindow(QMainWindow):
         except:
             msg("Must select a script file", "Error while selecting script", "Must select script")
 
+    #TODO Implement correctly
     def browse_audio(self):
         try:
             self.cx.audio_dir = QFileDialog.getExistingDirectory(self, "Browse for audio folder")
-            if self.cx.demo_path != "":
+            if self.cx.demo_paths[0] != "":
                 self.load_demo()
         except:
             msg("Must select a script file", "Error while selecting script", "Must select script")
 
-    def load_demo(self):
-        self.cx.demo = Demo(path=self.cx.demo_path, script_path=self.cx.script_path, audio_dir=self.cx.audio_dir)
+    def load_demo(self, demo_path: str):
+        demo = Demo(path=demo_path)
+        demo_item = QTreeWidgetItem([demo.title, "None", "None"])
+        self.demoListTreeWidget.addTopLevelItem(demo_item)
+        #self.cx.demo_load.append(demo)
+        #print(self.cx.demo_load)
         #self.demoSumTitle.setText(self.cx.demo.title)
         #self.demo_sum_title.setText("DFDF")
         #self.demoTreeWidget.insertTopLevelItem(QTreeWidgetItem("Demo tite", self.cx.demo.title))
         #tree: QTreeWidget = self.demoTreeWidget
-        sect_items: List[QTreeWidgetItem] = []
-        step_items: List[QTreeWidgetItem] = []
         """
         for i, sect in enumerate(self.cx.demo.iter_sect()):
             for j, step in enumerate(sect):
@@ -139,6 +136,19 @@ class MainWindow(QMainWindow):
                     sect_items[i].addChild(step_item)
         self.demoTreeWidget = tree
         """
+
+    def load_demo_tree(self):
+        """
+        Populates demo tree with sections/steps selectablbe for ops in rightmost pane
+        """
+        self.demoTreeWidget.clear()
+        pass
+
+    def load_script(self, script_path: str):
+        pass
+
+    def load_audio(self, audio_dir: str):
+        pass
                 
     def add_util_tab(self):
         pass
@@ -171,7 +181,6 @@ class MainWindow(QMainWindow):
         self.stepsTreeWidget.addTopLevelItem(op)
         self.stepTabs.addTab(self.cx.ops[-1], "Step " + str(step_num))
         self.stepTabs.setCurrentIndex(step_num)
-        self.opsParamsTabs.setEnabled(True)
         self.stepsTreeWidget.setCurrentItem(self.stepsTreeWidget.topLevelItem(step_num-1))
         self.update_steps()
         self.stepTabs.widget(step_num-1).opCombo.currentIndexChanged.connect(self.update_steps)
@@ -309,6 +318,11 @@ class SectMetadata(QStandardItemModel):
     def __init__(self):
         pass
 
+class DemoList(QAbstractItemModel):
+
+    def __init__(self):
+        pass
+
 def set_fusion(app: QApplication, dark: bool = False):
     app.setStyle("Fusion")
     if dark:
@@ -338,9 +352,13 @@ class Context:
     current_op: int = 0
 
 
+# signal whenever new demo is loaded --> add new demo to QItemModel for OpWidget demo selection
+def set_op_widget():
+    pass
+
 def run():
     app = QApplication(sys.argv)
-    set_fusion(app, dark=False)
+    #set_fusion(app, dark=False)
     window = MainWindow()
     window.show()
     app.exec_()
