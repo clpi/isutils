@@ -11,7 +11,7 @@ from PyQt5.QtCore import (Qt, QObject, pyqtSlot, pyqtSignal)
 from PyQt5.QtWidgets import (QWidget, QDialog, QListWidget, QPushButton,
     QComboBox, QListWidgetItem, QTreeWidget, QTreeWidgetItem, 
     QApplication, QLineEdit, QSpinBox, QStackedWidget, QFileDialog, QCheckBox)
-from models.operation import OP_TYPES, Op, ShellOp, InsertOp, SectionOp, AudioOp, CropOp, get_op
+from models.operation import Op, ShellOp, InsertOp, SectionOp, AudioOp, CropOp, get_op
 from models.demo.demo import Demo
 
 class OpWidget(QWidget):
@@ -74,19 +74,19 @@ class OpWidget(QWidget):
         self.opCombo.currentIndexChanged.connect(self.op_changed)
 
     def set_demo(self, demo: Demo):
-        self.demo = demo
+        self.apply_to_demo = demo
+        self.demoTargetCombo.set
 
     def set_op(self, op_idx: int):
         self.op = get_op(op_idx)()
         self.opsParamsStack.setCurrentIndex(op_idx)
-
 
     #@pyqtSignal(int)
     def op_changed(self, op_idx: int) -> None:
         #self.op_idx = self.opCombo.currentIndex()
         #idx = self.parentWidget().parentWidget().parentWidget().stepsTreeWidget.indexFromItem(self)
         #self.parentWidget().parentWidget().parentWidget().stepsTreeWidget.topLevelItem(idx.row()).setData(1,0,get_op(op_idx))
-        self.op = OP_TYPES[op_idx]()
+        #self.op = OP_TYPES[op_idx]()
         print(op_idx)
         print(self.op)
 
@@ -101,14 +101,14 @@ class OpWidget(QWidget):
     def run_op(self) -> None:
         params = self.get_params()
 
-
     def add_step(self) -> None:
         pass
 
     def add_sect(self) -> None:
         pass
 
-    def get_apply_to
+    def get_apply_to(self) -> List[List[bool]]:
+        pass
 
     def browse_insert(self):
         try:

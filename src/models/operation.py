@@ -5,6 +5,7 @@ from abc import abstractmethod, abstractproperty, ABC, ABCMeta
 from enum import Enum, auto
 from typing import Tuple, Optional, List, Union, Type, Any, Dict
 from dataclasses import dataclass
+#from ui.comp.op import OpWidget
 
 SECTION_RULES: list = []
 AUDIO_RULES: list = []
@@ -33,6 +34,9 @@ class Op:
     def get_params(self) -> Dict[str, Any]:
         pass
 
+    def run(self) -> None:
+        pass
+
 @dataclass
 class ShellOp(Op):
     img_path: str = ""
@@ -42,8 +46,15 @@ class ShellOp(Op):
     def __str__(self) -> str:
         return "shell"
 
-    def get_params(self) -> Dict[str, Any]:
+    #def get_params(self, op_widget: OpWidget) -> Dict[str, Any]:
+        #pass
+
+    def run_op(self):
         pass
+
+    def run(self) -> None:
+        pass
+
 
 @dataclass
 class InsertOp(Op):
@@ -53,6 +64,15 @@ class InsertOp(Op):
 
     def __str__(self) -> str:
         return "insert"
+
+    def run(self) -> None:
+        pass
+
+    #def from_widget(self, op_widget: OpWidget) -> InsertOp:
+        #for i in range(op_widget.topLevelItemCount()):
+            #print(i)
+        #apply_to = [sect for i in op_widget.applyToTreeWidget.topLevelItemCount()]
+        #self.apply_to = op
 
     def get_params(self) -> Dict[str, Any]:
         pass
@@ -67,6 +87,9 @@ class SectionOp(Op):
     def get_params(self) -> Dict[str, Any]:
         pass
 
+    def run(self) -> None:
+        pass
+
 @dataclass
 class AudioOp(Op):
     audio_rules: Optional[List[str]] = None
@@ -75,6 +98,9 @@ class AudioOp(Op):
         return "audio"
 
     def get_params(self) -> Dict[str, Any]:
+        pass
+
+    def run(self) -> None:
         pass
 
 @dataclass
@@ -87,6 +113,9 @@ class CropOp(Op):
     def get_params(self) -> Dict[str, Any]:
         pass
 
+    def run(self) -> None:
+        pass
+
 @dataclass
 class ComposeOp(Op):
     other_path: Optional[str] = None
@@ -97,6 +126,9 @@ class ComposeOp(Op):
     def get_params(self) -> Dict[str, Any]:
         pass
 
+    def run(self) -> None:
+        pass
+
 @dataclass
 class ResizeOp(Op):
     new_dim: Tuple[int, int] = (0, 0)
@@ -105,6 +137,9 @@ class ResizeOp(Op):
         return "resize"
 
     def get_params(self) -> Dict[str, Any]:
+        pass
+
+    def run(self) -> None:
         pass
 
 @dataclass
@@ -118,6 +153,9 @@ class MoveOp(Op):
         return "move"
 
     def get_params(self) -> Dict[str, Any]:
+        pass
+
+    def run(self) -> None:
         pass
 
 class OpData:
