@@ -156,11 +156,11 @@ class MainWindow(QMainWindow):
             self.demoListTreeWidget.topLevelItem(sel_demo_idx).setData(0, 0, new.path.name)
             self.demoListTreeWidget.topLevelItem(sel_demo_idx).setData(1, 0, str(new.audio_dir != ""))
             self.demoListTreeWidget.topLevelItem(sel_demo_idx).setData(2, 0, str(True))
-            self.demoListTreeWidget.topLevelItem(sel_demo_idx).addChild([QTreeWidgetItem(\
+            """self.demoListTreeWidget.topLevelItem(sel_demo_idx).addChild([QTreeWidgetItem(\
                 Path(script_path).name, \
                 str(new.script.num_sections)+" Sect, "+str(new.script.length)+" Steps", \
                 str(new.script.num_tp)+" TP"\
-            )])
+            )])"""
         if curr_demo.audio_dir == "" and audio_dir != "":
             print("ADDING AUDIO reload_sel_demo")
             new = Demo(path=curr_demo_path, script_path=curr_demo_script_path, audio_dir=audio_dir)
@@ -168,11 +168,12 @@ class MainWindow(QMainWindow):
             self.demoListTreeWidget.topLevelItem(sel_demo_idx).setData(0, 0, new.path.name)
             self.demoListTreeWidget.topLevelItem(sel_demo_idx).setData(1, 0, str(True))
             self.demoListTreeWidget.topLevelItem(sel_demo_idx).setData(2, 0, str(new.script_path != ""))
-            self.demoListTreeWidget.topLevelItem(sel_demo_idx).addChild([QTreeWidgetItem(\
+            """self.demoListTreeWidget.topLevelItem(sel_demo_idx).addChild([QTreeWidgetItem(\
                 Path(audio_dir).name, \
                 str(new.audio.len)+" Soundbites", \
                 "" #add alternate indicator?
-            )])
+            )])"""
+        self.set_demo_tree(sel_demo_idx)
         print("END reload_sel_demo")
 
     def get_demo_info(self):
@@ -206,10 +207,10 @@ class MainWindow(QMainWindow):
         out = ""
         for i in range(self.stepsTreeWidget.topLevelItemCount()):
             step = self.stepTabs.widget(i)
-            op_type = str(step.op)
-            out += op_type
-            out += "\n"
-        msg(txt=out, inf=out, title="Run")
+            demo = self.cx.demo_load[step.demoTargetCombo.currentIndex()]
+            step.run_op(demo)
+            print("RUNNING OPERATION " + str(i))
+        msg(txt="Finished running operations", inf=out, title="Finished")
         print("END run_ops")
 
     def add_step(self):
@@ -308,7 +309,7 @@ class MainWindow(QMainWindow):
             sect_item = QTreeWidgetItem([sect.title])
             self.demoTreeWidget.addTopLevelItem(sect_item)
             for j, step in enumerate(sect):
-                step_item = QTreeWidgetItem(["Step "+str(j), str(step.ci.text!=""), str(step.tp.text!="")])
+                step_item = QTreeWidgetItem(["Step "+str(j), str(step.tp.text!=""), str(step.ci.text!="")])
                 self.demoTreeWidget.topLevelItem(i).addChild(step_item)
         #demo_model.itemChanged.connect(self.displayInfo)
         print(curr_demo.title)
@@ -427,7 +428,7 @@ class Context:
     def get_demo_list_items(self) -> List[str]:
         out: List[str] = []
         for demo in self.demo_load:
-            out.append(demo.title)
+            out.append(demo.path.name)
         return out
 
 # signal whenever new demo is loaded --> add new demo to QItemModel for OpWidget demo selection

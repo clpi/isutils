@@ -5,7 +5,7 @@ TODO: Consider having op-type params be non-str
 TODO: Make default op view be blank, only show params view when one is selected
 """
 import sys, os
-from typing import Optional, List, Dict, Any, Type
+from typing import Optional, List, Dict, Any, Type, Tuple
 from PyQt5 import uic
 from PyQt5.QtCore import (Qt, QObject, pyqtSlot, pyqtSignal)
 from PyQt5.QtWidgets import (QWidget, QDialog, QListWidget, QPushButton,
@@ -54,13 +54,13 @@ class OpWidget(QWidget):
         self.allStepsCheck: QCheckBox
         self.matchSubstringCheck: QCheckBox
         # Shell ------------------->
-        self.shellImgPath: QPushButton
+        self.shellImgPath: QLineEdit
         self.shellFgX: QSpinBox
         self.shellFgY: QSpinBox
         self.shellFgW: QSpinBox
         self.shellFgH: QSpinBox
         # Insert ----------------->
-        self.insertImgPath: QPushButton
+        self.insertImgPath: QLineEdit
         self.insertFgX: QSpinBox
         self.insertFgY: QSpinBox
         self.insertFgW: QSpinBox
@@ -98,7 +98,34 @@ class OpWidget(QWidget):
         params: Dict[str, Any] = op_type().get_params()
         return params
 
-    def run_op(self) -> None:
+    def run_op(self, demo: Demo) -> None:
+        op_idx = self.opCombo.currentIndex()
+        op_type = get_op(op_idx)
+        if op_idx == 0: #shell
+            print("RUNNING SHELL OPERATION")
+            s_img_path: str = self.shellImgPath.text()
+            s_fg_coord: Tuple[int, int] = (self.shellFgX.value(), self.shellFgY.value())
+            s_fg_dim: Tuple[int, int] = (self.shellFgW.value(), self.shellFgH.value())
+            ShellOp(img_path=s_img_path, fg_coord=s_fg_coord, fg_dim=s_fg_dim).run(demo)
+        elif op_idx == 1: #insert #TODO fix insert algo in demo model
+            print("RUNNING INSERT OPERATION")
+            i_img_path: str = self.shellImgPath.text()
+            i_fg_coord: Tuple[int, int] = (self.insertFgX.value(), self.insertFgY.value())
+            i_fg_dim: Tuple[int, int] = (self.insertFgW.value(), self.insertFgH.value())
+            #InsertOp(img_path=i_img_path, fg_coord=i_fg_coord, fg_dim=i_fg_dim).run(demo)
+        elif op_idx == 2: #section
+            print("RUNNING SECTION OPERATION")
+            SectionOp().run(demo)
+        elif op_idx == 3: #audio
+            print("RUNNING AUDIO OPERATION")
+            AudioOp().run(demo)
+        elif op_idx == 4: #crop
+            pass
+        else:
+            pass
+            
+
+        op_type = self.opCombo.currentIndex()
         params = self.get_params()
 
     def add_step(self) -> None:
@@ -113,6 +140,7 @@ class OpWidget(QWidget):
     def browse_insert(self):
         try:
             fileName, _ = QFileDialog.getOpenFileName(self,"Browse for image files", "","All Files (*);;PNG files (*.png)")
+            self.insertImgPath.setText(fileName)
             img_tmp = Image.open(fileName)
             iwidth, iheight = img_tmp.size
             if self.demo is not None:
@@ -125,6 +153,7 @@ class OpWidget(QWidget):
     def browse_shell(self):
         try:
             fileName, _ = QFileDialog.getOpenFileName(self,"Browse for image files", "","All Files (*);;PNG files (*.png)")
+            self.shellImgPath.setText(fileName)
             img_tmp = Image.open(fileName)
             iwidth, iheight = img_tmp.size
             if self.demo is not None:

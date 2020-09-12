@@ -5,6 +5,7 @@ from abc import abstractmethod, abstractproperty, ABC, ABCMeta
 from enum import Enum, auto
 from typing import Tuple, Optional, List, Union, Type, Any, Dict
 from dataclasses import dataclass
+from models.demo.demo import Demo, section
 #from ui.comp.op import OpWidget
 
 SECTION_RULES: list = []
@@ -34,9 +35,6 @@ class Op:
     def get_params(self) -> Dict[str, Any]:
         pass
 
-    def run(self) -> None:
-        pass
-
 @dataclass
 class ShellOp(Op):
     img_path: str = ""
@@ -49,11 +47,8 @@ class ShellOp(Op):
     #def get_params(self, op_widget: OpWidget) -> Dict[str, Any]:
         #pass
 
-    def run_op(self):
-        pass
-
-    def run(self) -> None:
-        pass
+    def run(self, demo: Demo): #TODO add sect discrim fxn
+        demo.shell_assets(to_sect=[], bg_path=self.img_path, asset_new_coord=self.fg_coord, asset_new_size=self.fg_dim)
 
 
 @dataclass
@@ -65,8 +60,8 @@ class InsertOp(Op):
     def __str__(self) -> str:
         return "insert"
 
-    def run(self) -> None:
-        pass
+    def run(self, demo: Demo): #TODO add sect discrim fxn
+        demo.shell_assets(to_sect=[], bg_path=self.img_path, asset_new_coord=self.fg_coord, asset_new_size=self.fg_dim)
 
     #def from_widget(self, op_widget: OpWidget) -> InsertOp:
         #for i in range(op_widget.topLevelItemCount()):
@@ -87,8 +82,8 @@ class SectionOp(Op):
     def get_params(self) -> Dict[str, Any]:
         pass
 
-    def run(self) -> None:
-        pass
+    def run(self, demo: Demo) -> None:
+        section(demo)
 
 @dataclass
 class AudioOp(Op):
@@ -100,8 +95,8 @@ class AudioOp(Op):
     def get_params(self) -> Dict[str, Any]:
         pass
 
-    def run(self) -> None:
-        pass
+    def run(self, demo: Demo) -> None:
+        demo.add_audio()
 
 @dataclass
 class CropOp(Op):

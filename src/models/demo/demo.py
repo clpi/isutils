@@ -1,6 +1,8 @@
 import sys, os
 import lxml.etree as ET
 import re
+import uuid
+import copy
 from typing import List, Tuple, Dict, Union, Optional, Iterable, Any
 from pathlib import Path, PurePath
 from itertools import islice
@@ -121,6 +123,9 @@ class Demo:
                     return False
         print("Script length, demo length: " + str(len(script)) + ", " + str(self.len))
         return True
+
+    def load_from_root(self, tree: ET.ElementTree):
+        pass
 
     def matches_audio(self, audio: Optional[Audio] = None, by_tp: bool = True):
         if not self.is_sectioned:
@@ -560,6 +565,108 @@ class Demo:
         xml = ET.tostring(self.tree, pretty_print=True, xml_declaration=True, encoding='utf-8')
         return str(xml)
 
+#----------------------SECTIONING (ORGANIZE LATER) ---------------------------------#
+
+def is_prod_note(string: str) -> bool: #naive implementation
+    return string[0] == "[" and string[-1] == "]"
+
+def get_coast_num(steps: list, idx: int) -> int: #get num steps w/ tp after tp step
+    c = 1
+    try:
+        while steps[idx+c].tp.text != "" and not is_prod_note(steps[idx+c].tp.text):
+            c+=1
+    except:
+        c = 1
+    return c-1
+
+def clear_sects(root):
+    root.find("Chapters").clear()
+    return root
+    
+def insert_sect(root):
+    chapters = root.find("Chapters")
+    num_chapters = len(chapters.findall("Chapter"))
+    chapter = ET.SubElement(chapters, "Chapter")
+    id_el = ET.SubElement(chapter, "ID")
+    id_el.text = str(uuid.uuid4())
+    xml_name_el = ET.SubElement(chapter, "XmlName")
+    name_el = ET.SubElement(xml_name_el, "Name")
+    name_el.text = "Section "+str(num_chapters+1)
+    steps = ET.SubElement(chapter, "Steps")
+    is_active_el = ET.SubElement(chapter, "IsActive")
+    is_active_el.text = "true"
+    click_anywhere_el = ET.SubElement(chapter, "ClickAnywhere")
+    click_anywhere_el.text = "false"
+    
+def append_step(chapter, step):
+    steps_el = chapter.find("Steps")
+    steps_el.append(step)
+    new_index = steps_el.index(step)
+    steps_el.findall("Step")[-1].find("XmlName/Name").text="Step "+str(new_index+1)
+
+def write(root, path: str = ""):
+    tree = ET.ElementTree(root)
+    tree.write(path, pretty_print=True, xml_declaration=True, encoding='utf-8')
+    
+def section(d: Demo, add_intro_outro=False):
+    root_c = copy.deepcopy(d.root)
+    orig_sect = list(d.root.findall("Chapters/Chapter"))
+    orig_step = [step for sect in d.root.findall("Chapters/Chapter") for step in sect.findall("Steps/Step")]
+    sect_num = 0
+    new_sect_num = -1
+    new_step_idx = 0
+    cons = 0
+    steps = list(d.iter_step())
+    root = d.root
+    root_c = copy.deepcopy(d.root)
+    clear_sects(root_c)
+
+    for i, step in enumerate(steps):
+        step_el = orig_step[i]
+        if cons >= 2:
+            new_step_idx += 1
+            if step.idx == 0:
+                sect_num += 1
+                print(sect_num, step.idx, new_sect_num, new_step_idx, "MERGE", step.tp.text[:40])
+            else:
+                print(sect_num, step.idx, new_sect_num, new_step_idx, "GTG", step.tp.text[:40])
+            append_step(root_c.findall("Chapters/Chapter")[-1], copy.deepcopy(step_el))
+            cons -= 1
+        else:
+            if step.idx == 0:
+                if step.tp.text != "" and not is_prod_note(step.tp.text):
+                    cons = get_coast_num(steps, i)
+                    new_sect_num += 1
+                    new_step_idx = 0
+                    print(sect_num, step.idx, new_sect_num, new_step_idx, "GTG", step.tp.text[:40])
+                    insert_sect(root_c) #Benefits sectionsn
+                    append_step(root_c.findall("Chapters/Chapter")[-1], copy.deepcopy(step_el))
+                    if add_intro_outro:
+                        append_step(root_c.findall("Chapters/Chapter")[-1], copy.deepcopy(step_el))
+                        insert_sect(root_c) #This step...
+                        append_step(root_c.findall("Chapters/Chapter")[-1], copy.deepcopy(step_el))
+                else:
+                    new_step_idx += 1
+                    print(sect_num, step.idx, new_sect_num, new_step_idx, "MERGE", step.tp.text[:40])
+                    append_step(root_c.findall("Chapters/Chapter")[-1], copy.deepcopy(step_el))
+                sect_num += 1
+            else:
+                if step.tp.text != "" and not is_prod_note(step.tp.text):
+                    cons = get_coast_num(steps, i)
+                    new_sect_num += 1
+                    new_step_idx = 0
+                    print(sect_num, step.idx, new_sect_num, new_step_idx, "NEW", step.tp.text[:40])
+                    insert_sect(root_c)
+                    append_step(root_c.findall("Chapters/Chapter")[-1], copy.deepcopy(step_el))
+                else:
+                    new_step_idx += 1
+                    print(sect_num, step.idx, new_sect_num, new_step_idx, "GTG", step.tp.text[:40])
+                    append_step(root_c.findall("Chapters/Chapter")[-1], copy.deepcopy(step_el))
+            if add_intro_outro:
+                insert_sect(root_c) #"Now it's your turn to try..."
+                append_step(root_c.findall("Chapters/Chapter")[-1], copy.deepcopy(step_el))
+        write(root_c, d.file)
+    
 #-----------------------------ITERATORS--------------------------------
 #TODO: Learn a lot more about generators, implement same functionality
 #       as these iterators but with generators in iter_sect() or iter_step()
