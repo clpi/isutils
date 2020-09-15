@@ -48,7 +48,7 @@ class Demo:
             self.loaded = False
 
     @validate_path #~329ms
-    def load(self, path: str = ""): #w/o dq: 584ms, dq:
+    def load(self, path: str = "", root = None): #w/o dq: 584ms, dq:
         """
         Takes a directory path pointing to a DemoMate script .doc file as input
         Returns a list of tuples for each step in demo, where first element of pair contains
@@ -57,8 +57,11 @@ class Demo:
         self.path = Path(path)
         parser = ET.XMLParser(strip_cdata=False, remove_blank_text=True)
         try:
-            self.tree = ET.parse(path, parser)
-            self.root = self.tree.getroot()
+            if root is None:
+                self.tree = ET.parse(path, parser)
+                self.root = self.tree.getroot()
+            else:
+                self.root = root
         except:
             print("Demo failed to import. Demo file might be corrupted or in use.")
             return
@@ -141,10 +144,12 @@ class Demo:
         return False
 
     def add_audio(self, start:int = 0, end: int = -1):
+        """
         if not self.is_sectioned:
             self.process_sections()
         if self.audio_attached:
             return
+        """
         #TODO: Implement functionality to PROMPT to use alternates when they appear instead of skipping
         audio_i = 0
         for i, (step, is_step_audio) in enumerate(self.iter_audio_step()):
@@ -152,6 +157,7 @@ class Demo:
             num = sb.path.name.rsplit(".")[0].rsplit("_")[1]
             if "a" in num:
                 audio_i += 1
+                print(i)
                 sb = self.audio[audio_i]
             if start > i or (end != -1 and end < 1):
                 continue
@@ -163,6 +169,7 @@ class Demo:
                         sect.set_audio(sb)
             audio_i += 1
         self.audio_attached = True
+        self.write()
 
     def set_text(self, script: Optional[Script] = None) -> None:
         print('setting text')
@@ -641,10 +648,13 @@ def section(d: Demo, add_intro_outro=False):
                     print(sect_num, step.idx, new_sect_num, new_step_idx, "GTG", step.tp.text[:40])
                     insert_sect(root_c) #Benefits sectionsn
                     append_step(root_c.findall("Chapters/Chapter")[-1], copy.deepcopy(step_el))
-                    if add_intro_outro:
-                        append_step(root_c.findall("Chapters/Chapter")[-1], copy.deepcopy(step_el))
-                        insert_sect(root_c) #This step...
-                        append_step(root_c.findall("Chapters/Chapter")[-1], copy.deepcopy(step_el))
+                    """
+                    if i==0:
+                        if add_intro_outro:
+                            append_step(root_c.findall("Chapters/Chapter")[-1], copy.deepcopy(step_el))
+                            insert_sect(root_c) #This step...
+                            append_step(root_c.findall("Chapters/Chapter")[-1], copy.deepcopy(step_el))
+                    """
                 else:
                     new_step_idx += 1
                     print(sect_num, step.idx, new_sect_num, new_step_idx, "MERGE", step.tp.text[:40])
@@ -662,9 +672,12 @@ def section(d: Demo, add_intro_outro=False):
                     new_step_idx += 1
                     print(sect_num, step.idx, new_sect_num, new_step_idx, "GTG", step.tp.text[:40])
                     append_step(root_c.findall("Chapters/Chapter")[-1], copy.deepcopy(step_el))
-            if add_intro_outro:
-                insert_sect(root_c) #"Now it's your turn to try..."
-                append_step(root_c.findall("Chapters/Chapter")[-1], copy.deepcopy(step_el))
+        
+        """
+        if add_intro_outro:
+            insert_sect(root_c) #"Now it's your turn to try..."
+            append_step(root_c.findall("Chapters/Chapter")[-1], copy.deepcopy(step_el))
+        """
         write(root_c, d.file)
     
 #-----------------------------ITERATORS--------------------------------

@@ -128,6 +128,17 @@ class MainWindow(QMainWindow):
         except:
             msg("Must select a script file", "Error while selecting script", "Must select script")
 
+    def browse_demo_next(self):
+        try:
+            if self.cx.demo_load[-1] is not None:
+                print("Loaded demo")
+            else:
+                print("Demo not loaded")
+        except:
+            print("Demo could not be loaded")
+        finally:
+            pass
+
     def load_demo(self, demo_path: str):
         demo = Demo(path=demo_path) 
         demo_item = QTreeWidgetItem([demo.path.name, str(False), str(False)])
@@ -209,6 +220,8 @@ class MainWindow(QMainWindow):
             step = self.stepTabs.widget(i)
             demo = self.cx.demo_load[step.demoTargetCombo.currentIndex()]
             step.run_op(demo)
+            if step.opCombo.currentIndex() == 2: #section -> destructive to script - demo connection
+                self.cx.demo_load[step.demoTargetCombo.currentIndex()] = Demo(path=demo.file, audio_dir=demo.audio_dir, script_path=demo.script_path)
             print("RUNNING OPERATION " + str(i))
         msg(txt="Finished running operations", inf=out, title="Finished")
         print("END run_ops")

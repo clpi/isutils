@@ -83,7 +83,7 @@ class SectionOp(Op):
         pass
 
     def run(self, demo: Demo) -> None:
-        section(demo)
+        section(demo, add_intro_outro=True)
 
 @dataclass
 class AudioOp(Op):

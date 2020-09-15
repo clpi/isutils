@@ -9,23 +9,28 @@ class Audio:
 
     def __init__(self, path: str = ""):
         self.dir = path
-        self.mp3: List[SoundBite] = []
+        self.mp3 = []
         self.len = 0
         try:
+            print("LOADING AUDIO")
             self.loaded = self.load_dir(path)
         except BaseException as exc:
             logger.error("Audio failed to import. %s", str(exc))
             self.loaded = False
 
-    @validate_path
+    #@validate_path
     def load_dir(self, path: str = ""):
         self.path = Path(path)
         for filepath in self.path.glob("*.mp3"):
+            print(filepath)
             soundbite = SoundBite(path=str(filepath)) #guaranteed to load
             self.mp3.append(soundbite)
             self.len += 1
-        print("Audio: Successfully loaded {} soundbites.".format(self.len))
+        print("Audio:  loaded {} soundbites.".format(self.len))
+        self.mp3 = [SoundBite(path=str(filepath)) for filepath in self.path.glob("*.mp3")]
+        print(self.mp3)
         return True
+
 
     def iter_paths(self):
         return (p.resolve() for p in sorted(self.path.glob("*.mp3")))
@@ -59,6 +64,7 @@ class SoundBite:
         if not elem:
             self.path = PurePath(path)
             self.dur =  int(MP3(str(self.path)).info.length * 10000000)
+            print(self.dur)
         elif asset_path:
             self.asset_path = asset_path
             self.path = PurePath(asset_path, elem.find("File").text)
@@ -77,6 +83,3 @@ class SoundBite:
 
     def __str__(self):
         return str(self.path)
-
-    def __repr__(self):
-        pass
