@@ -107,6 +107,21 @@
             <string>Move region</string>
            </property>
           </item>
+          <item>
+           <property name="text">
+            <string>Bulk rename</string>
+           </property>
+          </item>
+          <item>
+           <property name="text">
+            <string>Add pacing</string>
+           </property>
+          </item>
+          <item>
+           <property name="text">
+            <string>Animate scroll steps</string>
+           </property>
+          </item>
          </widget>
         </item>
         <item row="2" column="0">
@@ -121,20 +136,43 @@
           <item>
            <layout class="QVBoxLayout" name="verticalLayout_18">
             <item>
-             <widget class="QCheckBox" name="allStepsCheck">
-              <property name="sizePolicy">
-               <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
-                <horstretch>0</horstretch>
-                <verstretch>0</verstretch>
-               </sizepolicy>
-              </property>
-              <property name="layoutDirection">
-               <enum>Qt::LeftToRight</enum>
-              </property>
-              <property name="text">
-               <string>Apply to all steps</string>
-              </property>
-             </widget>
+             <layout class="QHBoxLayout" name="horizontalLayout_2">
+              <item>
+               <widget class="QCheckBox" name="allDemoCheck">
+                <property name="maximumSize">
+                 <size>
+                  <width>10000</width>
+                  <height>16777215</height>
+                 </size>
+                </property>
+                <property name="text">
+                 <string>Apply to all demos</string>
+                </property>
+               </widget>
+              </item>
+              <item>
+               <widget class="QCheckBox" name="allStepsCheck">
+                <property name="sizePolicy">
+                 <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+                  <horstretch>0</horstretch>
+                  <verstretch>0</verstretch>
+                 </sizepolicy>
+                </property>
+                <property name="minimumSize">
+                 <size>
+                  <width>180</width>
+                  <height>0</height>
+                 </size>
+                </property>
+                <property name="layoutDirection">
+                 <enum>Qt::LeftToRight</enum>
+                </property>
+                <property name="text">
+                 <string>Apply to all steps</string>
+                </property>
+               </widget>
+              </item>
+             </layout>
             </item>
             <item>
              <widget class="QCheckBox" name="matchSubstringCheck">
@@ -213,7 +251,7 @@
          <bool>false</bool>
         </property>
         <property name="currentIndex">
-         <number>0</number>
+         <number>3</number>
         </property>
         <widget class="QWidget" name="shellTab">
          <property name="autoFillBackground">
@@ -528,8 +566,31 @@
         </widget>
         <widget class="QWidget" name="audioTab">
          <layout class="QFormLayout" name="formLayout_8">
+          <item row="0" column="1">
+           <widget class="QComboBox" name="comboBox">
+            <item>
+             <property name="text">
+              <string>Mixed section and step audio</string>
+             </property>
+            </item>
+            <item>
+             <property name="text">
+              <string>Section audio only</string>
+             </property>
+            </item>
+            <item>
+             <property name="text">
+              <string>Step audio only</string>
+             </property>
+            </item>
+           </widget>
+          </item>
           <item row="0" column="0">
-           <layout class="QFormLayout" name="formLayout_7"/>
+           <widget class="QLabel" name="label_8">
+            <property name="text">
+             <string>Audio attachment behavior</string>
+            </property>
+           </widget>
           </item>
          </layout>
         </widget>

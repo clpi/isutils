@@ -153,6 +153,30 @@ class MoveOp(Op):
     def run(self) -> None:
         pass
 
+@dataclass
+class RenameOp(Op):
+
+    def __str__(self) -> str:
+        return "rename"
+
+    def get_params(self) -> Dict[str, Any]:
+        pass
+
+    def run(self) -> None:
+        pass
+
+@dataclass
+class PacingOp(Op):
+
+    def __str__(self) -> str:
+        return "pacing"
+
+    def get_params(self) -> Dict[str, Any]:
+        pass
+
+    def run(self) -> None:
+        pass
+
 class OpData:
 
     def __init__(self):
