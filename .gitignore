@@ -72,4 +72,7 @@ Thumbs.db
 *.exe
 
 **target
+build/
+src/build/
+**build/
 **node_modules
