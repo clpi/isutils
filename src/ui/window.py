@@ -450,7 +450,7 @@ def set_op_widget():
 
 def run():
     app = QApplication(sys.argv)
-    set_fusion(app, dark=False)
+    # set_fusion(app, dark=False)
     window = MainWindow()
     window.show()
     app.exec_()
