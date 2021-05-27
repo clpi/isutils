@@ -57,6 +57,7 @@ class MainWindow(QMainWindow):
         self.stepUpBtn: QPushButton
         self.stepDownBtn: QPushButton
 
+
         #self.loadScriptBtn.setEnabled(False)
         #self.loadAudioBtn.setEnabled(False)
         #self.runBtn.setEnabled(False)
@@ -97,7 +98,12 @@ class MainWindow(QMainWindow):
         self.stepTabs.currentChanged.connect(self.changed_step_tab)
 
     def load_actions(self):
-        pass
+        self.actionPreferences: QAction
+        self.actionAbout: QAction
+
+        self.actionPreferences.triggered.connect(self.show_prefs)
+        self.actionAbout.triggered.connect(self.show_about)
+
 
     #TODO detach these from class
     def browse_demo(self):

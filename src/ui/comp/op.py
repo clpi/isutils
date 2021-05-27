@@ -6,6 +6,7 @@ TODO: Make default op view be blank, only show params view when one is selected
 """
 import sys, os
 from typing import Optional, List, Dict, Any, Type, Tuple
+from PIL import Image
 from PyQt5 import uic
 from PyQt5.QtCore import (Qt, QObject, pyqtSlot, pyqtSignal)
 from PyQt5.QtWidgets import (QWidget, QDialog, QListWidget, QPushButton,

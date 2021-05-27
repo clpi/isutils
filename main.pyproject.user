@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE QtCreatorProject>
-<!-- Written by QtCreator 4.13.0, 2021-01-05T19:51:51. -->
+<!-- Written by QtCreator 4.13.0, 2021-05-26T18:04:28. -->
 <qtcreator>
  <data>
   <variable>EnvironmentId</variable>
@@ -92,7 +92,7 @@
    <value type="QString" key="ProjectExplorer.ProjectConfiguration.Id">{ec14883a-eb27-47c6-8676-10546da439cd}</value>
    <value type="int" key="ProjectExplorer.Target.ActiveBuildConfiguration">-1</value>
    <value type="int" key="ProjectExplorer.Target.ActiveDeployConfiguration">0</value>
-   <value type="int" key="ProjectExplorer.Target.ActiveRunConfiguration">13</value>
+   <value type="int" key="ProjectExplorer.Target.ActiveRunConfiguration">0</value>
    <value type="int" key="ProjectExplorer.Target.BuildConfigurationCount">0</value>
    <valuemap type="QVariantMap" key="ProjectExplorer.Target.DeployConfiguration.0">
     <valuemap type="QVariantMap" key="ProjectExplorer.BuildConfiguration.BuildStepList.0">
@@ -169,12 +169,12 @@
     <valuelist type="QVariantList" key="CustomOutputParsers"/>
     <value type="int" key="PE.EnvironmentAspect.Base">2</value>
     <valuelist type="QVariantList" key="PE.EnvironmentAspect.Changes"/>
-    <value type="QString" key="ProjectExplorer.ProjectConfiguration.DisplayName">main.pyproject</value>
-    <value type="QString" key="ProjectExplorer.ProjectConfiguration.Id">PythonEditor.RunConfiguration.C:/Users/Jess/Documents/lab/qt/isutils/main.pyproject.user</value>
-    <value type="QString" key="ProjectExplorer.RunConfiguration.BuildKey">C:/Users/Jess/Documents/lab/qt/isutils/main.pyproject.user</value>
+    <value type="QString" key="ProjectExplorer.ProjectConfiguration.DisplayName">prefs2</value>
+    <value type="QString" key="ProjectExplorer.ProjectConfiguration.Id">PythonEditor.RunConfiguration.C:/Users/Jess/Documents/isutils/src/ui/comp/prefs.py</value>
+    <value type="QString" key="ProjectExplorer.RunConfiguration.BuildKey">C:/Users/Jess/Documents/isutils/src/ui/comp/prefs.py</value>
     <value type="bool" key="PythonEditor.RunConfiguation.Buffered">false</value>
     <value type="QString" key="PythonEditor.RunConfiguation.Interpreter">{04e13d93-0d81-40c9-93ec-53063227cfc8}</value>
-    <value type="QString" key="PythonEditor.RunConfiguation.Script">C:\Users\Jess\Documents\lab\qt\isutils\main.pyproject.user</value>
+    <value type="QString" key="PythonEditor.RunConfiguation.Script">C:\Users\Jess\Documents\isutils\src\ui\comp\prefs.py</value>
     <value type="QString" key="RunConfiguration.Arguments"></value>
     <value type="bool" key="RunConfiguration.Arguments.multi">false</value>
     <value type="QString" key="RunConfiguration.OverrideDebuggerStartup"></value>
@@ -184,7 +184,7 @@
     <value type="bool" key="RunConfiguration.UseQmlDebugger">false</value>
     <value type="bool" key="RunConfiguration.UseQmlDebuggerAuto">true</value>
     <value type="QString" key="RunConfiguration.WorkingDirectory"></value>
-    <value type="QString" key="RunConfiguration.WorkingDirectory.default">C:/Users/Jess/Documents/lab/qt/isutils</value>
+    <value type="QString" key="RunConfiguration.WorkingDirectory.default">C:/Users/Jess/Documents/isutils/src/ui/comp</value>
    </valuemap>
    <valuemap type="QVariantMap" key="ProjectExplorer.Target.RunConfiguration.1">
     <value type="QString" key="Analyzer.Perf.CallgraphMode">dwarf</value>
@@ -247,12 +247,12 @@
     <valuelist type="QVariantList" key="CustomOutputParsers"/>
     <value type="int" key="PE.EnvironmentAspect.Base">2</value>
     <valuelist type="QVariantList" key="PE.EnvironmentAspect.Changes"/>
-    <value type="QString" key="ProjectExplorer.ProjectConfiguration.DisplayName">prefs</value>
-    <value type="QString" key="ProjectExplorer.ProjectConfiguration.Id">PythonEditor.RunConfiguration.C:/Users/Jess/Documents/lab/qt/isutils/src/ui/comp/prefs.py</value>
-    <value type="QString" key="ProjectExplorer.RunConfiguration.BuildKey">C:/Users/Jess/Documents/lab/qt/isutils/src/ui/comp/prefs.py</value>
+    <value type="QString" key="ProjectExplorer.ProjectConfiguration.DisplayName">step2</value>
+    <value type="QString" key="ProjectExplorer.ProjectConfiguration.Id">PythonEditor.RunConfiguration.C:/Users/Jess/Documents/isutils/src/models/demo/step.py</value>
+    <value type="QString" key="ProjectExplorer.RunConfiguration.BuildKey">C:/Users/Jess/Documents/isutils/src/models/demo/step.py</value>
     <value type="bool" key="PythonEditor.RunConfiguation.Buffered">false</value>
     <value type="QString" key="PythonEditor.RunConfiguation.Interpreter"></value>
-    <value type="QString" key="PythonEditor.RunConfiguation.Script">C:\Users\Jess\Documents\lab\qt\isutils\src\ui\comp\prefs.py</value>
+    <value type="QString" key="PythonEditor.RunConfiguation.Script">C:\Users\Jess\Documents\isutils\src\models\demo\step.py</value>
     <value type="QString" key="RunConfiguration.Arguments"></value>
     <value type="bool" key="RunConfiguration.Arguments.multi">false</value>
     <value type="QString" key="RunConfiguration.OverrideDebuggerStartup"></value>
@@ -325,12 +325,12 @@
     <valuelist type="QVariantList" key="CustomOutputParsers"/>
     <value type="int" key="PE.EnvironmentAspect.Base">2</value>
     <valuelist type="QVariantList" key="PE.EnvironmentAspect.Changes"/>
-    <value type="QString" key="ProjectExplorer.ProjectConfiguration.DisplayName">operations</value>
-    <value type="QString" key="ProjectExplorer.ProjectConfiguration.Id">PythonEditor.RunConfiguration.C:/Users/Jess/Documents/lab/qt/isutils/src/qml/operations.cpp</value>
-    <value type="QString" key="ProjectExplorer.RunConfiguration.BuildKey">C:/Users/Jess/Documents/lab/qt/isutils/src/qml/operations.cpp</value>
+    <value type="QString" key="ProjectExplorer.ProjectConfiguration.DisplayName">__init__6</value>
+    <value type="QString" key="ProjectExplorer.ProjectConfiguration.Id">PythonEditor.RunConfiguration.C:/Users/Jess/Documents/isutils/src/models/demo/__init__.py</value>
+    <value type="QString" key="ProjectExplorer.RunConfiguration.BuildKey">C:/Users/Jess/Documents/isutils/src/models/demo/__init__.py</value>
     <value type="bool" key="PythonEditor.RunConfiguation.Buffered">false</value>
     <value type="QString" key="PythonEditor.RunConfiguation.Interpreter"></value>
-    <value type="QString" key="PythonEditor.RunConfiguation.Script">C:\Users\Jess\Documents\lab\qt\isutils\src\qml\operations.cpp</value>
+    <value type="QString" key="PythonEditor.RunConfiguation.Script">C:\Users\Jess\Documents\isutils\src\models\demo\__init__.py</value>
     <value type="QString" key="RunConfiguration.Arguments"></value>
     <value type="bool" key="RunConfiguration.Arguments.multi">false</value>
     <value type="QString" key="RunConfiguration.OverrideDebuggerStartup"></value>
@@ -403,12 +403,12 @@
     <valuelist type="QVariantList" key="CustomOutputParsers"/>
     <value type="int" key="PE.EnvironmentAspect.Base">2</value>
     <valuelist type="QVariantList" key="PE.EnvironmentAspect.Changes"/>
-    <value type="QString" key="ProjectExplorer.ProjectConfiguration.DisplayName">window</value>
-    <value type="QString" key="ProjectExplorer.ProjectConfiguration.Id">PythonEditor.RunConfiguration.C:/Users/Jess/Documents/lab/qt/isutils/src/ui/window.py</value>
-    <value type="QString" key="ProjectExplorer.RunConfiguration.BuildKey">C:/Users/Jess/Documents/lab/qt/isutils/src/ui/window.py</value>
+    <value type="QString" key="ProjectExplorer.ProjectConfiguration.DisplayName">app2</value>
+    <value type="QString" key="ProjectExplorer.ProjectConfiguration.Id">PythonEditor.RunConfiguration.C:/Users/Jess/Documents/isutils/src/app.py</value>
+    <value type="QString" key="ProjectExplorer.RunConfiguration.BuildKey">C:/Users/Jess/Documents/isutils/src/app.py</value>
     <value type="bool" key="PythonEditor.RunConfiguation.Buffered">false</value>
     <value type="QString" key="PythonEditor.RunConfiguation.Interpreter"></value>
-    <value type="QString" key="PythonEditor.RunConfiguation.Script">C:\Users\Jess\Documents\lab\qt\isutils\src\ui\window.py</value>
+    <value type="QString" key="PythonEditor.RunConfiguation.Script">C:\Users\Jess\Documents\isutils\src\app.py</value>
     <value type="QString" key="RunConfiguration.Arguments"></value>
     <value type="bool" key="RunConfiguration.Arguments.multi">false</value>
     <value type="QString" key="RunConfiguration.OverrideDebuggerStartup"></value>
@@ -481,11 +481,12 @@
     <valuelist type="QVariantList" key="CustomOutputParsers"/>
     <value type="int" key="PE.EnvironmentAspect.Base">2</value>
     <valuelist type="QVariantList" key="PE.EnvironmentAspect.Changes"/>
-    <value type="QString" key="ProjectExplorer.ProjectConfiguration.Id">PythonEditor.RunConfiguration.C:/Users/Jess/Documents/lab/qt/isutils/.gitignore</value>
-    <value type="QString" key="ProjectExplorer.RunConfiguration.BuildKey">C:/Users/Jess/Documents/lab/qt/isutils/.gitignore</value>
+    <value type="QString" key="ProjectExplorer.ProjectConfiguration.DisplayName">main3</value>
+    <value type="QString" key="ProjectExplorer.ProjectConfiguration.Id">PythonEditor.RunConfiguration.C:/Users/Jess/Documents/isutils/src/main.py</value>
+    <value type="QString" key="ProjectExplorer.RunConfiguration.BuildKey">C:/Users/Jess/Documents/isutils/src/main.py</value>
     <value type="bool" key="PythonEditor.RunConfiguation.Buffered">false</value>
     <value type="QString" key="PythonEditor.RunConfiguation.Interpreter"></value>
-    <value type="QString" key="PythonEditor.RunConfiguation.Script">C:\Users\Jess\Documents\lab\qt\isutils\.gitignore</value>
+    <value type="QString" key="PythonEditor.RunConfiguation.Script">C:\Users\Jess\Documents\isutils\src\main.py</value>
     <value type="QString" key="RunConfiguration.Arguments"></value>
     <value type="bool" key="RunConfiguration.Arguments.multi">false</value>
     <value type="QString" key="RunConfiguration.OverrideDebuggerStartup"></value>
@@ -558,12 +559,12 @@
     <valuelist type="QVariantList" key="CustomOutputParsers"/>
     <value type="int" key="PE.EnvironmentAspect.Base">2</value>
     <valuelist type="QVariantList" key="PE.EnvironmentAspect.Changes"/>
-    <value type="QString" key="ProjectExplorer.ProjectConfiguration.DisplayName">main2</value>
-    <value type="QString" key="ProjectExplorer.ProjectConfiguration.Id">PythonEditor.RunConfiguration.C:/Users/Jess/Documents/lab/qt/isutils/src/main.py</value>
-    <value type="QString" key="ProjectExplorer.RunConfiguration.BuildKey">C:/Users/Jess/Documents/lab/qt/isutils/src/main.py</value>
+    <value type="QString" key="ProjectExplorer.ProjectConfiguration.DisplayName">section2</value>
+    <value type="QString" key="ProjectExplorer.ProjectConfiguration.Id">PythonEditor.RunConfiguration.C:/Users/Jess/Documents/isutils/src/models/demo/section.py</value>
+    <value type="QString" key="ProjectExplorer.RunConfiguration.BuildKey">C:/Users/Jess/Documents/isutils/src/models/demo/section.py</value>
     <value type="bool" key="PythonEditor.RunConfiguation.Buffered">false</value>
-    <value type="QString" key="PythonEditor.RunConfiguation.Interpreter">{04e13d93-0d81-40c9-93ec-53063227cfc8}</value>
-    <value type="QString" key="PythonEditor.RunConfiguation.Script">C:\Users\Jess\Documents\lab\qt\isutils\src\main.py</value>
+    <value type="QString" key="PythonEditor.RunConfiguation.Interpreter"></value>
+    <value type="QString" key="PythonEditor.RunConfiguation.Script">C:\Users\Jess\Documents\isutils\src\models\demo\section.py</value>
     <value type="QString" key="RunConfiguration.Arguments"></value>
     <value type="bool" key="RunConfiguration.Arguments.multi">false</value>
     <value type="QString" key="RunConfiguration.OverrideDebuggerStartup"></value>
@@ -636,12 +637,12 @@
     <valuelist type="QVariantList" key="CustomOutputParsers"/>
     <value type="int" key="PE.EnvironmentAspect.Base">2</value>
     <valuelist type="QVariantList" key="PE.EnvironmentAspect.Changes"/>
-    <value type="QString" key="ProjectExplorer.ProjectConfiguration.DisplayName">__init__2</value>
-    <value type="QString" key="ProjectExplorer.ProjectConfiguration.Id">PythonEditor.RunConfiguration.C:/Users/Jess/Documents/lab/qt/isutils/src/ui/__init__.py</value>
-    <value type="QString" key="ProjectExplorer.RunConfiguration.BuildKey">C:/Users/Jess/Documents/lab/qt/isutils/src/ui/__init__.py</value>
+    <value type="QString" key="ProjectExplorer.ProjectConfiguration.DisplayName">__init__7</value>
+    <value type="QString" key="ProjectExplorer.ProjectConfiguration.Id">PythonEditor.RunConfiguration.C:/Users/Jess/Documents/isutils/src/models/__init__.py</value>
+    <value type="QString" key="ProjectExplorer.RunConfiguration.BuildKey">C:/Users/Jess/Documents/isutils/src/models/__init__.py</value>
     <value type="bool" key="PythonEditor.RunConfiguation.Buffered">false</value>
     <value type="QString" key="PythonEditor.RunConfiguation.Interpreter"></value>
-    <value type="QString" key="PythonEditor.RunConfiguation.Script">C:\Users\Jess\Documents\lab\qt\isutils\src\ui\__init__.py</value>
+    <value type="QString" key="PythonEditor.RunConfiguation.Script">C:\Users\Jess\Documents\isutils\src\models\__init__.py</value>
     <value type="QString" key="RunConfiguration.Arguments"></value>
     <value type="bool" key="RunConfiguration.Arguments.multi">false</value>
     <value type="QString" key="RunConfiguration.OverrideDebuggerStartup"></value>
@@ -714,12 +715,12 @@
     <valuelist type="QVariantList" key="CustomOutputParsers"/>
     <value type="int" key="PE.EnvironmentAspect.Base">2</value>
     <valuelist type="QVariantList" key="PE.EnvironmentAspect.Changes"/>
-    <value type="QString" key="ProjectExplorer.ProjectConfiguration.DisplayName">script</value>
-    <value type="QString" key="ProjectExplorer.ProjectConfiguration.Id">PythonEditor.RunConfiguration.C:/Users/Jess/Documents/lab/qt/isutils/src/models/demo/script.py</value>
-    <value type="QString" key="ProjectExplorer.RunConfiguration.BuildKey">C:/Users/Jess/Documents/lab/qt/isutils/src/models/demo/script.py</value>
+    <value type="QString" key="ProjectExplorer.ProjectConfiguration.DisplayName">__init__8</value>
+    <value type="QString" key="ProjectExplorer.ProjectConfiguration.Id">PythonEditor.RunConfiguration.C:/Users/Jess/Documents/isutils/src/ui/__init__.py</value>
+    <value type="QString" key="ProjectExplorer.RunConfiguration.BuildKey">C:/Users/Jess/Documents/isutils/src/ui/__init__.py</value>
     <value type="bool" key="PythonEditor.RunConfiguation.Buffered">false</value>
     <value type="QString" key="PythonEditor.RunConfiguation.Interpreter"></value>
-    <value type="QString" key="PythonEditor.RunConfiguation.Script">C:\Users\Jess\Documents\lab\qt\isutils\src\models\demo\script.py</value>
+    <value type="QString" key="PythonEditor.RunConfiguation.Script">C:\Users\Jess\Documents\isutils\src\ui\__init__.py</value>
     <value type="QString" key="RunConfiguration.Arguments"></value>
     <value type="bool" key="RunConfiguration.Arguments.multi">false</value>
     <value type="QString" key="RunConfiguration.OverrideDebuggerStartup"></value>
@@ -792,12 +793,12 @@
     <valuelist type="QVariantList" key="CustomOutputParsers"/>
     <value type="int" key="PE.EnvironmentAspect.Base">2</value>
     <valuelist type="QVariantList" key="PE.EnvironmentAspect.Changes"/>
-    <value type="QString" key="ProjectExplorer.ProjectConfiguration.DisplayName">test</value>
-    <value type="QString" key="ProjectExplorer.ProjectConfiguration.Id">PythonEditor.RunConfiguration.C:/Users/Jess/Documents/lab/qt/isutils/src/test.py</value>
-    <value type="QString" key="ProjectExplorer.RunConfiguration.BuildKey">C:/Users/Jess/Documents/lab/qt/isutils/src/test.py</value>
+    <value type="QString" key="ProjectExplorer.ProjectConfiguration.DisplayName">main4</value>
+    <value type="QString" key="ProjectExplorer.ProjectConfiguration.Id">PythonEditor.RunConfiguration.C:/Users/Jess/Documents/isutils/src/qml/img_view/main.py</value>
+    <value type="QString" key="ProjectExplorer.RunConfiguration.BuildKey">C:/Users/Jess/Documents/isutils/src/qml/img_view/main.py</value>
     <value type="bool" key="PythonEditor.RunConfiguation.Buffered">false</value>
     <value type="QString" key="PythonEditor.RunConfiguation.Interpreter"></value>
-    <value type="QString" key="PythonEditor.RunConfiguation.Script">C:\Users\Jess\Documents\lab\qt\isutils\src\test.py</value>
+    <value type="QString" key="PythonEditor.RunConfiguation.Script">C:\Users\Jess\Documents\isutils\src\qml\img_view\main.py</value>
     <value type="QString" key="RunConfiguration.Arguments"></value>
     <value type="bool" key="RunConfiguration.Arguments.multi">false</value>
     <value type="QString" key="RunConfiguration.OverrideDebuggerStartup"></value>
@@ -870,12 +871,12 @@
     <valuelist type="QVariantList" key="CustomOutputParsers"/>
     <value type="int" key="PE.EnvironmentAspect.Base">2</value>
     <valuelist type="QVariantList" key="PE.EnvironmentAspect.Changes"/>
-    <value type="QString" key="ProjectExplorer.ProjectConfiguration.DisplayName">__init__3</value>
-    <value type="QString" key="ProjectExplorer.ProjectConfiguration.Id">PythonEditor.RunConfiguration.C:/Users/Jess/Documents/lab/qt/isutils/src/ui/comp/__init__.py</value>
-    <value type="QString" key="ProjectExplorer.RunConfiguration.BuildKey">C:/Users/Jess/Documents/lab/qt/isutils/src/ui/comp/__init__.py</value>
+    <value type="QString" key="ProjectExplorer.ProjectConfiguration.DisplayName">op2</value>
+    <value type="QString" key="ProjectExplorer.ProjectConfiguration.Id">PythonEditor.RunConfiguration.C:/Users/Jess/Documents/isutils/src/ui/comp/op.py</value>
+    <value type="QString" key="ProjectExplorer.RunConfiguration.BuildKey">C:/Users/Jess/Documents/isutils/src/ui/comp/op.py</value>
     <value type="bool" key="PythonEditor.RunConfiguation.Buffered">false</value>
     <value type="QString" key="PythonEditor.RunConfiguation.Interpreter"></value>
-    <value type="QString" key="PythonEditor.RunConfiguation.Script">C:\Users\Jess\Documents\lab\qt\isutils\src\ui\comp\__init__.py</value>
+    <value type="QString" key="PythonEditor.RunConfiguation.Script">C:\Users\Jess\Documents\isutils\src\ui\comp\op.py</value>
     <value type="QString" key="RunConfiguration.Arguments"></value>
     <value type="bool" key="RunConfiguration.Arguments.multi">false</value>
     <value type="QString" key="RunConfiguration.OverrideDebuggerStartup"></value>
@@ -948,12 +949,12 @@
     <valuelist type="QVariantList" key="CustomOutputParsers"/>
     <value type="int" key="PE.EnvironmentAspect.Base">2</value>
     <valuelist type="QVariantList" key="PE.EnvironmentAspect.Changes"/>
-    <value type="QString" key="ProjectExplorer.ProjectConfiguration.DisplayName">__init__4</value>
-    <value type="QString" key="ProjectExplorer.ProjectConfiguration.Id">PythonEditor.RunConfiguration.C:/Users/Jess/Documents/lab/qt/isutils/src/models/__init__.py</value>
-    <value type="QString" key="ProjectExplorer.RunConfiguration.BuildKey">C:/Users/Jess/Documents/lab/qt/isutils/src/models/__init__.py</value>
+    <value type="QString" key="ProjectExplorer.ProjectConfiguration.DisplayName">test2</value>
+    <value type="QString" key="ProjectExplorer.ProjectConfiguration.Id">PythonEditor.RunConfiguration.C:/Users/Jess/Documents/isutils/src/test.py</value>
+    <value type="QString" key="ProjectExplorer.RunConfiguration.BuildKey">C:/Users/Jess/Documents/isutils/src/test.py</value>
     <value type="bool" key="PythonEditor.RunConfiguation.Buffered">false</value>
     <value type="QString" key="PythonEditor.RunConfiguation.Interpreter"></value>
-    <value type="QString" key="PythonEditor.RunConfiguation.Script">C:\Users\Jess\Documents\lab\qt\isutils\src\models\__init__.py</value>
+    <value type="QString" key="PythonEditor.RunConfiguation.Script">C:\Users\Jess\Documents\isutils\src\test.py</value>
     <value type="QString" key="RunConfiguration.Arguments"></value>
     <value type="bool" key="RunConfiguration.Arguments.multi">false</value>
     <value type="QString" key="RunConfiguration.OverrideDebuggerStartup"></value>
@@ -1026,12 +1027,11 @@
     <valuelist type="QVariantList" key="CustomOutputParsers"/>
     <value type="int" key="PE.EnvironmentAspect.Base">2</value>
     <valuelist type="QVariantList" key="PE.EnvironmentAspect.Changes"/>
-    <value type="QString" key="ProjectExplorer.ProjectConfiguration.DisplayName">step</value>
-    <value type="QString" key="ProjectExplorer.ProjectConfiguration.Id">PythonEditor.RunConfiguration.C:/Users/Jess/Documents/lab/qt/isutils/src/models/demo/step.py</value>
-    <value type="QString" key="ProjectExplorer.RunConfiguration.BuildKey">C:/Users/Jess/Documents/lab/qt/isutils/src/models/demo/step.py</value>
+    <value type="QString" key="ProjectExplorer.ProjectConfiguration.Id">PythonEditor.RunConfiguration.C:/Users/Jess/Documents/isutils/.gitignore</value>
+    <value type="QString" key="ProjectExplorer.RunConfiguration.BuildKey">C:/Users/Jess/Documents/isutils/.gitignore</value>
     <value type="bool" key="PythonEditor.RunConfiguation.Buffered">false</value>
     <value type="QString" key="PythonEditor.RunConfiguation.Interpreter"></value>
-    <value type="QString" key="PythonEditor.RunConfiguation.Script">C:\Users\Jess\Documents\lab\qt\isutils\src\models\demo\step.py</value>
+    <value type="QString" key="PythonEditor.RunConfiguation.Script">C:\Users\Jess\Documents\isutils\.gitignore</value>
     <value type="QString" key="RunConfiguration.Arguments"></value>
     <value type="bool" key="RunConfiguration.Arguments.multi">false</value>
     <value type="QString" key="RunConfiguration.OverrideDebuggerStartup"></value>
@@ -1104,12 +1104,12 @@
     <valuelist type="QVariantList" key="CustomOutputParsers"/>
     <value type="int" key="PE.EnvironmentAspect.Base">2</value>
     <valuelist type="QVariantList" key="PE.EnvironmentAspect.Changes"/>
-    <value type="QString" key="ProjectExplorer.ProjectConfiguration.DisplayName">__init__</value>
-    <value type="QString" key="ProjectExplorer.ProjectConfiguration.Id">PythonEditor.RunConfiguration.C:/Users/Jess/Documents/lab/qt/isutils/src/models/demo/__init__.py</value>
-    <value type="QString" key="ProjectExplorer.RunConfiguration.BuildKey">C:/Users/Jess/Documents/lab/qt/isutils/src/models/demo/__init__.py</value>
+    <value type="QString" key="ProjectExplorer.ProjectConfiguration.DisplayName">operations2</value>
+    <value type="QString" key="ProjectExplorer.ProjectConfiguration.Id">PythonEditor.RunConfiguration.C:/Users/Jess/Documents/isutils/src/qml/operations.cpp</value>
+    <value type="QString" key="ProjectExplorer.RunConfiguration.BuildKey">C:/Users/Jess/Documents/isutils/src/qml/operations.cpp</value>
     <value type="bool" key="PythonEditor.RunConfiguation.Buffered">false</value>
     <value type="QString" key="PythonEditor.RunConfiguation.Interpreter"></value>
-    <value type="QString" key="PythonEditor.RunConfiguation.Script">C:\Users\Jess\Documents\lab\qt\isutils\src\models\demo\__init__.py</value>
+    <value type="QString" key="PythonEditor.RunConfiguation.Script">C:\Users\Jess\Documents\isutils\src\qml\operations.cpp</value>
     <value type="QString" key="RunConfiguration.Arguments"></value>
     <value type="bool" key="RunConfiguration.Arguments.multi">false</value>
     <value type="QString" key="RunConfiguration.OverrideDebuggerStartup"></value>
@@ -1182,12 +1182,12 @@
     <valuelist type="QVariantList" key="CustomOutputParsers"/>
     <value type="int" key="PE.EnvironmentAspect.Base">2</value>
     <valuelist type="QVariantList" key="PE.EnvironmentAspect.Changes"/>
-    <value type="QString" key="ProjectExplorer.ProjectConfiguration.DisplayName">app</value>
-    <value type="QString" key="ProjectExplorer.ProjectConfiguration.Id">PythonEditor.RunConfiguration.C:/Users/Jess/Documents/lab/qt/isutils/src/app.py</value>
-    <value type="QString" key="ProjectExplorer.RunConfiguration.BuildKey">C:/Users/Jess/Documents/lab/qt/isutils/src/app.py</value>
+    <value type="QString" key="ProjectExplorer.ProjectConfiguration.DisplayName">audio2</value>
+    <value type="QString" key="ProjectExplorer.ProjectConfiguration.Id">PythonEditor.RunConfiguration.C:/Users/Jess/Documents/isutils/src/models/demo/audio.py</value>
+    <value type="QString" key="ProjectExplorer.RunConfiguration.BuildKey">C:/Users/Jess/Documents/isutils/src/models/demo/audio.py</value>
     <value type="bool" key="PythonEditor.RunConfiguation.Buffered">false</value>
     <value type="QString" key="PythonEditor.RunConfiguation.Interpreter"></value>
-    <value type="QString" key="PythonEditor.RunConfiguation.Script">C:\Users\Jess\Documents\lab\qt\isutils\src\app.py</value>
+    <value type="QString" key="PythonEditor.RunConfiguation.Script">C:\Users\Jess\Documents\isutils\src\models\demo\audio.py</value>
     <value type="QString" key="RunConfiguration.Arguments"></value>
     <value type="bool" key="RunConfiguration.Arguments.multi">false</value>
     <value type="QString" key="RunConfiguration.OverrideDebuggerStartup"></value>
@@ -1260,12 +1260,12 @@
     <valuelist type="QVariantList" key="CustomOutputParsers"/>
     <value type="int" key="PE.EnvironmentAspect.Base">2</value>
     <valuelist type="QVariantList" key="PE.EnvironmentAspect.Changes"/>
-    <value type="QString" key="ProjectExplorer.ProjectConfiguration.DisplayName">demo</value>
-    <value type="QString" key="ProjectExplorer.ProjectConfiguration.Id">PythonEditor.RunConfiguration.C:/Users/Jess/Documents/lab/qt/isutils/src/models/demo/demo.py</value>
-    <value type="QString" key="ProjectExplorer.RunConfiguration.BuildKey">C:/Users/Jess/Documents/lab/qt/isutils/src/models/demo/demo.py</value>
+    <value type="QString" key="ProjectExplorer.ProjectConfiguration.DisplayName">window2</value>
+    <value type="QString" key="ProjectExplorer.ProjectConfiguration.Id">PythonEditor.RunConfiguration.C:/Users/Jess/Documents/isutils/src/ui/window.py</value>
+    <value type="QString" key="ProjectExplorer.RunConfiguration.BuildKey">C:/Users/Jess/Documents/isutils/src/ui/window.py</value>
     <value type="bool" key="PythonEditor.RunConfiguation.Buffered">false</value>
     <value type="QString" key="PythonEditor.RunConfiguation.Interpreter"></value>
-    <value type="QString" key="PythonEditor.RunConfiguation.Script">C:\Users\Jess\Documents\lab\qt\isutils\src\models\demo\demo.py</value>
+    <value type="QString" key="PythonEditor.RunConfiguation.Script">C:\Users\Jess\Documents\isutils\src\ui\window.py</value>
     <value type="QString" key="RunConfiguration.Arguments"></value>
     <value type="bool" key="RunConfiguration.Arguments.multi">false</value>
     <value type="QString" key="RunConfiguration.OverrideDebuggerStartup"></value>
@@ -1338,12 +1338,12 @@
     <valuelist type="QVariantList" key="CustomOutputParsers"/>
     <value type="int" key="PE.EnvironmentAspect.Base">2</value>
     <valuelist type="QVariantList" key="PE.EnvironmentAspect.Changes"/>
-    <value type="QString" key="ProjectExplorer.ProjectConfiguration.DisplayName">audio</value>
-    <value type="QString" key="ProjectExplorer.ProjectConfiguration.Id">PythonEditor.RunConfiguration.C:/Users/Jess/Documents/lab/qt/isutils/src/models/demo/audio.py</value>
-    <value type="QString" key="ProjectExplorer.RunConfiguration.BuildKey">C:/Users/Jess/Documents/lab/qt/isutils/src/models/demo/audio.py</value>
+    <value type="QString" key="ProjectExplorer.ProjectConfiguration.DisplayName">__init__5</value>
+    <value type="QString" key="ProjectExplorer.ProjectConfiguration.Id">PythonEditor.RunConfiguration.C:/Users/Jess/Documents/isutils/src/ui/comp/__init__.py</value>
+    <value type="QString" key="ProjectExplorer.RunConfiguration.BuildKey">C:/Users/Jess/Documents/isutils/src/ui/comp/__init__.py</value>
     <value type="bool" key="PythonEditor.RunConfiguation.Buffered">false</value>
     <value type="QString" key="PythonEditor.RunConfiguation.Interpreter"></value>
-    <value type="QString" key="PythonEditor.RunConfiguation.Script">C:\Users\Jess\Documents\lab\qt\isutils\src\models\demo\audio.py</value>
+    <value type="QString" key="PythonEditor.RunConfiguation.Script">C:\Users\Jess\Documents\isutils\src\ui\comp\__init__.py</value>
     <value type="QString" key="RunConfiguration.Arguments"></value>
     <value type="bool" key="RunConfiguration.Arguments.multi">false</value>
     <value type="QString" key="RunConfiguration.OverrideDebuggerStartup"></value>
@@ -1416,12 +1416,12 @@
     <valuelist type="QVariantList" key="CustomOutputParsers"/>
     <value type="int" key="PE.EnvironmentAspect.Base">2</value>
     <valuelist type="QVariantList" key="PE.EnvironmentAspect.Changes"/>
-    <value type="QString" key="ProjectExplorer.ProjectConfiguration.DisplayName">op</value>
-    <value type="QString" key="ProjectExplorer.ProjectConfiguration.Id">PythonEditor.RunConfiguration.C:/Users/Jess/Documents/lab/qt/isutils/src/ui/comp/op.py</value>
-    <value type="QString" key="ProjectExplorer.RunConfiguration.BuildKey">C:/Users/Jess/Documents/lab/qt/isutils/src/ui/comp/op.py</value>
+    <value type="QString" key="ProjectExplorer.ProjectConfiguration.DisplayName">main.pyproject2</value>
+    <value type="QString" key="ProjectExplorer.ProjectConfiguration.Id">PythonEditor.RunConfiguration.C:/Users/Jess/Documents/isutils/main.pyproject.user</value>
+    <value type="QString" key="ProjectExplorer.RunConfiguration.BuildKey">C:/Users/Jess/Documents/isutils/main.pyproject.user</value>
     <value type="bool" key="PythonEditor.RunConfiguation.Buffered">false</value>
     <value type="QString" key="PythonEditor.RunConfiguation.Interpreter"></value>
-    <value type="QString" key="PythonEditor.RunConfiguation.Script">C:\Users\Jess\Documents\lab\qt\isutils\src\ui\comp\op.py</value>
+    <value type="QString" key="PythonEditor.RunConfiguation.Script">C:\Users\Jess\Documents\isutils\main.pyproject.user</value>
     <value type="QString" key="RunConfiguration.Arguments"></value>
     <value type="bool" key="RunConfiguration.Arguments.multi">false</value>
     <value type="QString" key="RunConfiguration.OverrideDebuggerStartup"></value>
@@ -1494,12 +1494,12 @@
     <valuelist type="QVariantList" key="CustomOutputParsers"/>
     <value type="int" key="PE.EnvironmentAspect.Base">2</value>
     <valuelist type="QVariantList" key="PE.EnvironmentAspect.Changes"/>
-    <value type="QString" key="ProjectExplorer.ProjectConfiguration.DisplayName">main</value>
-    <value type="QString" key="ProjectExplorer.ProjectConfiguration.Id">PythonEditor.RunConfiguration.C:/Users/Jess/Documents/lab/qt/isutils/src/qml/img_view/main.py</value>
-    <value type="QString" key="ProjectExplorer.RunConfiguration.BuildKey">C:/Users/Jess/Documents/lab/qt/isutils/src/qml/img_view/main.py</value>
+    <value type="QString" key="ProjectExplorer.ProjectConfiguration.DisplayName">demo_tags2</value>
+    <value type="QString" key="ProjectExplorer.ProjectConfiguration.Id">PythonEditor.RunConfiguration.C:/Users/Jess/Documents/isutils/src/models/demo/demo_tags.py</value>
+    <value type="QString" key="ProjectExplorer.RunConfiguration.BuildKey">C:/Users/Jess/Documents/isutils/src/models/demo/demo_tags.py</value>
     <value type="bool" key="PythonEditor.RunConfiguation.Buffered">false</value>
-    <value type="QString" key="PythonEditor.RunConfiguation.Interpreter">{04e13d93-0d81-40c9-93ec-53063227cfc8}</value>
-    <value type="QString" key="PythonEditor.RunConfiguation.Script">C:\Users\Jess\Documents\lab\qt\isutils\src\qml\img_view\main.py</value>
+    <value type="QString" key="PythonEditor.RunConfiguation.Interpreter"></value>
+    <value type="QString" key="PythonEditor.RunConfiguation.Script">C:\Users\Jess\Documents\isutils\src\models\demo\demo_tags.py</value>
     <value type="QString" key="RunConfiguration.Arguments"></value>
     <value type="bool" key="RunConfiguration.Arguments.multi">false</value>
     <value type="QString" key="RunConfiguration.OverrideDebuggerStartup"></value>
@@ -1509,7 +1509,7 @@
     <value type="bool" key="RunConfiguration.UseQmlDebugger">false</value>
     <value type="bool" key="RunConfiguration.UseQmlDebuggerAuto">true</value>
     <value type="QString" key="RunConfiguration.WorkingDirectory"></value>
-    <value type="QString" key="RunConfiguration.WorkingDirectory.default">C:/Users/Jess/Documents/lab/qt/isutils/src/qml/img_view</value>
+    <value type="QString" key="RunConfiguration.WorkingDirectory.default"></value>
    </valuemap>
    <valuemap type="QVariantMap" key="ProjectExplorer.Target.RunConfiguration.8">
     <value type="QString" key="Analyzer.Perf.CallgraphMode">dwarf</value>
@@ -1572,12 +1572,12 @@
     <valuelist type="QVariantList" key="CustomOutputParsers"/>
     <value type="int" key="PE.EnvironmentAspect.Base">2</value>
     <valuelist type="QVariantList" key="PE.EnvironmentAspect.Changes"/>
-    <value type="QString" key="ProjectExplorer.ProjectConfiguration.DisplayName">section</value>
-    <value type="QString" key="ProjectExplorer.ProjectConfiguration.Id">PythonEditor.RunConfiguration.C:/Users/Jess/Documents/lab/qt/isutils/src/models/demo/section.py</value>
-    <value type="QString" key="ProjectExplorer.RunConfiguration.BuildKey">C:/Users/Jess/Documents/lab/qt/isutils/src/models/demo/section.py</value>
+    <value type="QString" key="ProjectExplorer.ProjectConfiguration.DisplayName">script2</value>
+    <value type="QString" key="ProjectExplorer.ProjectConfiguration.Id">PythonEditor.RunConfiguration.C:/Users/Jess/Documents/isutils/src/models/demo/script.py</value>
+    <value type="QString" key="ProjectExplorer.RunConfiguration.BuildKey">C:/Users/Jess/Documents/isutils/src/models/demo/script.py</value>
     <value type="bool" key="PythonEditor.RunConfiguation.Buffered">false</value>
     <value type="QString" key="PythonEditor.RunConfiguation.Interpreter"></value>
-    <value type="QString" key="PythonEditor.RunConfiguation.Script">C:\Users\Jess\Documents\lab\qt\isutils\src\models\demo\section.py</value>
+    <value type="QString" key="PythonEditor.RunConfiguation.Script">C:\Users\Jess\Documents\isutils\src\models\demo\script.py</value>
     <value type="QString" key="RunConfiguration.Arguments"></value>
     <value type="bool" key="RunConfiguration.Arguments.multi">false</value>
     <value type="QString" key="RunConfiguration.OverrideDebuggerStartup"></value>
@@ -1650,12 +1650,12 @@
     <valuelist type="QVariantList" key="CustomOutputParsers"/>
     <value type="int" key="PE.EnvironmentAspect.Base">2</value>
     <valuelist type="QVariantList" key="PE.EnvironmentAspect.Changes"/>
-    <value type="QString" key="ProjectExplorer.ProjectConfiguration.DisplayName">demo_tags</value>
-    <value type="QString" key="ProjectExplorer.ProjectConfiguration.Id">PythonEditor.RunConfiguration.C:/Users/Jess/Documents/lab/qt/isutils/src/models/demo/demo_tags.py</value>
-    <value type="QString" key="ProjectExplorer.RunConfiguration.BuildKey">C:/Users/Jess/Documents/lab/qt/isutils/src/models/demo/demo_tags.py</value>
+    <value type="QString" key="ProjectExplorer.ProjectConfiguration.DisplayName">demo2</value>
+    <value type="QString" key="ProjectExplorer.ProjectConfiguration.Id">PythonEditor.RunConfiguration.C:/Users/Jess/Documents/isutils/src/models/demo/demo.py</value>
+    <value type="QString" key="ProjectExplorer.RunConfiguration.BuildKey">C:/Users/Jess/Documents/isutils/src/models/demo/demo.py</value>
     <value type="bool" key="PythonEditor.RunConfiguation.Buffered">false</value>
     <value type="QString" key="PythonEditor.RunConfiguation.Interpreter"></value>
-    <value type="QString" key="PythonEditor.RunConfiguation.Script">C:\Users\Jess\Documents\lab\qt\isutils\src\models\demo\demo_tags.py</value>
+    <value type="QString" key="PythonEditor.RunConfiguation.Script">C:\Users\Jess\Documents\isutils\src\models\demo\demo.py</value>
     <value type="QString" key="RunConfiguration.Arguments"></value>
     <value type="bool" key="RunConfiguration.Arguments.multi">false</value>
     <value type="QString" key="RunConfiguration.OverrideDebuggerStartup"></value>

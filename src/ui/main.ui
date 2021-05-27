@@ -26,6 +26,12 @@
       <property name="enabled">
        <bool>true</bool>
       </property>
+      <property name="sizePolicy">
+       <sizepolicy hsizetype="Ignored" vsizetype="Expanding">
+        <horstretch>0</horstretch>
+        <verstretch>0</verstretch>
+       </sizepolicy>
+      </property>
       <property name="acceptDrops">
        <bool>true</bool>
       </property>
@@ -401,7 +407,7 @@
           <item>
            <widget class="QTabWidget" name="objectViewTabW">
             <property name="currentIndex">
-             <number>3</number>
+             <number>0</number>
             </property>
             <property name="documentMode">
              <bool>true</bool>
@@ -648,12 +654,12 @@
       </widget>
       <widget class="QWidget" name="centralTabsPage2_2">
        <attribute name="title">
-        <string>(Empty)</string>
+        <string>Script Studio</string>
        </attribute>
       </widget>
       <widget class="QWidget" name="centralTabsPage3">
        <attribute name="title">
-        <string>(Unimplemented)</string>
+        <string>Production</string>
        </attribute>
       </widget>
      </widget>
@@ -718,20 +724,32 @@
     <addaction name="menuSelect_associated"/>
    </widget>
    <widget class="QMenu" name="menuView">
+    <property name="tearOffEnabled">
+     <bool>false</bool>
+    </property>
     <property name="title">
      <string>View</string>
+    </property>
+    <property name="toolTipsVisible">
+     <bool>true</bool>
     </property>
     <widget class="QMenu" name="menuZoom">
      <property name="title">
       <string>Zoom...</string>
      </property>
      <addaction name="actionZoom_in"/>
+     <addaction name="actionZoom_out"/>
+     <addaction name="actionReset_zoom"/>
     </widget>
     <addaction name="actionView_statusbar"/>
     <addaction name="actionView_step_preview"/>
     <addaction name="actionView_demo_in_folder"/>
     <addaction name="separator"/>
     <addaction name="menuZoom"/>
+    <addaction name="actionView_menubar"/>
+    <addaction name="actionView_in_file_explorer"/>
+    <addaction name="separator"/>
+    <addaction name="actionView_menubar_2"/>
    </widget>
    <widget class="QMenu" name="menuTools">
     <property name="title">
@@ -1667,7 +1685,77 @@
     <string>Script..</string>
    </property>
   </action>
+  <action name="actionView_menubar">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="text">
+    <string>View console</string>
+   </property>
+  </action>
+  <action name="actionView_in_file_explorer">
+   <property name="text">
+    <string>View in file explorer</string>
+   </property>
+   <property name="shortcut">
+    <string>Ctrl+Shift+F</string>
+   </property>
+  </action>
+  <action name="actionView_menubar_2">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="text">
+    <string>View menubar</string>
+   </property>
+   <property name="shortcut">
+    <string>Alt+M</string>
+   </property>
+  </action>
+  <action name="actionZoom_out">
+   <property name="text">
+    <string>Zoom out</string>
+   </property>
+  </action>
+  <action name="actionReset_zoom">
+   <property name="text">
+    <string>Reset zoom</string>
+   </property>
+  </action>
  </widget>
  <resources/>
- <connections/>
+ <connections>
+  <connection>
+   <sender>actionOpen</sender>
+   <signal>triggered()</signal>
+   <receiver>browseDemoBtn</receiver>
+   <slot>click()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>-1</x>
+     <y>-1</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>98</x>
+     <y>135</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>actionPreferences</sender>
+   <signal>toggled(bool)</signal>
+   <receiver>demoAddStepBtn</receiver>
+   <slot>hide()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>-1</x>
+     <y>-1</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>1317</x>
+     <y>536</y>
+    </hint>
+   </hints>
+  </connection>
+ </connections>
 </ui>
