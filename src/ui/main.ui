@@ -36,11 +36,20 @@
        <number>0</number>
       </property>
       <property name="documentMode">
+       <bool>true</bool>
+      </property>
+      <property name="tabsClosable">
+       <bool>false</bool>
+      </property>
+      <property name="movable">
+       <bool>true</bool>
+      </property>
+      <property name="tabBarAutoHide">
        <bool>false</bool>
       </property>
       <widget class="QWidget" name="centralTabsPage1_2">
        <attribute name="title">
-        <string/>
+        <string>Demo Utilities</string>
        </attribute>
        <layout class="QHBoxLayout" name="horizontalLayout_2">
         <item>
@@ -639,12 +648,12 @@
       </widget>
       <widget class="QWidget" name="centralTabsPage2_2">
        <attribute name="title">
-        <string/>
+        <string>(Empty)</string>
        </attribute>
       </widget>
       <widget class="QWidget" name="centralTabsPage3">
        <attribute name="title">
-        <string/>
+        <string>(Unimplemented)</string>
        </attribute>
       </widget>
      </widget>

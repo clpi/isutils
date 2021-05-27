@@ -458,10 +458,10 @@ class Demo:
                     for img in [step.img, step.hover]:
                         if img is not None:
                             curr_img = bg_img.copy()
-                            asset = Image.open(str(img))
-                            asset_resize = asset.resize(asset_new_size, Image.ANTIALIAS)
-                            curr_img.paste(asset_resize, asset_new_coord, asset_resize.convert('RGBA'))
-                            curr_img.save(str(img))
+                            with Image.open(str(img)) as asset:
+                                asset_resize = asset.resize(asset_new_size, Image.ANTIALIAS)
+                                curr_img.paste(asset_resize, asset_new_coord, asset_resize.convert('RGBA'))
+                                curr_img.save(str(img))
                             if dt.DEBUG:
                                 print(f"SHELLED: {img}")
                                 print(f"FINISHED: Section {sect_i}, step {step_i}")
@@ -470,26 +470,31 @@ class Demo:
         
     def insert_img(self, 
                     to_sect: List[str],
-                    fg_img_obj: Image,
                     fg_img_path: str,
                     fg_img_size: Tuple[int, int],
                     fg_img_coord: Tuple[int, int]
                     ):
         #TODO Find elegant way to implement boudnary checking for insertion only
         #     consider putting insert_img in shell_assets before transforming dims?
-        #TODO Finish
+        """
+        Inserts an image, provided through a path string, on all assets of the demo.
+        Assets modified in this way can be filtered by providing a list of section
+        names for which this image pasting operation should be performed.
+        """
         sections = [s.lower() for s in to_sect]
-        fg_img = fg_img_obj
+        print(f"INSERTING {fg_img_path}")
+        fg_path = str(fg_img_path)
+        fg_img = Image.open(fg_path)
         for sect_i, sect in enumerate(self):
             # if to_sect == [] or sect.title.lower() in sections:
                 for step_i, step in enumerate(sect.steps):
                     for img in [step.img, step.hover]:
                         if img is not None:
                             curr_img = fg_img.copy()
-                            asset = Image.open(str(img))
                             curr_img_resize = curr_img.resize(fg_img_size, Image.ANTIALIAS)
-                            asset.paste(curr_img_resize, fg_img_coord, curr_img.convert('RGBA'))
-                            curr_img.save(str(img))
+                            with Image.open(str(img)) as asset:
+                                asset.paste(curr_img_resize, fg_img_coord, curr_img.convert('RGBA'))
+                                asset.save(str(img))
                             if dt.DEBUG:
                                 print(f"INSERTED: {str(img)}")
                                 print(f"FINISHED: Section {sect_i}, step {step_i}")

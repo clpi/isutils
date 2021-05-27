@@ -109,10 +109,10 @@ class OpWidget(QWidget):
             ShellOp(img_path=s_img_path, fg_coord=s_fg_coord, fg_dim=s_fg_dim).run(demo)
         elif op_idx == 1: #insert #TODO fix insert algo in demo model
             print("RUNNING INSERT OPERATION")
-            i_img_path: str = self.shellImgPath.text()
+            i_img_path: str = self.insertImgPath.text()
             i_fg_coord: Tuple[int, int] = (self.insertFgX.value(), self.insertFgY.value())
             i_fg_dim: Tuple[int, int] = (self.insertFgW.value(), self.insertFgH.value())
-            #InsertOp(img_path=i_img_path, fg_coord=i_fg_coord, fg_dim=i_fg_dim).run(demo)
+            InsertOp(img_path=i_img_path, fg_coord=i_fg_coord, fg_dim=i_fg_dim).run(demo)
         elif op_idx == 2: #section
             print("RUNNING SECTION OPERATION")
             SectionOp().run(demo)

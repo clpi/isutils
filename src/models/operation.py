@@ -61,7 +61,7 @@ class InsertOp(Op):
         return "insert"
 
     def run(self, demo: Demo): #TODO add sect discrim fxn
-        demo.shell_assets(to_sect=[], bg_path=self.img_path, asset_new_coord=self.fg_coord, asset_new_size=self.fg_dim)
+        demo.insert_img(to_sect=[], fg_img_path=self.img_path, fg_img_coord=self.fg_coord, fg_img_size=self.fg_dim)
 
     #def from_widget(self, op_widget: OpWidget) -> InsertOp:
         #for i in range(op_widget.topLevelItemCount()):
