@@ -21,10 +21,10 @@ import shutil
 
 class Demo:
 
-    def __init__(self, 
-                path: str = "", 
-                script_path: str = "", 
-                audio_dir: str = "", 
+    def __init__(self,
+                path: str = "",
+                script_path: str = "",
+                audio_dir: str = "",
                 is_sectioned: bool = False,
                 audio_attached: bool = False):
         print("Demo loading...")
@@ -33,13 +33,13 @@ class Demo:
         self.audio_dir: str = audio_dir
         self.is_sectioned: bool = is_sectioned
         self.audio_attached: bool = audio_attached
-        self.title: str = "" 
+        self.title: str = ""
         self.res: Tuple[int, int] = (0, 0) #TODO make changeable?
         self.len, self.sect_len = 0, 0
         self.sections: List[Section] = []
         self.steps: List[List] = []
         self.lsect: List[List] = []
-        self.lstep: List[List] = [] 
+        self.lstep: List[List] = []
         self.lstepprops: List[List] = []
         try:
             self.loaded = self.load(path)
@@ -119,8 +119,8 @@ class Demo:
             for i, sect in enumerate(self.sections):
                 sect_lens.append(len(sect))
                 if (len(sect)) != len(script.tp):
-                    print("""Demo and script have same number 
-                        of steps and sections, but the lengths of sections are unequal. 
+                    print("""Demo and script have same number
+                        of steps and sections, but the lengths of sections are unequal.
                         Stopped at section {} ({}): script has {} steps, demo has {} steps.\n"""
                         .format(i, sect.title, len(sect), len(script.tp)))
                     return False
@@ -139,7 +139,7 @@ class Demo:
         if len(audio) == demo_audio_len:
             print(f"Audio: Matches demo. Both have {len(audio)} soundbites.")
             return True
-        print(f"""Warning: Audio does not match demo. Audio has {len(audio)} 
+        print(f"""Warning: Audio does not match demo. Audio has {len(audio)}
                 soundbites, demo should have {demo_audio_len} soundbites.""")
         return False
 
@@ -205,6 +205,9 @@ class Demo:
                     pass
             pass
 
+    def check_prod_mods(self, idx: int) -> Tuple[bool, bool, bool, bool]:
+        return (False, False, False, False)
+
     def section_demo(self):
         sect_n, step_n = [], []
         current = []
@@ -214,14 +217,13 @@ class Demo:
                     current.append(step)
 
     def process_sections(self, add_audio: bool =True):
-        return
         self.handle_misplaced_sections()
         audio = self.audio if add_audio else None
         tp_streak, tp_left, prev_tp_i = -1, -1, -1
         """ while(True) -> break if no next -> do not increment if step deleted """
         for i, step in enumerate(self.iter_instr()):
             tp = step.tp
-            deleted, duped, animated, is_section_step = check_prod_mods(i)
+            deleted, duped, animated, is_section_step = self.check_prod_mods(i)
             step_i = step.idx
             if tp.is_valid_tp():
                 num_lines = tp.num_lines(tp)
@@ -235,7 +237,7 @@ class Demo:
                     self.insert_section(i)
                 if step_i == 0 and tp_streak != tp_left + 1:
                     self.merge_section(i, to="prev")
-                self.attach_audio(i, self.audio[i], step=tp_left!=0)
+                self.add_audio(i, i+1)
                 tp_left -= 1
                 prev_tp_i = i
             prev_step_section_step = True if is_section_step else False
@@ -244,7 +246,7 @@ class Demo:
         def check_prod_mods(step, count: int = 0):
             prod_notes = step.tp.get_prod_notes()
             if prod_notes:
-                deleted, duped, animated, is_section_step = self.handle_prod_notes(i, prod_notes)
+                deleted, duped, animated, is_section_step = self.handle_prod_notes(i, prod_notes, delete=False)
                 if deleted:
                     return check_prod_mods(i+count)
             else:
@@ -283,9 +285,12 @@ class Demo:
         """
         Finds beginning of sections which have no valid talking points, and merges them
         """
-        for i, sect in self.iter_sect():
-            if not self.is_valid_tp(self.tp[i]):
+        for i, sect in enumerate(self.sections):
+            if not self.is_valid_tp(i):
                 self.merge_section(idx=i, to="prev")
+
+    def is_valid_tp(self, idx: int) -> bool:
+        return True
 
 
     def merge_section(self, idx: int,  to: str = "prev"):
@@ -307,9 +312,9 @@ class Demo:
         x, y = Image.open(str(self[0][0].img)).size
         print(x, y)
         self.res: Tuple[int, int] = (x, y)
-        dt.DEMO_RES: Tuple[int, int] = (x, y)
+        dt.DEMO_RES = (x, y)
 
-    # roadblock: ID? 
+    # roadblock: ID?
     def duplicate_step(self, idx: int, as_pacing: bool = False, before: bool = True):
         #TODO Figure out how to properly update LXML ETree with steps in object list
         step = self.steps[idx]
@@ -368,7 +373,7 @@ class Demo:
         if (dx >= self.res[0]) or (dy >= self.res[1]):
             raise Exception("Cropping dimensions exceed the size of image")
 
-        asset_new_size = (self.res[0] - dims[0] - dims[2], self.res[1] - dims[1] - dims[3]) 
+        asset_new_size = (self.res[0] - dims[0] - dims[2], self.res[1] - dims[1] - dims[3])
         rx, ry = tuple(map(lambda z: z[0]/z[1], zip(asset_new_size, self.res)))
 
         for step in self.iter_step():
@@ -379,12 +384,12 @@ class Demo:
                 asset.save(str(img))
         self.res, dt.DEMO_RES = asset_new_size, asset_new_size
 
-    def shell_assets(self, 
+    def shell_assets(self,
                     to_sect: List[str], # SECTIONS TO APPLY SHELLING. Empty ([]) list -> all sections affected.
-                    bg_path: str, # PATH OF LOWEST Z-INDEX BG IMG. If bg img dims > demo asset dims, demo res set to bg img res 
+                    bg_path: str, # PATH OF LOWEST Z-INDEX BG IMG. If bg img dims > demo asset dims, demo res set to bg img res
                     asset_new_coord: Tuple[int, int], # FROM TOP LEFT OF BG IMG, where foremost top-left point of assets will be placed
                     asset_new_size: Tuple[int, int], # SIZE OF ASSETS AFTER RESIZE. Resize is performed before translating on bg img
-                    shell_path: str = None, # if provided, path of img to be placed on top of bg_img but below asset (must be smaller than asset) 
+                    shell_path: str = None, # if provided, path of img to be placed on top of bg_img but below asset (must be smaller than asset)
                     shell_new_coord: Tuple[int, int] = None, # if provided, coordinates (as above) of shell img on bg img
                     shell_new_size: Tuple[int, int] = None, # if provied, size (as above) of shell img on bg img
                     ):
@@ -427,7 +432,7 @@ class Demo:
 
         if shell_path is not None and shell_new_coord is not None and shell_new_size is not None:
             if exceeds_res(bound(shell_new_size, shell_new_coord)):
-                raise Exception("Shell image dimensions beyond original boundaries")                
+                raise Exception("Shell image dimensions beyond original boundaries")
             if any(i < 0 for i in shell_new_coord + shell_new_size):
                     raise Exception("Negative values passed for shell")
 
@@ -435,7 +440,7 @@ class Demo:
             shell_img_resize = shell_img.resize(shell_new_size, Image.ANTIALIAS)
             bg_img.paste(shell_img_resize, shell_new_coord, shell_img_resize.convert('RGBA'))
 
-            
+
         print(bg_dims)
         rx = float(asset_new_size[0] / bg_dims[0])
         ry = float(asset_new_size[1] / bg_dims[1])
@@ -451,7 +456,7 @@ class Demo:
         for sect_i, sect in enumerate(self.sections):
             #if sections == [] or sect.title.lower() in sections:
                 for step_i, step in enumerate(sect.steps):
-                    if dt.DEBUG: 
+                    if dt.DEBUG:
                         print(f"STARTING SHELLING: Sect {sect_i}, step {step_i}")
                     #self.transform_coords(step_idx=step_i, sect_idx=sect_i, scale=(rx, ry), offset=(asset_new_coord))
                     step.transform_coords(scale=(rx, ry), offset=(offset_x, offset_y))
@@ -467,8 +472,8 @@ class Demo:
                                 print(f"FINISHED: Section {sect_i}, step {step_i}")
         if dt.DEBUG: print(self.res)
         self.write(self.file)
-        
-    def insert_img(self, 
+
+    def insert_img(self,
                     to_sect: List[str],
                     fg_img_path: str,
                     fg_img_size: Tuple[int, int],
@@ -498,7 +503,7 @@ class Demo:
                             if dt.DEBUG:
                                 print(f"INSERTED: {str(img)}")
                                 print(f"FINISHED: Section {sect_i}, step {step_i}")
-                        
+
 
     def clear_talking_points(self, i: int):
         pass
@@ -528,7 +533,7 @@ class Demo:
                     for step in sect:
                         yield step, True
         else:
-            for sect in self: 
+            for sect in self:
                 if sect.is_special:
                     continue
                 if len(sect) == 1:
@@ -546,7 +551,7 @@ class Demo:
                 continue
             for step in sect:
                 yield (sect.idx, step)
-                
+
     def __iter__(self):
         return DemoSectionIterator(self)
 
@@ -567,7 +572,7 @@ class Demo:
             if type(item) is Section:
                 self.sections[idx] = item
         if type(idx) is tuple:
-            if type(item) is Step:  
+            if type(item) is Step:
                 self.sections[idx[0]].steps[idx[1]] = item
 
     def __delitem__(self, key):
@@ -594,7 +599,7 @@ def get_coast_num(steps: list, idx: int) -> int: #get num steps w/ tp after tp s
 def clear_sects(root):
     root.find("Chapters").clear()
     return root
-    
+
 def insert_sect(root):
     chapters = root.find("Chapters")
     num_chapters = len(chapters.findall("Chapter"))
@@ -609,7 +614,7 @@ def insert_sect(root):
     is_active_el.text = "true"
     click_anywhere_el = ET.SubElement(chapter, "ClickAnywhere")
     click_anywhere_el.text = "false"
-    
+
 def append_step(chapter, step):
     steps_el = chapter.find("Steps")
     steps_el.append(step)
@@ -619,7 +624,7 @@ def append_step(chapter, step):
 def write(root, path: str = ""):
     tree = ET.ElementTree(root)
     tree.write(path, pretty_print=True, xml_declaration=True, encoding='utf-8')
-    
+
 def section(d: Demo, add_intro_outro=False):
     root_c = copy.deepcopy(d.root)
     orig_sect = list(d.root.findall("Chapters/Chapter"))
@@ -677,14 +682,14 @@ def section(d: Demo, add_intro_outro=False):
                     new_step_idx += 1
                     print(sect_num, step.idx, new_sect_num, new_step_idx, "GTG", step.tp.text[:40])
                     append_step(root_c.findall("Chapters/Chapter")[-1], copy.deepcopy(step_el))
-        
+
         """
         if add_intro_outro:
             insert_sect(root_c) #"Now it's your turn to try..."
             append_step(root_c.findall("Chapters/Chapter")[-1], copy.deepcopy(step_el))
         """
         write(root_c, d.file)
-    
+
 #-----------------------------ITERATORS--------------------------------
 #TODO: Learn a lot more about generators, implement same functionality
 #       as these iterators but with generators in iter_sect() or iter_step()
@@ -740,4 +745,4 @@ class DemoStepIterator:
         self.counter += 1
         # if item.tp.text != "":
         #     print(self.sect_idx, self.step_idx, item.tp.text)
-        return itemi
+        return item

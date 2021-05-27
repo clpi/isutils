@@ -33,7 +33,7 @@ class Op:
         pass
 
     def get_params(self) -> Dict[str, Any]:
-        pass
+        return { "": "" }
 
 @dataclass
 class ShellOp(Op):
@@ -70,7 +70,7 @@ class InsertOp(Op):
         #self.apply_to = op
 
     def get_params(self) -> Dict[str, Any]:
-        pass
+        return { "": "" }
 
 @dataclass
 class SectionOp(Op):
@@ -80,7 +80,7 @@ class SectionOp(Op):
         return "section"
 
     def get_params(self) -> Dict[str, Any]:
-        pass
+        return { "": "" }
 
     def run(self, demo: Demo) -> None:
         section(demo, add_intro_outro=True)
@@ -93,20 +93,20 @@ class AudioOp(Op):
         return "audio"
 
     def get_params(self) -> Dict[str, Any]:
-        pass
+        return { "": "" }
 
     def run(self, demo: Demo) -> None:
         demo.add_audio()
 
 @dataclass
 class CropOp(Op):
-    dims: Tuple[int, int, int, int] = (0, 0, 0, 0) #TODO set to demo dims 
+    dims: Tuple[int, int, int, int] = (0, 0, 0, 0) #TODO set to demo dims
 
     def __str__(self) -> str:
         return "crop"
 
     def get_params(self) -> Dict[str, Any]:
-        pass
+        return { "": "" }
 
     def run(self) -> None:
         pass
@@ -119,7 +119,7 @@ class ComposeOp(Op):
         return "compose"
 
     def get_params(self) -> Dict[str, Any]:
-        pass
+        return { "": "" }
 
     def run(self) -> None:
         pass
@@ -132,7 +132,7 @@ class ResizeOp(Op):
         return "resize"
 
     def get_params(self) -> Dict[str, Any]:
-        pass
+        return { "": "" }
 
     def run(self) -> None:
         pass
@@ -148,7 +148,7 @@ class MoveOp(Op):
         return "move"
 
     def get_params(self) -> Dict[str, Any]:
-        pass
+        return { "": "" }
 
     def run(self) -> None:
         pass
@@ -160,7 +160,7 @@ class RenameOp(Op):
         return "rename"
 
     def get_params(self) -> Dict[str, Any]:
-        pass
+        return { "": "" }
 
     def run(self) -> None:
         pass
@@ -172,7 +172,7 @@ class PacingOp(Op):
         return "pacing"
 
     def get_params(self) -> Dict[str, Any]:
-        pass
+        return { "": "" }
 
     def run(self) -> None:
         pass
@@ -181,14 +181,14 @@ class OpData:
 
     def __init__(self):
         self.apply_to: Optional[List[int]] = None
-        self.all_steps: bool = None
-        self.steps_with: bool = None
+        self.all_steps: Optional[bool] = None
+        self.steps_with: Optional[bool] = None
         self.step_substr: Optional[str] = None
 
 OP_TYPES = [
     ShellOp,
     InsertOp,
-    SectionOp, 
+    SectionOp,
     AudioOp,
     CropOp,
     ComposeOp,

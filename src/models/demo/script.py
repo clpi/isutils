@@ -20,7 +20,7 @@ class Script:
         except BaseException as exc:
             self.loaded = False
             logger.error("Script failed to import. %s", str(exc))
-        
+
     @validate_path
     def load(self, path: str = "") -> bool:
         if path != "":
@@ -83,7 +83,7 @@ class Script:
         return self.length
 
     def __getitem__(self, key: Tuple[int, str]):
-        """ Returns talking point for index value passed """ 
+        """ Returns talking point for index value passed """
         if key[1] is None:
             return self.tp[key[0]]
         if key[1] == "ci":
@@ -157,7 +157,7 @@ class TextBox:
         if self.words is None:
             self.words = self.get_words(line)
         if self.text:
-            freq = dict.fromkeys(set(self.words), 1)
+            freq = dict.fromkeys(self.words.__dict__)
             for word in freq.keys():
                 freq[word] += 1
             return freq
@@ -176,7 +176,7 @@ class TextBox:
 
     def key_tp_phrase_match(self, notes: List[str], bracketed=True) -> List[str]:
         key_unbracketed_phrases = {
-            "thank you": "", 
+            "thank you": "",
             "welcome": "",
             "for our purposes": ""
         }
@@ -200,11 +200,11 @@ class TextBox:
 
     def __len__(self) -> int:
         " Returns number of words in talking point "
-        return self.word_count()
+        return self.word_count().__len__()
 
     def __bool__(self) -> int:
         return self.text != ""
 
     def __iter__(self):
         " Returns generator over all of the words and punctuation separately in talking point "
-        return (word.lower() for word in re.findall(r'\w+', string))
+        return (word.lower() for word in re.findall(r'\w+', "test"))

@@ -12,7 +12,7 @@ from copy import deepcopy
 class Step:
 
     #TODO check if step delaya is None if not specified
-    def __init__(self, 
+    def __init__(self,
                 elem = None,
                 copy: bool = False,
                 demo_dir: str = None,
@@ -34,7 +34,7 @@ class Step:
         self.demo_idx = demo_idx
         self.demo_dir = demo_dir
         self.tp, self.ci = TextBox(talking_pt), TextBox(click_instr)
-        self.loaded = self.load()
+        self.load()
 
     def load(self):
         s = []
@@ -53,7 +53,7 @@ class Step:
         if (soundbite := self.root.find("SoundBite")) is not None:
             self.audio = SoundBite(elem=soundbite, asset_path=str(self.assets))
         else:
-            self.audio = None 
+            self.audio = None
         for prop, prop_dict in dt.STEP_PROPS.items():
             prop_tag, prop_type = prop_dict["tag"], prop_dict["type"]
             try:
@@ -66,14 +66,14 @@ class Step:
             props = (self.props.findall(tag+"/"+tag[:-1]))
             if props is not None:
                 for prop, prop_vals in box_props.items():
-                    self.boxes[box_key][prop] = []
+                    self.boxes[box_key][prop]: List[str] = []
                     for i, box in enumerate(props):
                         prop_tag, prop_type = prop_vals["tag"], prop_vals["type"]
                         if (box.find(prop_tag) is not None):
                             box_text = prop_type(box.find(prop_tag).text)
                             self.boxes[box_key][prop].append(box_text)
             if box_key == 'hotspot':
-                if (self.boxes[box_key]['x1'][0] == dt.DEMO_RES[0] and 
+                if (self.boxes[box_key]['x1'][0] == dt.DEMO_RES[0] and
                     self.boxes[box_key]['y1'][0] == dt.DEMO_RES[1]):
                     self.animated = True
                 else:
@@ -85,7 +85,7 @@ class Step:
         self.mouse = (x, y)
         self.props.find(dt.MOUSE_X).text = str(x)
         self.props.find(dt.MOUSE_Y).text = str(y)
-            
+
     def set_mouse_hover(self, x: float, y: float):
         self.mouse_hover = (x, y)
         self.props.find("MouseEnterPicture/"+dt.MOUSE_X).text = str(x)
@@ -96,7 +96,7 @@ class Step:
         self.props.find("VideoRects/VideoRect/Video/VideoHeight").text = str(y)
         self.props.find("VideoRects/VideoRect/Video/VideoWidth").text = str(x)
         self.boxes["video"]["width"], self.boxes["video"]["height"] = x, y
-    
+
     def set_box_dims(self, box: str, coords):
         """
         Input: Box type (str, ex "hotspot"), (x0, x1) int tuple, (y0, y1) int tuple
@@ -166,8 +166,8 @@ class Step:
             self.set_mouse_hover(self.mouse_hover[0]*rx*ox, self.mouse_hover[1]*ry*oy)
         if dt.DEBUG:
             print(f"SHIFTED: Step {self.idx}")
-        
-        
+
+
 
     def set_guided(self, guided: bool):
         pass
@@ -184,13 +184,13 @@ class Step:
 
     def get_img_names(self, full_path=False) -> Tuple[str, str]:
         if self.hover:
-            return (self.img, self.hover) if full_path else (self.img.name, self.hover.name)
+            return (str(self.img), str(self.hover)) if full_path else (str(self.img.name), str(self.hover.name))
         if full_path:
             num = self.img.name.rsplit()[1][:-4]
-            hover_name = self.img.name.replace(str(num), str(num+1))
+            hover_name = self.img.name.replace(str(num), str(num+str(1)))
             hover_path = Path(self.assets, hover_name)
-            return (self.img, hover_path) if full_path else (self.img.name, hover_name)
-        return (self.img, self.hover)
+            return (str(self.img), str(hover_path)) if full_path else (str(self.img.name), str(hover_name))
+        return (str(self.img), str(self.hover))
 
     def set_text(self, tp: str = "", ci: str = "", img: str = ""):
         self.tp.text, self.ci.text = tp, ci
@@ -219,9 +219,9 @@ class Step:
 
     def set_video(self, video_path: str):
         pass
-        
+
     def set_animated(self):
-        self.set_box_dims('hotspot', 0, 0, dt.DEMO_RES[0], dt.DEMO_RES[1])
+        self.set_box_dims('hotspot', (0, 0, dt.DEMO_RES[0], dt.DEMO_RES[1]))
         for dir_key, ddict in dt.DIRS.items():
             hspot = self.props.find(f"Hotspots/Hotspot/{ddict[dir_key]['tag']}")
             hspot.text = str(getattr(self, 'hotspot')[dir_key][0])
@@ -232,7 +232,7 @@ class Step:
         for box, box_props in self.boxes.items():
             for prop, vals in box_props.items():
                 yield (prop, vals)
-    
+
     def remove_audio(self):
         pass
 
@@ -240,11 +240,14 @@ class Step:
         pass
 
     def __eq__(self, other):
-        return self.id == other.id
+        return self.idx == other.idx
 
     def __str__(self):
         return str(self.tp)
 
     def __call__(self, tp: str = None, ci: str = None, img: str = None):
         pass
-    
+
+    def __getitem__(self, index: int):
+        self.idx
+

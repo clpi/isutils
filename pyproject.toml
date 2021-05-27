@@ -11,6 +11,7 @@ python-docx="*"
 pyqt5="*"
 mutagen="*"
 pillow="*"
+pylint = "^2.8.2"
 
 [tool.poetry.dev-dependencies]
 mypy="*"
