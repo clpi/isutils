@@ -9,16 +9,21 @@ import sys, os, functools, typing
 from pathlib import Path
 from dataclasses import dataclass, field
 from typing import List, Tuple, Dict, Optional, Type, Any
-from PyQt5.QtCore import ( Qt,
+from PyQt6.QtCore import ( Qt,
     QObject, pyqtSlot, QFileSelector, QSaveFile, QFileSelector, QTemporaryDir, 
     QTemporaryFile, QAbstractItemModel, QAbstractListModel, pyqtSignal, QModelIndex,
     QSignalMapper
 )
-from PyQt5.QtGui import (QIcon, QImageIOHandler, QImage, QImageReader, QImageWriter, QStandardItemModel, QStandardItem, QPalette, QColor)
-from PyQt5.QtWidgets import ( QWidget,
+from PyQt6.QtGui import (QIcon,
+    QImageIOHandler, QImage, QImageReader, QAction, QIcon,
+    QImageWriter, QStandardItemModel, QStandardItem, QPalette, QColor
+)
+from PyQt6.QtWidgets import ( QWidget,
+    QColorDialog,
     QApplication, QMainWindow, QPushButton, QLineEdit, QSpinBox, QMessageBox, QFileDialog, QListWidgetItem,
     QListWidget, QTreeWidget, QTableWidget, QLabel, QTabWidget, QComboBox, QTreeWidgetItem, QTableWidgetItem,
-    QAction, QWizard, QWizardPage, QDialog, QUndoView, QProgressBar, QStyle, QStackedWidget, QGroupBox
+    QWizard, QWizardPage, QDialog, QUndoView, QProgressBar, QStyle, QStackedWidget, QGroupBox,
+    QInputDialog
 )
 from PIL import Image
 
@@ -27,7 +32,7 @@ from models.operation import Op, ShellOp, InsertOp, SectionOp, AudioOp, CropOp, 
 from ui.comp.op import OpWidget
 from ui.comp.prefs import Prefs
 
-from PyQt5 import uic
+from PyQt6 import uic
 
 #TODO make function/class which automatically goes thru list of widget names
 #     and attaches appropriate functions/functionality
@@ -100,21 +105,35 @@ class MainWindow(QMainWindow):
     def load_actions(self):
         self.actionPreferences: QAction
         self.actionAbout: QAction
+        self.actionNewStep: QAction
 
+        self.actionOpenDemo: QAction
+
+        self.actionNewStep.setShortcut("Ctrl+Shift+S")
+        self.actionNewStep.setStatusTip("Add new step to operations")
+        self.actionNewStep.triggered.connect(self.add_step)
         self.actionPreferences.triggered.connect(self.show_prefs)
         self.actionAbout.triggered.connect(self.show_about)
 
 
     #TODO detach these from class
     def browse_demo(self):
-        try:
-            demo_path, _ = QFileDialog.getOpenFileName(self,"Browse for .demo files", "","Demo files (*.demo);;All Files (*)")
-            self.cx.demo_paths.append(demo_path)
-            print(demo_path)
-            self.load_demo(demo_path)
-            #msg("Loaded demo: " + repr(self.cx.load_demo[-1]), "Successfully loaded demo", "")
-        except:
-            print("Something went wrong loading demo?")
+        home_dir = str(Path.home()) + "\\Documents\\My Demos"
+        print(home_dir)
+        print("TRYING TO GET QFILEDIALOG")
+        # demo_path, _ok = QFileDialog.getOpenFileName(self,"Browse for .demo files", "","Demo files (*.demo);;All Files (*)")
+        # demo_path = QFileDialog.getOpenFileName(self,"Browse for demo files", str(Path.home()))
+        demo_path = QInputDialog.getText(self, "Input", "Enter name")
+        # c, ok = QColorDialog.getColor()
+        # demo_path, ok = QFileDialog.getOpenFileName(self, "Browse for demo file")
+        # demo_p, ok = QFileDialog.get
+        if demo_path[0]:
+            self.cx.demo_paths.append(demo_path[0])
+            print(demo_path[0])
+            self.load_demo(demo_path[0])
+            self.add_step()
+        else:
+            print("No demo selected.")
 
     #TODO implement correcty
     def browse_script(self):
@@ -220,7 +239,7 @@ class MainWindow(QMainWindow):
         print("END save_state")
 
     def run_ops(self):
-        print("BEGIN run_ops")
+        print("[Window.run_ops] BEGIN run_ops")
         out = ""
         for i in range(self.stepsTreeWidget.topLevelItemCount()):
             step = self.stepTabs.widget(i)
@@ -228,9 +247,8 @@ class MainWindow(QMainWindow):
             step.run_op(demo)
             if step.opCombo.currentIndex() == 2: #section -> destructive to script - demo connection
                 self.cx.demo_load[step.demoTargetCombo.currentIndex()] = Demo(path=demo.file, audio_dir=demo.audio_dir, script_path=demo.script_path)
-            print("RUNNING OPERATION " + str(i))
-        msg(txt="Finished running operations", inf=out, title="Finished")
-        print("END run_ops")
+        msg(txt="[Window.run_ops] Finished running operations", inf=out, title="Finished")
+        print("[Window.run_ops] END run_ops")
 
     def add_step(self):
         #TODO create model for new steps QTreeWidgetItem
@@ -283,9 +301,8 @@ class MainWindow(QMainWindow):
                 self.stepTabs.setTabText(i, "Step " + str(i+1))
                 self.stepTabs.setCurrentIndex(self.stepsTreeWidget.currentIndex().row())
         if len(self.cx.demo_load) > 0:
-            self.set_demo_tree(self.stepTabs.widget(\
-                self.stepsTreeWidget.currentIndex().row())\
-                    .demoTargetCombo.currentIndex())
+            if self.stepTabs.widget(0):
+                self.set_demo_tree(self.stepTabs.widget(self.stepsTreeWidget.currentIndex().row()).demoTargetCombo.currentIndex())
 
     def add_demo_row(self):
         # checkif sect or step
@@ -362,14 +379,14 @@ class AboutDialog(QDialog):
 @pyqtSlot(MainWindow)
 def msg(txt: str, inf: str, title: str, det: str = "") -> None:
     msg = QMessageBox()
-    msg.setIcon(QMessageBox.Information)
+    # msg.setIcon(QMessageBox.Information)
     msg.setText(txt)
     msg.setInformativeText(inf)
     msg.setWindowTitle(title)
     if det != "":
         msg.setDetailedText(det)
-    msg.setStandardButtons(QMessageBox.Ok | QMessageBox.Cancel)
-    msg.exec_()
+    # msg.setStandardButtons(QMessageBox.Ok | QMessageBox.Cancel)
+    msg.exec()
 
 
 class OpsModel(QAbstractItemModel):
@@ -459,4 +476,4 @@ def run():
     set_fusion(app, dark=False)
     window = MainWindow()
     window.show()
-    app.exec_()
+    sys.exit(app.exec())

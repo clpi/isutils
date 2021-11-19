@@ -42,15 +42,20 @@ class Step:
         self.boxes = {k:dict.fromkeys({*v["props"], *dt.DIRS}, None) for k, v in dt.BOX_PROPS.items()}
         self.assets = Path(self.demo_dir, self.props.find("AssetsDirectory").text)
         self.img = PurePath(self.assets, self.props.find("PictureFile").text)
+        print(f"IMAGE: {self.img}")
         self.time = self.props.find("Time").text
         if (hover := self.props.find("MouseEnterPicture")) is not None and hover.text is not None:
             self.hover = PurePath(self.assets, hover.find("PictureFile").text)
-            self.hover_time = hover.find("Time").text
+            if (hover_time := hover.find("Time").text):
+                self.hover_time = hover.find("Time").text
+            else:
+                self.hover_time = ""
             self.mouse_hover = (float(hover.find(dt.MOUSE_X).text), float(hover.find(dt.MOUSE_Y).text))
         else:
             self.hover = None
         self.mouse = (float(self.props.find(dt.MOUSE_X).text), float(self.props.find(dt.MOUSE_Y).text))
         if (soundbite := self.root.find("SoundBite")) is not None:
+            print(f"SOUNDBITE: {soundbite}")
             self.audio = SoundBite(elem=soundbite, asset_path=str(self.assets))
         else:
             self.audio = None
@@ -66,7 +71,7 @@ class Step:
             props = (self.props.findall(tag+"/"+tag[:-1]))
             if props is not None:
                 for prop, prop_vals in box_props.items():
-                    self.boxes[box_key][prop]: List[str] = []
+                    self.boxes[box_key][prop] = []
                     for i, box in enumerate(props):
                         prop_tag, prop_type = prop_vals["tag"], prop_vals["type"]
                         if (box.find(prop_tag) is not None):
@@ -117,7 +122,6 @@ class Step:
         Transforms all coordinate-based and height/widgth/size based properties of
         this step by a provided scaling and offset factor, LTRB
         """
-
         (rx, ry) = scale
         (ox, oy) = offset
 
@@ -125,15 +129,11 @@ class Step:
             out = []
             for i, c in enumerate(coord):
                 if i%2 == 0:
-                    if use_offset:
-                        out.append(float(c * rx + ox))
-                    else:
-                        out.append(float(c * rx))
+                    if use_offset: out.append(float(c * rx + ox))
+                    else: out.append(float(c * rx))
                 else:
-                    if use_offset:
-                        out.append(float(c * ry + oy))
-                    else:
-                        out.append(float(c * ry))
+                    if use_offset: out.append(float(c * ry + oy))
+                    else: out.append(float(c * ry))
             return out
 
         def transform(coords: List[float]) -> List[float]: #-> [top, bottom, left, right]

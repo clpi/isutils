@@ -1,0 +1,7 @@
+pathlib
+PyQt5
+pillow
+lxml
+python-docx
+mutagen
+opencv-python

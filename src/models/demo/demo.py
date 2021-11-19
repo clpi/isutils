@@ -3,6 +3,7 @@ import lxml.etree as ET
 import re
 import uuid
 import copy
+import cv2
 from typing import List, Tuple, Dict, Union, Optional, Iterable, Any
 from pathlib import Path, PurePath
 from itertools import islice
@@ -16,6 +17,7 @@ import models.demo.demo_tags as dt
 from collections import deque, namedtuple
 from PIL import Image
 import shutil
+import ffmpeg
 
 #----------------------------DEMO------------------------------------#
 
@@ -72,10 +74,12 @@ class Demo:
             self.id = self.root.find("ID").text
             self.title = self.root.find("DemoName").text
             for i, sect in enumerate(self.root.findall('Chapters/Chapter')):
+                print(f"SECTION {i+1}: Processing...")
                 self.lstep.append([])
                 self.lstepprops.append([])
                 self.lsect.append(sect)
                 for j, step in enumerate(sect.findall("Steps/Step")):
+                    print(f"SECTION {i+1} STEP {j+1}: Processing...")
                     self.lstep[i].append(step)
                     self.lstepprops[i].append(step.find("StartPicture"))
                 section = Section(elem=sect, demo_dir=self.file, idx=i, demo_idx=self.len)
@@ -504,6 +508,76 @@ class Demo:
                                 print(f"INSERTED: {str(img)}")
                                 print(f"FINISHED: Section {sect_i}, step {step_i}")
 
+    def render_video(self, out_path: Path):
+        """
+        Renders composite of all demo's images into video using python mmpeg
+        0. Create an empty list of size n where n = number of steps for 
+            (a) images
+            (b) each step's audio, and 
+            (c) click coordinates, and 
+            (d) fade in, 
+            (e). step delay
+            (f) hover image
+            (g) hover image time
+            (h) rects
+            (i) text
+        1. From demo object, iterate through every step, and load each step image + hover, audio (if appl.), and click coordinates, and fade in status
+            A. Add length of soundbite (if applicable) to step delay of step in step delay list
+            B. Paste image of cursor on coordinates onto image
+        2. Create empty output video with ffmpeg
+        3. With ffmpeg, loop from 0..n (num of steps) and:
+            A. Add image
+        """
+        print("[Demo.render_video] RUNNING render_video to path " + str(out_path))
+        imgs = []
+        for sect_i, sect in enumerate(self):
+            for step_i, step in enumerate(sect.steps):
+                if step.img is not None:
+                    print("\nSECTION " + str(sect_i) + ", STEP " + str(step_i) + " info:")
+                    if step.img: print("IMAGE: " + str(step.img))
+                    if step.hover: 
+                        print("HOVER: " + str(step.hover))
+                        if step.hover_time: 
+                            print("HOVER TIME: " + str(step.hover_time))
+                    if step.audio:
+                        print("AUDIO: " + str(step.audio))
+                    if step.animated: print("ANIMATED: " + str(step.animated))
+                    if step["has_mouse"]: print("HAS MOUSE: " + str(step.has_mouse))
+                    if step["delay"]: print("DELAY: " + str(step.delay))
+                    if step.time: print("TIME: " + str(step.time))
+                    if step.transition: print("")
+                    if step.boxes["hotspot"]:
+                        print("HOTSPOT:   (" + str(step.boxes["hotspot"]["x1"]) + ", " + str(step.boxes["hotspot"]["y1"]) + ")")
+                    if step.boxes["highlight"]:
+                        print("HIGHLIGHT: (" + str(step.boxes["highlight"]["x1"]) + ", " + str(step.boxes["highlight"]["y1"]) + "), color: " + str(step.boxes["highlight"]["color"]))
+                    if step.boxes["text"]:
+                        print("TEXT:      (" + str(step.boxes["text"]["text"]) + " (font: " + str(step.boxes["text"]["font"]) + ", size: " + str(step.boxes["text"]["size"]) + ", color: " + str(step.boxes["text"]["color"]) + ")")
+                    if step.mouse:
+                        print("MOUSE:     (" + str(step.mouse[0]) + ", " + str(step.mouse[1]) + ")")
+                    if step.mouse_hover:
+                        print("MOUSE HOV: (" + str(step.mouse_hover[0]) + ", " + str(step.mouse_hover[1]) + ")")
+                    step_img = cv2.imread(str(step.img))
+                    h, w, layers = step_img.shape
+                    size = (w, h)
+                    imgs.append(step_img)
+                if step.hover is not None:
+                    pass
+        # out = cv2.VideoWriter("C:\\Users\\chris\\Documents\\out.avi", cv2.VideoWriter_fourcc(*'DIVX'), 15, size)
+        out = cv2.VideoWriter(out_path, cv2.VideoWriter_fourcc(*'DIVX'), 15, size)
+        for img in imgs:
+            out.write(img)
+        out.release()
+
+
+    def read_frame_as_jpg(in_filename, frame_num):
+        out, err = (
+            ffmpeg
+            .input(in_filename)
+            .filter_('select', 'gte(n,{})'.format(frame_num))
+            .output('pipe:', vframes=1, format='image2', vcodec='mjpeg')
+            .run(capture_stdout=True)
+    )
+        return out
 
     def clear_talking_points(self, i: int):
         pass

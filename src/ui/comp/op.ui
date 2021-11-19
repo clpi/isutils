@@ -104,22 +104,17 @@
           </item>
           <item>
            <property name="text">
-            <string>Move region</string>
-           </property>
-          </item>
-          <item>
-           <property name="text">
-            <string>Bulk rename</string>
-           </property>
-          </item>
-          <item>
-           <property name="text">
             <string>Add pacing</string>
            </property>
           </item>
           <item>
            <property name="text">
             <string>Animate scroll steps</string>
+           </property>
+          </item>
+          <item>
+           <property name="text">
+            <string>Render to video</string>
            </property>
           </item>
          </widget>
@@ -251,7 +246,7 @@
          <bool>false</bool>
         </property>
         <property name="currentIndex">
-         <number>1</number>
+         <number>9</number>
         </property>
         <widget class="QWidget" name="shellTab">
          <property name="autoFillBackground">
@@ -728,62 +723,221 @@
           </item>
          </layout>
         </widget>
-        <widget class="QWidget" name="opsParamsTabsPage6"/>
-        <widget class="QWidget" name="opsParamsTabsPage7"/>
-        <widget class="QWidget" name="opsParamsTabsPage8"/>
-       </widget>
-      </item>
-     </layout>
-    </widget>
-   </item>
-   <item>
-    <widget class="QGroupBox" name="applyToBox">
-     <property name="enabled">
-      <bool>true</bool>
-     </property>
-     <property name="maximumSize">
-      <size>
-       <width>16777215</width>
-       <height>175</height>
-      </size>
-     </property>
-     <property name="title">
-      <string>Apply to</string>
-     </property>
-     <property name="flat">
-      <bool>true</bool>
-     </property>
-     <layout class="QVBoxLayout" name="verticalLayout_7">
-      <property name="spacing">
-       <number>10</number>
-      </property>
-      <property name="leftMargin">
-       <number>4</number>
-      </property>
-      <property name="topMargin">
-       <number>20</number>
-      </property>
-      <property name="rightMargin">
-       <number>4</number>
-      </property>
-      <property name="bottomMargin">
-       <number>20</number>
-      </property>
-      <item>
-       <widget class="QTreeWidget" name="applyToTreeWidget">
-        <property name="enabled">
-         <bool>true</bool>
-        </property>
-        <column>
-         <property name="text">
-          <string>Section</string>
-         </property>
-        </column>
-        <column>
-         <property name="text">
-          <string>Steps</string>
-         </property>
-        </column>
+        <widget class="QWidget" name="composeTab">
+         <layout class="QVBoxLayout" name="verticalLayout_12">
+          <item>
+           <layout class="QVBoxLayout" name="verticalLayout_11"/>
+          </item>
+         </layout>
+        </widget>
+        <widget class="QWidget" name="resizeTab">
+         <layout class="QVBoxLayout" name="verticalLayout_10">
+          <item>
+           <layout class="QVBoxLayout" name="verticalLayout_9"/>
+          </item>
+         </layout>
+        </widget>
+        <widget class="QWidget" name="pacingTab">
+         <layout class="QVBoxLayout" name="verticalLayout_5">
+          <property name="leftMargin">
+           <number>0</number>
+          </property>
+          <property name="topMargin">
+           <number>0</number>
+          </property>
+          <property name="rightMargin">
+           <number>0</number>
+          </property>
+          <property name="bottomMargin">
+           <number>0</number>
+          </property>
+          <item>
+           <widget class="QTabWidget" name="tabWidget">
+            <widget class="QWidget" name="tab">
+             <attribute name="title">
+              <string>Tab 1</string>
+             </attribute>
+            </widget>
+            <widget class="QWidget" name="tab_2">
+             <attribute name="title">
+              <string>Tab 2</string>
+             </attribute>
+            </widget>
+           </widget>
+          </item>
+         </layout>
+        </widget>
+        <widget class="QWidget" name="animateTab">
+         <layout class="QVBoxLayout" name="verticalLayout_14">
+          <item>
+           <layout class="QVBoxLayout" name="verticalLayout_13"/>
+          </item>
+         </layout>
+        </widget>
+        <widget class="QWidget" name="renderTab">
+         <layout class="QVBoxLayout" name="verticalLayout_4">
+          <property name="leftMargin">
+           <number>0</number>
+          </property>
+          <property name="topMargin">
+           <number>0</number>
+          </property>
+          <property name="rightMargin">
+           <number>0</number>
+          </property>
+          <property name="bottomMargin">
+           <number>0</number>
+          </property>
+          <item>
+           <widget class="QTabWidget" name="renderTabTabs">
+            <property name="currentIndex">
+             <number>0</number>
+            </property>
+            <widget class="QWidget" name="renderTabVideoTab">
+             <attribute name="title">
+              <string>Video</string>
+             </attribute>
+             <layout class="QVBoxLayout" name="verticalLayout_2">
+              <property name="leftMargin">
+               <number>5</number>
+              </property>
+              <property name="topMargin">
+               <number>5</number>
+              </property>
+              <property name="rightMargin">
+               <number>5</number>
+              </property>
+              <property name="bottomMargin">
+               <number>5</number>
+              </property>
+              <item>
+               <widget class="QScrollArea" name="scrollArea">
+                <property name="frameShape">
+                 <enum>QFrame::Panel</enum>
+                </property>
+                <property name="frameShadow">
+                 <enum>QFrame::Plain</enum>
+                </property>
+                <property name="lineWidth">
+                 <number>0</number>
+                </property>
+                <property name="widgetResizable">
+                 <bool>true</bool>
+                </property>
+                <widget class="QWidget" name="scrollAreaWidgetContents">
+                 <property name="geometry">
+                  <rect>
+                   <x>0</x>
+                   <y>0</y>
+                   <width>438</width>
+                   <height>436</height>
+                  </rect>
+                 </property>
+                 <layout class="QFormLayout" name="formLayout_10">
+                  <item row="0" column="0">
+                   <widget class="QLabel" name="videoTitleLabel">
+                    <property name="text">
+                     <string>Video Title</string>
+                    </property>
+                   </widget>
+                  </item>
+                  <item row="0" column="1">
+                   <widget class="QLineEdit" name="renderOutputTitle"/>
+                  </item>
+                  <item row="1" column="0">
+                   <widget class="QLabel" name="videoDirectoryLabel">
+                    <property name="text">
+                     <string>Video Directory</string>
+                    </property>
+                   </widget>
+                  </item>
+                  <item row="1" column="1">
+                   <widget class="QLineEdit" name="renderOutputDir"/>
+                  </item>
+                  <item row="2" column="0">
+                   <widget class="QLabel" name="videoFormatLabel">
+                    <property name="text">
+                     <string>Video Format</string>
+                    </property>
+                   </widget>
+                  </item>
+                  <item row="2" column="1">
+                   <widget class="QComboBox" name="renderOutputFormat">
+                    <item>
+                     <property name="text">
+                      <string>avi</string>
+                     </property>
+                    </item>
+                    <item>
+                     <property name="text">
+                      <string>mp4</string>
+                     </property>
+                    </item>
+                   </widget>
+                  </item>
+                 </layout>
+                </widget>
+               </widget>
+              </item>
+             </layout>
+            </widget>
+            <widget class="QWidget" name="renderTabAudioTab">
+             <attribute name="title">
+              <string>Audio</string>
+             </attribute>
+             <layout class="QVBoxLayout" name="verticalLayout_6">
+              <item>
+               <widget class="QScrollArea" name="scrollArea_2">
+                <property name="widgetResizable">
+                 <bool>true</bool>
+                </property>
+                <widget class="QWidget" name="scrollAreaWidgetContents_2">
+                 <property name="geometry">
+                  <rect>
+                   <x>0</x>
+                   <y>0</y>
+                   <width>428</width>
+                   <height>426</height>
+                  </rect>
+                 </property>
+                 <layout class="QFormLayout" name="formLayout_11"/>
+                </widget>
+               </widget>
+              </item>
+             </layout>
+            </widget>
+            <widget class="QWidget" name="renderTabPacingTab">
+             <attribute name="title">
+              <string>Pacing</string>
+             </attribute>
+             <layout class="QVBoxLayout" name="verticalLayout_8">
+              <item>
+               <widget class="QScrollArea" name="scrollArea_3">
+                <property name="widgetResizable">
+                 <bool>true</bool>
+                </property>
+                <widget class="QWidget" name="scrollAreaWidgetContents_3">
+                 <property name="geometry">
+                  <rect>
+                   <x>0</x>
+                   <y>0</y>
+                   <width>428</width>
+                   <height>426</height>
+                  </rect>
+                 </property>
+                 <layout class="QFormLayout" name="formLayout_12"/>
+                </widget>
+               </widget>
+              </item>
+             </layout>
+            </widget>
+           </widget>
+          </item>
+         </layout>
+        </widget>
+        <widget class="QWidget" name="extraTab">
+         <layout class="QFormLayout" name="formLayout_7"/>
+        </widget>
        </widget>
       </item>
      </layout>

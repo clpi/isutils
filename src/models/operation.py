@@ -1,6 +1,7 @@
 """
 
 """
+from pathlib import Path
 from abc import abstractmethod, abstractproperty, ABC, ABCMeta
 from enum import Enum, auto
 from typing import Tuple, Optional, List, Union, Type, Any, Dict
@@ -17,6 +18,7 @@ class OpKind(Enum):
     Section = auto()
     Audio = auto()
     Crop = auto()
+    Render = auto()
 
 
 @dataclass
@@ -154,7 +156,7 @@ class MoveOp(Op):
         pass
 
 @dataclass
-class RenameOp(Op):
+class AnimateOp(Op):
 
     def __str__(self) -> str:
         return "rename"
@@ -177,6 +179,21 @@ class PacingOp(Op):
     def run(self) -> None:
         pass
 
+@dataclass
+class RenderOp(Op):
+
+    out_path: Path = Path("C:\\Users\\chris\\Documents\\out.avi")
+
+    def __str__(self) -> str:
+        return "render"
+
+    def get_params(self) -> Dict[str, Any]:
+        return { "": "" }
+
+    def run(self, demo: Demo) -> None:
+        print("[RenderOp.run] RUNNING RENDER OP on " + demo.title)
+        demo.render_video(out_path=self.out_path)
+
 class OpData:
 
     def __init__(self):
@@ -186,14 +203,16 @@ class OpData:
         self.step_substr: Optional[str] = None
 
 OP_TYPES = [
-    ShellOp,
-    InsertOp,
-    SectionOp,
-    AudioOp,
-    CropOp,
-    ComposeOp,
-    ResizeOp,
-    MoveOp,
+    ShellOp, #0
+    InsertOp, #1
+    SectionOp, #2
+    AudioOp, #3
+    CropOp, #4
+    ComposeOp, #5
+    ResizeOp, #6
+    PacingOp, #7
+    AnimateOp, #8
+    RenderOp, #9
 ]
 
 def get_op(op_idx: int) -> Type[Op]:

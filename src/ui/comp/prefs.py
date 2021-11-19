@@ -1,8 +1,8 @@
 import sys, os
 from typing import Optional, List, Dict
-from PyQt5 import uic
-from PyQt5.QtCore import (Qt, QObject, pyqtSlot, pyqtSignal)
-from PyQt5.QtWidgets import (QWidget, QDialog, QListWidget, QComboBox, QListWidgetItem, QTreeWidget, QTreeWidgetItem, QApplication)
+from PyQt6 import uic
+from PyQt6.QtCore import (Qt, QObject, pyqtSlot, pyqtSignal)
+from PyQt6.QtWidgets import (QWidget, QDialog, QListWidget, QComboBox, QListWidgetItem, QTreeWidget, QTreeWidgetItem, QApplication)
 
 
 class Prefs(QDialog):
@@ -21,4 +21,4 @@ if __name__ == "__main__":
     app.setStyle("Fusion")
     prefs = Prefs()
     prefs.show()
-    app.exec_()
+    app.exec()

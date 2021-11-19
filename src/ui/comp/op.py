@@ -7,12 +7,13 @@ TODO: Make default op view be blank, only show params view when one is selected
 import sys, os
 from typing import Optional, List, Dict, Any, Type, Tuple
 from PIL import Image
-from PyQt5 import uic
-from PyQt5.QtCore import (Qt, QObject, pyqtSlot, pyqtSignal)
-from PyQt5.QtWidgets import (QWidget, QDialog, QListWidget, QPushButton,
+from pathlib import Path
+from PyQt6 import uic
+from PyQt6.QtCore import (Qt, QObject, pyqtSlot, pyqtSignal)
+from PyQt6.QtWidgets import (QWidget, QDialog, QListWidget, QPushButton,
     QComboBox, QListWidgetItem, QTreeWidget, QTreeWidgetItem, 
     QApplication, QLineEdit, QSpinBox, QStackedWidget, QFileDialog, QCheckBox)
-from models.operation import Op, ShellOp, InsertOp, SectionOp, AudioOp, CropOp, get_op
+from models.operation import Op, ShellOp, InsertOp, SectionOp, AudioOp, CropOp, RenderOp, get_op
 from models.demo.demo import Demo
 
 class OpWidget(QWidget):
@@ -43,18 +44,24 @@ class OpWidget(QWidget):
 
     def load_stack(self):
         self.opsParamsStack: QStackedWidget
-        self.shellTab: QWidget
-        self.insertTab: QWidget
-        self.sectionTab: QWidget
-        self.audioTab: QWidget
-        self.cropTab: QWidget
+
+        self.shellTab: QWidget # 0
+        self.insertTab: QWidget # 1
+        self.sectionTab: QWidget # 2
+        self.audioTab: QWidget # 3
+        self.cropTab: QWidget # 4
+        self.composeTab: QWidget # 5
+        self.resizeTab: QWidget # 6
+        self.pacingTab: QWidget # 7
+        self.animateTab: QWidget # 8
+        self.renderTab: QWidget # 9
 
     def load_data(self):
         self.demoTargetCombo: QComboBox
         self.opCombo: QComboBox
         self.allStepsCheck: QCheckBox
         self.matchSubstringCheck: QCheckBox
-        # Shell ------------------->
+        # 1 Shell ------------------->
         self.shellImgPath: QLineEdit
         self.shellFgX: QSpinBox
         self.shellFgY: QSpinBox
@@ -71,8 +78,12 @@ class OpWidget(QWidget):
         # Section --------------->
         # Apply to -------------->
         self.applyToTreeWidget: QTreeWidget
+        # Render to video ------->
+        self.renderOutputTitle: QLineEdit
+        self.renderOutputDir: QLineEdit
+        self.renderOutputFormat: QComboBox
 
-        self.opCombo.currentIndexChanged.connect(self.op_changed)
+        self.opCombo.currentIndexChanged.connect(self.set_op)
 
     def set_demo(self, demo: Demo):
         self.apply_to_demo = demo
@@ -101,6 +112,7 @@ class OpWidget(QWidget):
 
     def run_op(self, demo: Demo) -> None:
         op_idx = self.opCombo.currentIndex()
+        print(f"OP IDX: {op_idx}")
         op_type = get_op(op_idx)
         if op_idx == 0: #shell
             print("RUNNING SHELL OPERATION")
@@ -122,6 +134,28 @@ class OpWidget(QWidget):
             AudioOp().run(demo)
         elif op_idx == 4: #crop
             pass
+        elif op_idx == 5: #crop
+            pass
+        elif op_idx == 6: #crop
+            pass
+        elif op_idx == 7: #crop
+            pass
+        elif op_idx == 8: #render
+            print("RUNNING  OPERATION")
+        elif op_idx == 9: #render
+            print("RUNNING RENDER OPERATION")
+            print("DIR: " + self.renderOutputDir.text() + ", TITLE: " + self.renderOutputTitle.text())
+            out_title = self.renderOutputTitle.text()
+            out_dir = Path(self.renderOutputDir.text())
+            out_format = "avi"
+            if out_dir.is_dir():
+                out_path = os.path.join(out_dir, out_title + "." + out_format)
+                print("OUTPATH: " + out_path)
+                # out_path: str = self.renderOutputDir.text() + "\\" + self.renderOutputTitle.text()
+                RenderOp(out_path=out_path).run(demo)
+            else:
+                print("NOT VALID DIR")
+
         else:
             pass
             

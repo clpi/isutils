@@ -61,7 +61,7 @@
         <item>
          <layout class="QVBoxLayout" name="stepsLayout">
           <property name="spacing">
-           <number>0</number>
+           <number>10</number>
           </property>
           <property name="sizeConstraint">
            <enum>QLayout::SetMaximumSize</enum>
@@ -76,7 +76,7 @@
            <number>0</number>
           </property>
           <property name="bottomMargin">
-           <number>10</number>
+           <number>0</number>
           </property>
           <item>
            <widget class="QTabWidget" name="assetsTabs">
@@ -311,39 +311,63 @@
                 <item>
                  <widget class="QPushButton" name="stepDownBtn">
                   <property name="text">
-                   <string>Down</string>
+                   <string>&lt;</string>
                   </property>
                  </widget>
                 </item>
                 <item>
                  <widget class="QPushButton" name="stepUpBtn">
                   <property name="text">
-                   <string>Up</string>
+                   <string>&gt;</string>
                   </property>
                  </widget>
                 </item>
                 <item>
                  <widget class="QPushButton" name="removeStepBtn">
                   <property name="text">
-                   <string>Remove</string>
+                   <string>-</string>
                   </property>
                  </widget>
                 </item>
                 <item>
                  <widget class="QPushButton" name="addStepBtn">
                   <property name="text">
-                   <string>Add step</string>
+                   <string>+</string>
+                  </property>
+                 </widget>
+                </item>
+                <item>
+                 <widget class="QPushButton" name="runBtn">
+                  <property name="sizePolicy">
+                   <sizepolicy hsizetype="MinimumExpanding" vsizetype="Fixed">
+                    <horstretch>0</horstretch>
+                    <verstretch>0</verstretch>
+                   </sizepolicy>
+                  </property>
+                  <property name="minimumSize">
+                   <size>
+                    <width>0</width>
+                    <height>0</height>
+                   </size>
+                  </property>
+                  <property name="font">
+                   <font>
+                    <weight>50</weight>
+                    <bold>false</bold>
+                   </font>
+                  </property>
+                  <property name="text">
+                   <string>Run</string>
+                  </property>
+                  <property name="checkable">
+                   <bool>false</bool>
+                  </property>
+                  <property name="flat">
+                   <bool>false</bool>
                   </property>
                  </widget>
                 </item>
                </layout>
-              </item>
-              <item>
-               <widget class="QPushButton" name="runBtn">
-                <property name="text">
-                 <string>Run</string>
-                </property>
-               </widget>
               </item>
              </layout>
             </widget>
@@ -410,7 +434,7 @@
              <number>0</number>
             </property>
             <property name="documentMode">
-             <bool>true</bool>
+             <bool>false</bool>
             </property>
             <widget class="QWidget" name="demoViewTabW">
              <attribute name="title">
@@ -476,14 +500,14 @@
                    <item>
                     <widget class="QPushButton" name="demoDeleteBtn">
                      <property name="text">
-                      <string>Delete</string>
+                      <string>-</string>
                      </property>
                     </widget>
                    </item>
                    <item>
                     <widget class="QPushButton" name="demoAddStepBtn">
                      <property name="text">
-                      <string>Add step</string>
+                      <string>+</string>
                      </property>
                     </widget>
                    </item>
@@ -672,7 +696,7 @@
      <x>0</x>
      <y>0</y>
      <width>1440</width>
-     <height>25</height>
+     <height>20</height>
     </rect>
    </property>
    <property name="defaultUp">
@@ -690,10 +714,22 @@
      <addaction name="actionAudio"/>
      <addaction name="actionScript"/>
     </widget>
+    <widget class="QMenu" name="menuNew">
+     <property name="title">
+      <string>New...</string>
+     </property>
+     <addaction name="actionNewStep"/>
+    </widget>
+    <widget class="QMenu" name="menuOpen">
+     <property name="title">
+      <string>Open...</string>
+     </property>
+     <addaction name="actionOpenDemo"/>
+    </widget>
     <addaction name="separator"/>
     <addaction name="separator"/>
-    <addaction name="actionNew_3"/>
-    <addaction name="actionOpen"/>
+    <addaction name="menuNew"/>
+    <addaction name="menuOpen"/>
     <addaction name="actionSave"/>
     <addaction name="menuExport_2"/>
    </widget>
@@ -959,7 +995,17 @@
    <addaction name="menuWindow"/>
    <addaction name="menuHelp"/>
   </widget>
-  <widget class="QStatusBar" name="statusbar"/>
+  <widget class="QStatusBar" name="statusbar">
+   <property name="minimumSize">
+    <size>
+     <width>0</width>
+     <height>30</height>
+    </size>
+   </property>
+   <property name="sizeGripEnabled">
+    <bool>false</bool>
+   </property>
+  </widget>
   <action name="actionUndo">
    <property name="text">
     <string>Undo</string>
@@ -1655,16 +1701,6 @@
     <string>Overwrite existing</string>
    </property>
   </action>
-  <action name="actionNew_3">
-   <property name="text">
-    <string>New...</string>
-   </property>
-  </action>
-  <action name="actionOpen">
-   <property name="text">
-    <string>Open...</string>
-   </property>
-  </action>
   <action name="actionSave">
    <property name="text">
     <string>Save...</string>
@@ -1722,11 +1758,21 @@
     <string>Reset zoom</string>
    </property>
   </action>
+  <action name="actionNewStep">
+   <property name="text">
+    <string>Step</string>
+   </property>
+  </action>
+  <action name="actionOpenDemo">
+   <property name="text">
+    <string>Demo</string>
+   </property>
+  </action>
  </widget>
  <resources/>
  <connections>
   <connection>
-   <sender>actionOpen</sender>
+   <sender>actionOpenDemo</sender>
    <signal>triggered()</signal>
    <receiver>browseDemoBtn</receiver>
    <slot>click()</slot>
