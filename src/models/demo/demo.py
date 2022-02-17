@@ -4,6 +4,7 @@ import re
 import uuid
 import copy
 import cv2
+import moviepy.editor as mpy
 from typing import List, Tuple, Dict, Union, Optional, Iterable, Any
 from pathlib import Path, PurePath
 from itertools import islice
@@ -512,15 +513,8 @@ class Demo:
         """
         Renders composite of all demo's images into video using python mmpeg
         0. Create an empty list of size n where n = number of steps for 
-            (a) images
-            (b) each step's audio, and 
-            (c) click coordinates, and 
-            (d) fade in, 
-            (e). step delay
-            (f) hover image
-            (g) hover image time
-            (h) rects
-            (i) text
+            (a) images (b) each step's audio, and (c) click coordinates, and (d) fade in, 
+            (e). step delay (f) hover image (g) hover image time (h) rects (i) text
         1. From demo object, iterate through every step, and load each step image + hover, audio (if appl.), and click coordinates, and fade in status
             A. Add length of soundbite (if applicable) to step delay of step in step delay list
             B. Paste image of cursor on coordinates onto image
@@ -539,6 +533,7 @@ class Demo:
                         print("HOVER: " + str(step.hover))
                         if step.hover_time: 
                             print("HOVER TIME: " + str(step.hover_time))
+                    mpy.Video
                     if step.audio:
                         print("AUDIO: " + str(step.audio))
                     if step.animated: print("ANIMATED: " + str(step.animated))
