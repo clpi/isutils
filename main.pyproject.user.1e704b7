@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE QtCreatorProject>
-<!-- Written by QtCreator 6.0.2, 2022-02-16T18:19:34. -->
+<!-- Written by QtCreator 5.0.2, 2021-10-14T15:56:35. -->
 <qtcreator>
  <data>
   <variable>EnvironmentId</variable>
-  <value type="QByteArray">{a508add6-b6a3-4ae2-99c0-db7d33707868}</value>
+  <value type="QByteArray">{1e704b77-b768-4fc1-9acb-9be55fa3cedc}</value>
  </data>
  <data>
   <variable>ProjectExplorer.Project.ActiveTarget</variable>
@@ -70,7 +70,9 @@
    <valuemap type="QVariantMap" key="AutoTest.CheckStates"/>
    <value type="int" key="AutoTest.RunAfterBuild">0</value>
    <value type="bool" key="AutoTest.UseGlobal">true</value>
-   <valuelist type="QVariantList" key="ClangCodeModel.CustomCommandLineKey"/>
+   <valuelist type="QVariantList" key="ClangCodeModel.CustomCommandLineKey">
+    <value type="QString">-fno-delayed-template-parsing</value>
+   </valuelist>
    <value type="bool" key="ClangCodeModel.UseGlobalConfig">true</value>
    <value type="QString" key="ClangCodeModel.WarningConfigId">Builtin.BuildSystem</value>
    <valuemap type="QVariantMap" key="ClangTools">
@@ -89,9 +91,9 @@
   <variable>ProjectExplorer.Project.Target.0</variable>
   <valuemap type="QVariantMap">
    <value type="QString" key="DeviceType">Desktop</value>
-   <value type="QString" key="ProjectExplorer.ProjectConfiguration.DefaultDisplayName">Desktop Qt 5.15.2 from MacPorts arm64</value>
-   <value type="QString" key="ProjectExplorer.ProjectConfiguration.DisplayName">Desktop Qt 5.15.2 from MacPorts arm64</value>
-   <value type="QString" key="ProjectExplorer.ProjectConfiguration.Id">qt.5.macports_arm64_kit</value>
+   <value type="QString" key="ProjectExplorer.ProjectConfiguration.DefaultDisplayName">Desktop</value>
+   <value type="QString" key="ProjectExplorer.ProjectConfiguration.DisplayName">Desktop</value>
+   <value type="QString" key="ProjectExplorer.ProjectConfiguration.Id">{c71bcb57-481c-4d79-8f3c-ad5afa067c38}</value>
    <value type="int" key="ProjectExplorer.Target.ActiveBuildConfiguration">-1</value>
    <value type="int" key="ProjectExplorer.Target.ActiveDeployConfiguration">0</value>
    <value type="int" key="ProjectExplorer.Target.ActiveRunConfiguration">0</value>
@@ -116,16 +118,16 @@
     <valuelist type="QVariantList" key="CustomOutputParsers"/>
     <value type="int" key="PE.EnvironmentAspect.Base">2</value>
     <valuelist type="QVariantList" key="PE.EnvironmentAspect.Changes"/>
-    <value type="QString" key="ProjectExplorer.ProjectConfiguration.DisplayName">/Users/clp/isu/isutils/src/app.py</value>
-    <value type="QString" key="ProjectExplorer.ProjectConfiguration.Id">PythonEditor.RunConfiguration./Users/clp/isu/isutils/src/app.py</value>
-    <value type="QString" key="ProjectExplorer.RunConfiguration.BuildKey">/Users/clp/isu/isutils/src/app.py</value>
-    <value type="QString" key="PythonEditor.RunConfiguation.Interpreter">{ae81718d-3064-448b-91e7-32eaa1eac602}</value>
-    <value type="QString" key="PythonEditor.RunConfiguation.Script">/Users/clp/isu/isutils/src/app.py</value>
+    <value type="QString" key="ProjectExplorer.ProjectConfiguration.DisplayName">C:/Users/chris/dev/is/isutils/src/models/demo/__init__.py</value>
+    <value type="QString" key="ProjectExplorer.ProjectConfiguration.Id">PythonEditor.RunConfiguration.C:/Users/chris/dev/is/isutils/src/models/demo/__init__.py</value>
+    <value type="QString" key="ProjectExplorer.RunConfiguration.BuildKey">C:/Users/chris/dev/is/isutils/src/models/demo/__init__.py</value>
+    <value type="QString" key="PythonEditor.RunConfiguation.Interpreter">{a76d008c-fac0-4199-bc9e-cb2167e5c051}</value>
+    <value type="QString" key="PythonEditor.RunConfiguation.Script">C:\Users\chris\dev\is\isutils\src\models\demo\__init__.py</value>
     <value type="bool" key="RunConfiguration.UseCppDebugger">false</value>
     <value type="bool" key="RunConfiguration.UseCppDebuggerAuto">true</value>
     <value type="bool" key="RunConfiguration.UseQmlDebugger">false</value>
     <value type="bool" key="RunConfiguration.UseQmlDebuggerAuto">true</value>
-    <value type="QString" key="RunConfiguration.WorkingDirectory.default">/Users/clp/isu/isutils/src</value>
+    <value type="QString" key="RunConfiguration.WorkingDirectory.default">C:/Users/chris/dev/is/isutils/src/models/demo</value>
    </valuemap>
    <valuemap type="QVariantMap" key="ProjectExplorer.Target.RunConfiguration.1">
     <value type="bool" key="Analyzer.Perf.Settings.UseGlobalSettings">true</value>
@@ -134,15 +136,16 @@
     <valuelist type="QVariantList" key="CustomOutputParsers"/>
     <value type="int" key="PE.EnvironmentAspect.Base">2</value>
     <valuelist type="QVariantList" key="PE.EnvironmentAspect.Changes"/>
-    <value type="QString" key="ProjectExplorer.ProjectConfiguration.DisplayName">/Users/clp/isu/isutils/src/qml/img_view/main.py</value>
-    <value type="QString" key="ProjectExplorer.ProjectConfiguration.Id">PythonEditor.RunConfiguration./Users/clp/isu/isutils/src/qml/img_view/main.py</value>
-    <value type="QString" key="ProjectExplorer.RunConfiguration.BuildKey">/Users/clp/isu/isutils/src/qml/img_view/main.py</value>
-    <value type="QString" key="PythonEditor.RunConfiguation.Script">/Users/clp/isu/isutils/src/qml/img_view/main.py</value>
+    <value type="QString" key="ProjectExplorer.ProjectConfiguration.DisplayName">C:/Users/chris/dev/is/isutils/src/ui/comp/op.py</value>
+    <value type="QString" key="ProjectExplorer.ProjectConfiguration.Id">PythonEditor.RunConfiguration.C:/Users/chris/dev/is/isutils/src/ui/comp/op.py</value>
+    <value type="QString" key="ProjectExplorer.RunConfiguration.BuildKey">C:/Users/chris/dev/is/isutils/src/ui/comp/op.py</value>
+    <value type="QString" key="PythonEditor.RunConfiguation.Interpreter">{99f07e22-2961-49bc-8cf0-9dfd8244da4f}</value>
+    <value type="QString" key="PythonEditor.RunConfiguation.Script">C:\Users\chris\dev\is\isutils\src\ui\comp\op.py</value>
     <value type="bool" key="RunConfiguration.UseCppDebugger">false</value>
     <value type="bool" key="RunConfiguration.UseCppDebuggerAuto">true</value>
     <value type="bool" key="RunConfiguration.UseQmlDebugger">false</value>
     <value type="bool" key="RunConfiguration.UseQmlDebuggerAuto">true</value>
-    <value type="QString" key="RunConfiguration.WorkingDirectory.default">/Users/clp/isu/isutils/src/qml/img_view</value>
+    <value type="QString" key="RunConfiguration.WorkingDirectory.default">C:/Users/chris/dev/is/isutils/src/ui/comp</value>
    </valuemap>
    <valuemap type="QVariantMap" key="ProjectExplorer.Target.RunConfiguration.10">
     <value type="bool" key="Analyzer.Perf.Settings.UseGlobalSettings">true</value>
@@ -151,15 +154,16 @@
     <valuelist type="QVariantList" key="CustomOutputParsers"/>
     <value type="int" key="PE.EnvironmentAspect.Base">2</value>
     <valuelist type="QVariantList" key="PE.EnvironmentAspect.Changes"/>
-    <value type="QString" key="ProjectExplorer.ProjectConfiguration.DisplayName">/Users/clp/isu/isutils/src/models/demo/script.py</value>
-    <value type="QString" key="ProjectExplorer.ProjectConfiguration.Id">PythonEditor.RunConfiguration./Users/clp/isu/isutils/src/models/demo/script.py</value>
-    <value type="QString" key="ProjectExplorer.RunConfiguration.BuildKey">/Users/clp/isu/isutils/src/models/demo/script.py</value>
-    <value type="QString" key="PythonEditor.RunConfiguation.Script">/Users/clp/isu/isutils/src/models/demo/script.py</value>
+    <value type="QString" key="ProjectExplorer.ProjectConfiguration.DisplayName">C:/Users/chris/dev/is/isutils/src/models/demo/script.py</value>
+    <value type="QString" key="ProjectExplorer.ProjectConfiguration.Id">PythonEditor.RunConfiguration.C:/Users/chris/dev/is/isutils/src/models/demo/script.py</value>
+    <value type="QString" key="ProjectExplorer.RunConfiguration.BuildKey">C:/Users/chris/dev/is/isutils/src/models/demo/script.py</value>
+    <value type="QString" key="PythonEditor.RunConfiguation.Interpreter">{fa0bc6b1-a8aa-4e81-b8e6-27333736285c}</value>
+    <value type="QString" key="PythonEditor.RunConfiguation.Script">C:\Users\chris\dev\is\isutils\src\models\demo\script.py</value>
     <value type="bool" key="RunConfiguration.UseCppDebugger">false</value>
     <value type="bool" key="RunConfiguration.UseCppDebuggerAuto">true</value>
     <value type="bool" key="RunConfiguration.UseQmlDebugger">false</value>
     <value type="bool" key="RunConfiguration.UseQmlDebuggerAuto">true</value>
-    <value type="QString" key="RunConfiguration.WorkingDirectory.default">/Users/clp/isu/isutils/src/models/demo</value>
+    <value type="QString" key="RunConfiguration.WorkingDirectory.default">C:/Users/chris/dev/is/isutils/src/models/demo</value>
    </valuemap>
    <valuemap type="QVariantMap" key="ProjectExplorer.Target.RunConfiguration.11">
     <value type="bool" key="Analyzer.Perf.Settings.UseGlobalSettings">true</value>
@@ -168,15 +172,16 @@
     <valuelist type="QVariantList" key="CustomOutputParsers"/>
     <value type="int" key="PE.EnvironmentAspect.Base">2</value>
     <valuelist type="QVariantList" key="PE.EnvironmentAspect.Changes"/>
-    <value type="QString" key="ProjectExplorer.ProjectConfiguration.DisplayName">/Users/clp/isu/isutils/src/ui/window.py</value>
-    <value type="QString" key="ProjectExplorer.ProjectConfiguration.Id">PythonEditor.RunConfiguration./Users/clp/isu/isutils/src/ui/window.py</value>
-    <value type="QString" key="ProjectExplorer.RunConfiguration.BuildKey">/Users/clp/isu/isutils/src/ui/window.py</value>
-    <value type="QString" key="PythonEditor.RunConfiguation.Script">/Users/clp/isu/isutils/src/ui/window.py</value>
+    <value type="QString" key="ProjectExplorer.ProjectConfiguration.DisplayName">C:/Users/chris/dev/is/isutils/src/app.py</value>
+    <value type="QString" key="ProjectExplorer.ProjectConfiguration.Id">PythonEditor.RunConfiguration.C:/Users/chris/dev/is/isutils/src/app.py</value>
+    <value type="QString" key="ProjectExplorer.RunConfiguration.BuildKey">C:/Users/chris/dev/is/isutils/src/app.py</value>
+    <value type="QString" key="PythonEditor.RunConfiguation.Interpreter">{fbbc4ac1-6600-4b28-9c44-72f4ea8ba8c0}</value>
+    <value type="QString" key="PythonEditor.RunConfiguation.Script">C:\Users\chris\dev\is\isutils\src\app.py</value>
     <value type="bool" key="RunConfiguration.UseCppDebugger">false</value>
     <value type="bool" key="RunConfiguration.UseCppDebuggerAuto">true</value>
     <value type="bool" key="RunConfiguration.UseQmlDebugger">false</value>
     <value type="bool" key="RunConfiguration.UseQmlDebuggerAuto">true</value>
-    <value type="QString" key="RunConfiguration.WorkingDirectory.default">/Users/clp/isu/isutils/src/ui</value>
+    <value type="QString" key="RunConfiguration.WorkingDirectory.default">C:/Users/chris/dev/is/isutils/src</value>
    </valuemap>
    <valuemap type="QVariantMap" key="ProjectExplorer.Target.RunConfiguration.12">
     <value type="bool" key="Analyzer.Perf.Settings.UseGlobalSettings">true</value>
@@ -185,15 +190,16 @@
     <valuelist type="QVariantList" key="CustomOutputParsers"/>
     <value type="int" key="PE.EnvironmentAspect.Base">2</value>
     <valuelist type="QVariantList" key="PE.EnvironmentAspect.Changes"/>
-    <value type="QString" key="ProjectExplorer.ProjectConfiguration.DisplayName">/Users/clp/isu/isutils/src/ui/comp/prefs.py</value>
-    <value type="QString" key="ProjectExplorer.ProjectConfiguration.Id">PythonEditor.RunConfiguration./Users/clp/isu/isutils/src/ui/comp/prefs.py</value>
-    <value type="QString" key="ProjectExplorer.RunConfiguration.BuildKey">/Users/clp/isu/isutils/src/ui/comp/prefs.py</value>
-    <value type="QString" key="PythonEditor.RunConfiguation.Script">/Users/clp/isu/isutils/src/ui/comp/prefs.py</value>
+    <value type="QString" key="ProjectExplorer.ProjectConfiguration.DisplayName">C:/Users/chris/dev/is/isutils/src/test.py</value>
+    <value type="QString" key="ProjectExplorer.ProjectConfiguration.Id">PythonEditor.RunConfiguration.C:/Users/chris/dev/is/isutils/src/test.py</value>
+    <value type="QString" key="ProjectExplorer.RunConfiguration.BuildKey">C:/Users/chris/dev/is/isutils/src/test.py</value>
+    <value type="QString" key="PythonEditor.RunConfiguation.Interpreter">{467787a3-d045-49c3-ad20-8df15f8ccb74}</value>
+    <value type="QString" key="PythonEditor.RunConfiguation.Script">C:\Users\chris\dev\is\isutils\src\test.py</value>
     <value type="bool" key="RunConfiguration.UseCppDebugger">false</value>
     <value type="bool" key="RunConfiguration.UseCppDebuggerAuto">true</value>
     <value type="bool" key="RunConfiguration.UseQmlDebugger">false</value>
     <value type="bool" key="RunConfiguration.UseQmlDebuggerAuto">true</value>
-    <value type="QString" key="RunConfiguration.WorkingDirectory.default">/Users/clp/isu/isutils/src/ui/comp</value>
+    <value type="QString" key="RunConfiguration.WorkingDirectory.default">C:/Users/chris/dev/is/isutils/src</value>
    </valuemap>
    <valuemap type="QVariantMap" key="ProjectExplorer.Target.RunConfiguration.13">
     <value type="bool" key="Analyzer.Perf.Settings.UseGlobalSettings">true</value>
@@ -202,15 +208,16 @@
     <valuelist type="QVariantList" key="CustomOutputParsers"/>
     <value type="int" key="PE.EnvironmentAspect.Base">2</value>
     <valuelist type="QVariantList" key="PE.EnvironmentAspect.Changes"/>
-    <value type="QString" key="ProjectExplorer.ProjectConfiguration.DisplayName">/Users/clp/isu/isutils/src/test.py</value>
-    <value type="QString" key="ProjectExplorer.ProjectConfiguration.Id">PythonEditor.RunConfiguration./Users/clp/isu/isutils/src/test.py</value>
-    <value type="QString" key="ProjectExplorer.RunConfiguration.BuildKey">/Users/clp/isu/isutils/src/test.py</value>
-    <value type="QString" key="PythonEditor.RunConfiguation.Script">/Users/clp/isu/isutils/src/test.py</value>
+    <value type="QString" key="ProjectExplorer.ProjectConfiguration.DisplayName">C:/Users/chris/dev/is/isutils/src/models/demo/demo_tags.py</value>
+    <value type="QString" key="ProjectExplorer.ProjectConfiguration.Id">PythonEditor.RunConfiguration.C:/Users/chris/dev/is/isutils/src/models/demo/demo_tags.py</value>
+    <value type="QString" key="ProjectExplorer.RunConfiguration.BuildKey">C:/Users/chris/dev/is/isutils/src/models/demo/demo_tags.py</value>
+    <value type="QString" key="PythonEditor.RunConfiguation.Interpreter">{c0def1b4-56e6-40bd-9196-362483c1a230}</value>
+    <value type="QString" key="PythonEditor.RunConfiguation.Script">C:\Users\chris\dev\is\isutils\src\models\demo\demo_tags.py</value>
     <value type="bool" key="RunConfiguration.UseCppDebugger">false</value>
     <value type="bool" key="RunConfiguration.UseCppDebuggerAuto">true</value>
     <value type="bool" key="RunConfiguration.UseQmlDebugger">false</value>
     <value type="bool" key="RunConfiguration.UseQmlDebuggerAuto">true</value>
-    <value type="QString" key="RunConfiguration.WorkingDirectory.default">/Users/clp/isu/isutils/src</value>
+    <value type="QString" key="RunConfiguration.WorkingDirectory.default">C:/Users/chris/dev/is/isutils/src/models/demo</value>
    </valuemap>
    <valuemap type="QVariantMap" key="ProjectExplorer.Target.RunConfiguration.14">
     <value type="bool" key="Analyzer.Perf.Settings.UseGlobalSettings">true</value>
@@ -219,15 +226,16 @@
     <valuelist type="QVariantList" key="CustomOutputParsers"/>
     <value type="int" key="PE.EnvironmentAspect.Base">2</value>
     <valuelist type="QVariantList" key="PE.EnvironmentAspect.Changes"/>
-    <value type="QString" key="ProjectExplorer.ProjectConfiguration.DisplayName">/Users/clp/isu/isutils/main.pyproject.user</value>
-    <value type="QString" key="ProjectExplorer.ProjectConfiguration.Id">PythonEditor.RunConfiguration./Users/clp/isu/isutils/main.pyproject.user</value>
-    <value type="QString" key="ProjectExplorer.RunConfiguration.BuildKey">/Users/clp/isu/isutils/main.pyproject.user</value>
-    <value type="QString" key="PythonEditor.RunConfiguation.Script">/Users/clp/isu/isutils/main.pyproject.user</value>
+    <value type="QString" key="ProjectExplorer.ProjectConfiguration.DisplayName">C:/Users/chris/dev/is/isutils/src/qml/operations.cpp</value>
+    <value type="QString" key="ProjectExplorer.ProjectConfiguration.Id">PythonEditor.RunConfiguration.C:/Users/chris/dev/is/isutils/src/qml/operations.cpp</value>
+    <value type="QString" key="ProjectExplorer.RunConfiguration.BuildKey">C:/Users/chris/dev/is/isutils/src/qml/operations.cpp</value>
+    <value type="QString" key="PythonEditor.RunConfiguation.Interpreter">{38ab868b-9c90-4ada-aa33-edf96e3fd0c1}</value>
+    <value type="QString" key="PythonEditor.RunConfiguation.Script">C:\Users\chris\dev\is\isutils\src\qml\operations.cpp</value>
     <value type="bool" key="RunConfiguration.UseCppDebugger">false</value>
     <value type="bool" key="RunConfiguration.UseCppDebuggerAuto">true</value>
     <value type="bool" key="RunConfiguration.UseQmlDebugger">false</value>
     <value type="bool" key="RunConfiguration.UseQmlDebuggerAuto">true</value>
-    <value type="QString" key="RunConfiguration.WorkingDirectory.default">/Users/clp/isu/isutils</value>
+    <value type="QString" key="RunConfiguration.WorkingDirectory.default">C:/Users/chris/dev/is/isutils/src/qml</value>
    </valuemap>
    <valuemap type="QVariantMap" key="ProjectExplorer.Target.RunConfiguration.15">
     <value type="bool" key="Analyzer.Perf.Settings.UseGlobalSettings">true</value>
@@ -236,15 +244,16 @@
     <valuelist type="QVariantList" key="CustomOutputParsers"/>
     <value type="int" key="PE.EnvironmentAspect.Base">2</value>
     <valuelist type="QVariantList" key="PE.EnvironmentAspect.Changes"/>
-    <value type="QString" key="ProjectExplorer.ProjectConfiguration.DisplayName">/Users/clp/isu/isutils/src/models/demo/__init__.py</value>
-    <value type="QString" key="ProjectExplorer.ProjectConfiguration.Id">PythonEditor.RunConfiguration./Users/clp/isu/isutils/src/models/demo/__init__.py</value>
-    <value type="QString" key="ProjectExplorer.RunConfiguration.BuildKey">/Users/clp/isu/isutils/src/models/demo/__init__.py</value>
-    <value type="QString" key="PythonEditor.RunConfiguation.Script">/Users/clp/isu/isutils/src/models/demo/__init__.py</value>
+    <value type="QString" key="ProjectExplorer.ProjectConfiguration.DisplayName">C:/Users/chris/dev/is/isutils/src/ui/__init__.py</value>
+    <value type="QString" key="ProjectExplorer.ProjectConfiguration.Id">PythonEditor.RunConfiguration.C:/Users/chris/dev/is/isutils/src/ui/__init__.py</value>
+    <value type="QString" key="ProjectExplorer.RunConfiguration.BuildKey">C:/Users/chris/dev/is/isutils/src/ui/__init__.py</value>
+    <value type="QString" key="PythonEditor.RunConfiguation.Interpreter">{1fd4d630-7414-49f6-a4b1-43de0acecf75}</value>
+    <value type="QString" key="PythonEditor.RunConfiguation.Script">C:\Users\chris\dev\is\isutils\src\ui\__init__.py</value>
     <value type="bool" key="RunConfiguration.UseCppDebugger">false</value>
     <value type="bool" key="RunConfiguration.UseCppDebuggerAuto">true</value>
     <value type="bool" key="RunConfiguration.UseQmlDebugger">false</value>
     <value type="bool" key="RunConfiguration.UseQmlDebuggerAuto">true</value>
-    <value type="QString" key="RunConfiguration.WorkingDirectory.default">/Users/clp/isu/isutils/src/models/demo</value>
+    <value type="QString" key="RunConfiguration.WorkingDirectory.default">C:/Users/chris/dev/is/isutils/src/ui</value>
    </valuemap>
    <valuemap type="QVariantMap" key="ProjectExplorer.Target.RunConfiguration.16">
     <value type="bool" key="Analyzer.Perf.Settings.UseGlobalSettings">true</value>
@@ -253,15 +262,16 @@
     <valuelist type="QVariantList" key="CustomOutputParsers"/>
     <value type="int" key="PE.EnvironmentAspect.Base">2</value>
     <valuelist type="QVariantList" key="PE.EnvironmentAspect.Changes"/>
-    <value type="QString" key="ProjectExplorer.ProjectConfiguration.DisplayName">/Users/clp/isu/isutils/src/models/demo/demo_tags.py</value>
-    <value type="QString" key="ProjectExplorer.ProjectConfiguration.Id">PythonEditor.RunConfiguration./Users/clp/isu/isutils/src/models/demo/demo_tags.py</value>
-    <value type="QString" key="ProjectExplorer.RunConfiguration.BuildKey">/Users/clp/isu/isutils/src/models/demo/demo_tags.py</value>
-    <value type="QString" key="PythonEditor.RunConfiguation.Script">/Users/clp/isu/isutils/src/models/demo/demo_tags.py</value>
+    <value type="QString" key="ProjectExplorer.ProjectConfiguration.DisplayName">C:/Users/chris/dev/is/isutils/src/ui/comp/prefs.py</value>
+    <value type="QString" key="ProjectExplorer.ProjectConfiguration.Id">PythonEditor.RunConfiguration.C:/Users/chris/dev/is/isutils/src/ui/comp/prefs.py</value>
+    <value type="QString" key="ProjectExplorer.RunConfiguration.BuildKey">C:/Users/chris/dev/is/isutils/src/ui/comp/prefs.py</value>
+    <value type="QString" key="PythonEditor.RunConfiguation.Interpreter">{4107dc9b-c2c2-4618-998c-606c496f997b}</value>
+    <value type="QString" key="PythonEditor.RunConfiguation.Script">C:\Users\chris\dev\is\isutils\src\ui\comp\prefs.py</value>
     <value type="bool" key="RunConfiguration.UseCppDebugger">false</value>
     <value type="bool" key="RunConfiguration.UseCppDebuggerAuto">true</value>
     <value type="bool" key="RunConfiguration.UseQmlDebugger">false</value>
     <value type="bool" key="RunConfiguration.UseQmlDebuggerAuto">true</value>
-    <value type="QString" key="RunConfiguration.WorkingDirectory.default">/Users/clp/isu/isutils/src/models/demo</value>
+    <value type="QString" key="RunConfiguration.WorkingDirectory.default">C:/Users/chris/dev/is/isutils/src/ui/comp</value>
    </valuemap>
    <valuemap type="QVariantMap" key="ProjectExplorer.Target.RunConfiguration.17">
     <value type="bool" key="Analyzer.Perf.Settings.UseGlobalSettings">true</value>
@@ -270,15 +280,16 @@
     <valuelist type="QVariantList" key="CustomOutputParsers"/>
     <value type="int" key="PE.EnvironmentAspect.Base">2</value>
     <valuelist type="QVariantList" key="PE.EnvironmentAspect.Changes"/>
-    <value type="QString" key="ProjectExplorer.ProjectConfiguration.DisplayName">/Users/clp/isu/isutils/.gitignore</value>
-    <value type="QString" key="ProjectExplorer.ProjectConfiguration.Id">PythonEditor.RunConfiguration./Users/clp/isu/isutils/.gitignore</value>
-    <value type="QString" key="ProjectExplorer.RunConfiguration.BuildKey">/Users/clp/isu/isutils/.gitignore</value>
-    <value type="QString" key="PythonEditor.RunConfiguation.Script">/Users/clp/isu/isutils/.gitignore</value>
+    <value type="QString" key="ProjectExplorer.ProjectConfiguration.DisplayName">C:/Users/chris/dev/is/isutils/src/models/demo/audio.py</value>
+    <value type="QString" key="ProjectExplorer.ProjectConfiguration.Id">PythonEditor.RunConfiguration.C:/Users/chris/dev/is/isutils/src/models/demo/audio.py</value>
+    <value type="QString" key="ProjectExplorer.RunConfiguration.BuildKey">C:/Users/chris/dev/is/isutils/src/models/demo/audio.py</value>
+    <value type="QString" key="PythonEditor.RunConfiguation.Interpreter">{5d347e37-e9b0-4d46-8ba4-6dc5dad342d1}</value>
+    <value type="QString" key="PythonEditor.RunConfiguation.Script">C:\Users\chris\dev\is\isutils\src\models\demo\audio.py</value>
     <value type="bool" key="RunConfiguration.UseCppDebugger">false</value>
     <value type="bool" key="RunConfiguration.UseCppDebuggerAuto">true</value>
     <value type="bool" key="RunConfiguration.UseQmlDebugger">false</value>
     <value type="bool" key="RunConfiguration.UseQmlDebuggerAuto">true</value>
-    <value type="QString" key="RunConfiguration.WorkingDirectory.default">/Users/clp/isu/isutils</value>
+    <value type="QString" key="RunConfiguration.WorkingDirectory.default">C:/Users/chris/dev/is/isutils/src/models/demo</value>
    </valuemap>
    <valuemap type="QVariantMap" key="ProjectExplorer.Target.RunConfiguration.18">
     <value type="bool" key="Analyzer.Perf.Settings.UseGlobalSettings">true</value>
@@ -287,15 +298,16 @@
     <valuelist type="QVariantList" key="CustomOutputParsers"/>
     <value type="int" key="PE.EnvironmentAspect.Base">2</value>
     <valuelist type="QVariantList" key="PE.EnvironmentAspect.Changes"/>
-    <value type="QString" key="ProjectExplorer.ProjectConfiguration.DisplayName">/Users/clp/isu/isutils/src/ui/comp/op.py</value>
-    <value type="QString" key="ProjectExplorer.ProjectConfiguration.Id">PythonEditor.RunConfiguration./Users/clp/isu/isutils/src/ui/comp/op.py</value>
-    <value type="QString" key="ProjectExplorer.RunConfiguration.BuildKey">/Users/clp/isu/isutils/src/ui/comp/op.py</value>
-    <value type="QString" key="PythonEditor.RunConfiguation.Script">/Users/clp/isu/isutils/src/ui/comp/op.py</value>
+    <value type="QString" key="ProjectExplorer.ProjectConfiguration.DisplayName">C:/Users/chris/dev/is/isutils/src/models/demo/step.py</value>
+    <value type="QString" key="ProjectExplorer.ProjectConfiguration.Id">PythonEditor.RunConfiguration.C:/Users/chris/dev/is/isutils/src/models/demo/step.py</value>
+    <value type="QString" key="ProjectExplorer.RunConfiguration.BuildKey">C:/Users/chris/dev/is/isutils/src/models/demo/step.py</value>
+    <value type="QString" key="PythonEditor.RunConfiguation.Interpreter">{a056039c-ddec-4e92-b23e-738f8f079046}</value>
+    <value type="QString" key="PythonEditor.RunConfiguation.Script">C:\Users\chris\dev\is\isutils\src\models\demo\step.py</value>
     <value type="bool" key="RunConfiguration.UseCppDebugger">false</value>
     <value type="bool" key="RunConfiguration.UseCppDebuggerAuto">true</value>
     <value type="bool" key="RunConfiguration.UseQmlDebugger">false</value>
     <value type="bool" key="RunConfiguration.UseQmlDebuggerAuto">true</value>
-    <value type="QString" key="RunConfiguration.WorkingDirectory.default">/Users/clp/isu/isutils/src/ui/comp</value>
+    <value type="QString" key="RunConfiguration.WorkingDirectory.default">C:/Users/chris/dev/is/isutils/src/models/demo</value>
    </valuemap>
    <valuemap type="QVariantMap" key="ProjectExplorer.Target.RunConfiguration.19">
     <value type="bool" key="Analyzer.Perf.Settings.UseGlobalSettings">true</value>
@@ -304,15 +316,16 @@
     <valuelist type="QVariantList" key="CustomOutputParsers"/>
     <value type="int" key="PE.EnvironmentAspect.Base">2</value>
     <valuelist type="QVariantList" key="PE.EnvironmentAspect.Changes"/>
-    <value type="QString" key="ProjectExplorer.ProjectConfiguration.DisplayName">/Users/clp/isu/isutils/src/ui/comp/__init__.py</value>
-    <value type="QString" key="ProjectExplorer.ProjectConfiguration.Id">PythonEditor.RunConfiguration./Users/clp/isu/isutils/src/ui/comp/__init__.py</value>
-    <value type="QString" key="ProjectExplorer.RunConfiguration.BuildKey">/Users/clp/isu/isutils/src/ui/comp/__init__.py</value>
-    <value type="QString" key="PythonEditor.RunConfiguation.Script">/Users/clp/isu/isutils/src/ui/comp/__init__.py</value>
+    <value type="QString" key="ProjectExplorer.ProjectConfiguration.DisplayName">C:/Users/chris/dev/is/isutils/src/ui/window.py</value>
+    <value type="QString" key="ProjectExplorer.ProjectConfiguration.Id">PythonEditor.RunConfiguration.C:/Users/chris/dev/is/isutils/src/ui/window.py</value>
+    <value type="QString" key="ProjectExplorer.RunConfiguration.BuildKey">C:/Users/chris/dev/is/isutils/src/ui/window.py</value>
+    <value type="QString" key="PythonEditor.RunConfiguation.Interpreter">{f599956e-ce3b-4d30-ae53-4879b0a82acb}</value>
+    <value type="QString" key="PythonEditor.RunConfiguation.Script">C:\Users\chris\dev\is\isutils\src\ui\window.py</value>
     <value type="bool" key="RunConfiguration.UseCppDebugger">false</value>
     <value type="bool" key="RunConfiguration.UseCppDebuggerAuto">true</value>
     <value type="bool" key="RunConfiguration.UseQmlDebugger">false</value>
     <value type="bool" key="RunConfiguration.UseQmlDebuggerAuto">true</value>
-    <value type="QString" key="RunConfiguration.WorkingDirectory.default">/Users/clp/isu/isutils/src/ui/comp</value>
+    <value type="QString" key="RunConfiguration.WorkingDirectory.default">C:/Users/chris/dev/is/isutils/src/ui</value>
    </valuemap>
    <valuemap type="QVariantMap" key="ProjectExplorer.Target.RunConfiguration.2">
     <value type="bool" key="Analyzer.Perf.Settings.UseGlobalSettings">true</value>
@@ -321,15 +334,16 @@
     <valuelist type="QVariantList" key="CustomOutputParsers"/>
     <value type="int" key="PE.EnvironmentAspect.Base">2</value>
     <valuelist type="QVariantList" key="PE.EnvironmentAspect.Changes"/>
-    <value type="QString" key="ProjectExplorer.ProjectConfiguration.DisplayName">/Users/clp/isu/isutils/src/models/demo/step.py</value>
-    <value type="QString" key="ProjectExplorer.ProjectConfiguration.Id">PythonEditor.RunConfiguration./Users/clp/isu/isutils/src/models/demo/step.py</value>
-    <value type="QString" key="ProjectExplorer.RunConfiguration.BuildKey">/Users/clp/isu/isutils/src/models/demo/step.py</value>
-    <value type="QString" key="PythonEditor.RunConfiguation.Script">/Users/clp/isu/isutils/src/models/demo/step.py</value>
+    <value type="QString" key="ProjectExplorer.ProjectConfiguration.DisplayName">C:/Users/chris/dev/is/isutils/main.pyproject.user</value>
+    <value type="QString" key="ProjectExplorer.ProjectConfiguration.Id">PythonEditor.RunConfiguration.C:/Users/chris/dev/is/isutils/main.pyproject.user</value>
+    <value type="QString" key="ProjectExplorer.RunConfiguration.BuildKey">C:/Users/chris/dev/is/isutils/main.pyproject.user</value>
+    <value type="QString" key="PythonEditor.RunConfiguation.Interpreter">{def7b022-3ec4-4044-895a-653f22eb60cb}</value>
+    <value type="QString" key="PythonEditor.RunConfiguation.Script">C:\Users\chris\dev\is\isutils\main.pyproject.user</value>
     <value type="bool" key="RunConfiguration.UseCppDebugger">false</value>
     <value type="bool" key="RunConfiguration.UseCppDebuggerAuto">true</value>
     <value type="bool" key="RunConfiguration.UseQmlDebugger">false</value>
     <value type="bool" key="RunConfiguration.UseQmlDebuggerAuto">true</value>
-    <value type="QString" key="RunConfiguration.WorkingDirectory.default">/Users/clp/isu/isutils/src/models/demo</value>
+    <value type="QString" key="RunConfiguration.WorkingDirectory.default">C:/Users/chris/dev/is/isutils</value>
    </valuemap>
    <valuemap type="QVariantMap" key="ProjectExplorer.Target.RunConfiguration.3">
     <value type="bool" key="Analyzer.Perf.Settings.UseGlobalSettings">true</value>
@@ -338,15 +352,16 @@
     <valuelist type="QVariantList" key="CustomOutputParsers"/>
     <value type="int" key="PE.EnvironmentAspect.Base">2</value>
     <valuelist type="QVariantList" key="PE.EnvironmentAspect.Changes"/>
-    <value type="QString" key="ProjectExplorer.ProjectConfiguration.DisplayName">/Users/clp/isu/isutils/src/models/demo/section.py</value>
-    <value type="QString" key="ProjectExplorer.ProjectConfiguration.Id">PythonEditor.RunConfiguration./Users/clp/isu/isutils/src/models/demo/section.py</value>
-    <value type="QString" key="ProjectExplorer.RunConfiguration.BuildKey">/Users/clp/isu/isutils/src/models/demo/section.py</value>
-    <value type="QString" key="PythonEditor.RunConfiguation.Script">/Users/clp/isu/isutils/src/models/demo/section.py</value>
+    <value type="QString" key="ProjectExplorer.ProjectConfiguration.DisplayName">C:/Users/chris/dev/is/isutils/src/main.py</value>
+    <value type="QString" key="ProjectExplorer.ProjectConfiguration.Id">PythonEditor.RunConfiguration.C:/Users/chris/dev/is/isutils/src/main.py</value>
+    <value type="QString" key="ProjectExplorer.RunConfiguration.BuildKey">C:/Users/chris/dev/is/isutils/src/main.py</value>
+    <value type="QString" key="PythonEditor.RunConfiguation.Interpreter">{e39cd13b-8639-4ac6-bd86-2815406cb5b0}</value>
+    <value type="QString" key="PythonEditor.RunConfiguation.Script">C:\Users\chris\dev\is\isutils\src\main.py</value>
     <value type="bool" key="RunConfiguration.UseCppDebugger">false</value>
     <value type="bool" key="RunConfiguration.UseCppDebuggerAuto">true</value>
     <value type="bool" key="RunConfiguration.UseQmlDebugger">false</value>
     <value type="bool" key="RunConfiguration.UseQmlDebuggerAuto">true</value>
-    <value type="QString" key="RunConfiguration.WorkingDirectory.default">/Users/clp/isu/isutils/src/models/demo</value>
+    <value type="QString" key="RunConfiguration.WorkingDirectory.default">C:/Users/chris/dev/is/isutils/src</value>
    </valuemap>
    <valuemap type="QVariantMap" key="ProjectExplorer.Target.RunConfiguration.4">
     <value type="bool" key="Analyzer.Perf.Settings.UseGlobalSettings">true</value>
@@ -355,15 +370,16 @@
     <valuelist type="QVariantList" key="CustomOutputParsers"/>
     <value type="int" key="PE.EnvironmentAspect.Base">2</value>
     <valuelist type="QVariantList" key="PE.EnvironmentAspect.Changes"/>
-    <value type="QString" key="ProjectExplorer.ProjectConfiguration.DisplayName">/Users/clp/isu/isutils/src/models/__init__.py</value>
-    <value type="QString" key="ProjectExplorer.ProjectConfiguration.Id">PythonEditor.RunConfiguration./Users/clp/isu/isutils/src/models/__init__.py</value>
-    <value type="QString" key="ProjectExplorer.RunConfiguration.BuildKey">/Users/clp/isu/isutils/src/models/__init__.py</value>
-    <value type="QString" key="PythonEditor.RunConfiguation.Script">/Users/clp/isu/isutils/src/models/__init__.py</value>
+    <value type="QString" key="ProjectExplorer.ProjectConfiguration.DisplayName">C:/Users/chris/dev/is/isutils/src/models/demo/demo.py</value>
+    <value type="QString" key="ProjectExplorer.ProjectConfiguration.Id">PythonEditor.RunConfiguration.C:/Users/chris/dev/is/isutils/src/models/demo/demo.py</value>
+    <value type="QString" key="ProjectExplorer.RunConfiguration.BuildKey">C:/Users/chris/dev/is/isutils/src/models/demo/demo.py</value>
+    <value type="QString" key="PythonEditor.RunConfiguation.Interpreter">{3e792f51-60a3-4e6b-b97c-9c80a4b37695}</value>
+    <value type="QString" key="PythonEditor.RunConfiguation.Script">C:\Users\chris\dev\is\isutils\src\models\demo\demo.py</value>
     <value type="bool" key="RunConfiguration.UseCppDebugger">false</value>
     <value type="bool" key="RunConfiguration.UseCppDebuggerAuto">true</value>
     <value type="bool" key="RunConfiguration.UseQmlDebugger">false</value>
     <value type="bool" key="RunConfiguration.UseQmlDebuggerAuto">true</value>
-    <value type="QString" key="RunConfiguration.WorkingDirectory.default">/Users/clp/isu/isutils/src/models</value>
+    <value type="QString" key="RunConfiguration.WorkingDirectory.default">C:/Users/chris/dev/is/isutils/src/models/demo</value>
    </valuemap>
    <valuemap type="QVariantMap" key="ProjectExplorer.Target.RunConfiguration.5">
     <value type="bool" key="Analyzer.Perf.Settings.UseGlobalSettings">true</value>
@@ -372,15 +388,16 @@
     <valuelist type="QVariantList" key="CustomOutputParsers"/>
     <value type="int" key="PE.EnvironmentAspect.Base">2</value>
     <valuelist type="QVariantList" key="PE.EnvironmentAspect.Changes"/>
-    <value type="QString" key="ProjectExplorer.ProjectConfiguration.DisplayName">/Users/clp/isu/isutils/src/main.py</value>
-    <value type="QString" key="ProjectExplorer.ProjectConfiguration.Id">PythonEditor.RunConfiguration./Users/clp/isu/isutils/src/main.py</value>
-    <value type="QString" key="ProjectExplorer.RunConfiguration.BuildKey">/Users/clp/isu/isutils/src/main.py</value>
-    <value type="QString" key="PythonEditor.RunConfiguation.Script">/Users/clp/isu/isutils/src/main.py</value>
+    <value type="QString" key="ProjectExplorer.ProjectConfiguration.DisplayName">C:/Users/chris/dev/is/isutils/.gitignore</value>
+    <value type="QString" key="ProjectExplorer.ProjectConfiguration.Id">PythonEditor.RunConfiguration.C:/Users/chris/dev/is/isutils/.gitignore</value>
+    <value type="QString" key="ProjectExplorer.RunConfiguration.BuildKey">C:/Users/chris/dev/is/isutils/.gitignore</value>
+    <value type="QString" key="PythonEditor.RunConfiguation.Interpreter">{c157c56a-1498-4f49-95a8-9affade1ec82}</value>
+    <value type="QString" key="PythonEditor.RunConfiguation.Script">C:\Users\chris\dev\is\isutils\.gitignore</value>
     <value type="bool" key="RunConfiguration.UseCppDebugger">false</value>
     <value type="bool" key="RunConfiguration.UseCppDebuggerAuto">true</value>
     <value type="bool" key="RunConfiguration.UseQmlDebugger">false</value>
     <value type="bool" key="RunConfiguration.UseQmlDebuggerAuto">true</value>
-    <value type="QString" key="RunConfiguration.WorkingDirectory.default">/Users/clp/isu/isutils/src</value>
+    <value type="QString" key="RunConfiguration.WorkingDirectory.default">C:/Users/chris/dev/is/isutils</value>
    </valuemap>
    <valuemap type="QVariantMap" key="ProjectExplorer.Target.RunConfiguration.6">
     <value type="bool" key="Analyzer.Perf.Settings.UseGlobalSettings">true</value>
@@ -389,15 +406,16 @@
     <valuelist type="QVariantList" key="CustomOutputParsers"/>
     <value type="int" key="PE.EnvironmentAspect.Base">2</value>
     <valuelist type="QVariantList" key="PE.EnvironmentAspect.Changes"/>
-    <value type="QString" key="ProjectExplorer.ProjectConfiguration.DisplayName">/Users/clp/isu/isutils/src/models/demo/demo.py</value>
-    <value type="QString" key="ProjectExplorer.ProjectConfiguration.Id">PythonEditor.RunConfiguration./Users/clp/isu/isutils/src/models/demo/demo.py</value>
-    <value type="QString" key="ProjectExplorer.RunConfiguration.BuildKey">/Users/clp/isu/isutils/src/models/demo/demo.py</value>
-    <value type="QString" key="PythonEditor.RunConfiguation.Script">/Users/clp/isu/isutils/src/models/demo/demo.py</value>
+    <value type="QString" key="ProjectExplorer.ProjectConfiguration.DisplayName">C:/Users/chris/dev/is/isutils/src/models/demo/section.py</value>
+    <value type="QString" key="ProjectExplorer.ProjectConfiguration.Id">PythonEditor.RunConfiguration.C:/Users/chris/dev/is/isutils/src/models/demo/section.py</value>
+    <value type="QString" key="ProjectExplorer.RunConfiguration.BuildKey">C:/Users/chris/dev/is/isutils/src/models/demo/section.py</value>
+    <value type="QString" key="PythonEditor.RunConfiguation.Interpreter">{e5214cb3-353c-47ee-ba0a-f9a0c141e8b7}</value>
+    <value type="QString" key="PythonEditor.RunConfiguation.Script">C:\Users\chris\dev\is\isutils\src\models\demo\section.py</value>
     <value type="bool" key="RunConfiguration.UseCppDebugger">false</value>
     <value type="bool" key="RunConfiguration.UseCppDebuggerAuto">true</value>
     <value type="bool" key="RunConfiguration.UseQmlDebugger">false</value>
     <value type="bool" key="RunConfiguration.UseQmlDebuggerAuto">true</value>
-    <value type="QString" key="RunConfiguration.WorkingDirectory.default">/Users/clp/isu/isutils/src/models/demo</value>
+    <value type="QString" key="RunConfiguration.WorkingDirectory.default">C:/Users/chris/dev/is/isutils/src/models/demo</value>
    </valuemap>
    <valuemap type="QVariantMap" key="ProjectExplorer.Target.RunConfiguration.7">
     <value type="bool" key="Analyzer.Perf.Settings.UseGlobalSettings">true</value>
@@ -406,15 +424,16 @@
     <valuelist type="QVariantList" key="CustomOutputParsers"/>
     <value type="int" key="PE.EnvironmentAspect.Base">2</value>
     <valuelist type="QVariantList" key="PE.EnvironmentAspect.Changes"/>
-    <value type="QString" key="ProjectExplorer.ProjectConfiguration.DisplayName">/Users/clp/isu/isutils/src/ui/__init__.py</value>
-    <value type="QString" key="ProjectExplorer.ProjectConfiguration.Id">PythonEditor.RunConfiguration./Users/clp/isu/isutils/src/ui/__init__.py</value>
-    <value type="QString" key="ProjectExplorer.RunConfiguration.BuildKey">/Users/clp/isu/isutils/src/ui/__init__.py</value>
-    <value type="QString" key="PythonEditor.RunConfiguation.Script">/Users/clp/isu/isutils/src/ui/__init__.py</value>
+    <value type="QString" key="ProjectExplorer.ProjectConfiguration.DisplayName">C:/Users/chris/dev/is/isutils/src/qml/img_view/main.py</value>
+    <value type="QString" key="ProjectExplorer.ProjectConfiguration.Id">PythonEditor.RunConfiguration.C:/Users/chris/dev/is/isutils/src/qml/img_view/main.py</value>
+    <value type="QString" key="ProjectExplorer.RunConfiguration.BuildKey">C:/Users/chris/dev/is/isutils/src/qml/img_view/main.py</value>
+    <value type="QString" key="PythonEditor.RunConfiguation.Interpreter">{3be46bb2-0e59-4cb3-b11e-65ede36433c7}</value>
+    <value type="QString" key="PythonEditor.RunConfiguation.Script">C:\Users\chris\dev\is\isutils\src\qml\img_view\main.py</value>
     <value type="bool" key="RunConfiguration.UseCppDebugger">false</value>
     <value type="bool" key="RunConfiguration.UseCppDebuggerAuto">true</value>
     <value type="bool" key="RunConfiguration.UseQmlDebugger">false</value>
     <value type="bool" key="RunConfiguration.UseQmlDebuggerAuto">true</value>
-    <value type="QString" key="RunConfiguration.WorkingDirectory.default">/Users/clp/isu/isutils/src/ui</value>
+    <value type="QString" key="RunConfiguration.WorkingDirectory.default">C:/Users/chris/dev/is/isutils/src/qml/img_view</value>
    </valuemap>
    <valuemap type="QVariantMap" key="ProjectExplorer.Target.RunConfiguration.8">
     <value type="bool" key="Analyzer.Perf.Settings.UseGlobalSettings">true</value>
@@ -423,15 +442,16 @@
     <valuelist type="QVariantList" key="CustomOutputParsers"/>
     <value type="int" key="PE.EnvironmentAspect.Base">2</value>
     <valuelist type="QVariantList" key="PE.EnvironmentAspect.Changes"/>
-    <value type="QString" key="ProjectExplorer.ProjectConfiguration.DisplayName">/Users/clp/isu/isutils/src/qml/operations.cpp</value>
-    <value type="QString" key="ProjectExplorer.ProjectConfiguration.Id">PythonEditor.RunConfiguration./Users/clp/isu/isutils/src/qml/operations.cpp</value>
-    <value type="QString" key="ProjectExplorer.RunConfiguration.BuildKey">/Users/clp/isu/isutils/src/qml/operations.cpp</value>
-    <value type="QString" key="PythonEditor.RunConfiguation.Script">/Users/clp/isu/isutils/src/qml/operations.cpp</value>
+    <value type="QString" key="ProjectExplorer.ProjectConfiguration.DisplayName">C:/Users/chris/dev/is/isutils/src/models/__init__.py</value>
+    <value type="QString" key="ProjectExplorer.ProjectConfiguration.Id">PythonEditor.RunConfiguration.C:/Users/chris/dev/is/isutils/src/models/__init__.py</value>
+    <value type="QString" key="ProjectExplorer.RunConfiguration.BuildKey">C:/Users/chris/dev/is/isutils/src/models/__init__.py</value>
+    <value type="QString" key="PythonEditor.RunConfiguation.Interpreter">{5bd647a1-ec3a-40a1-a70e-f7eaa1046d9e}</value>
+    <value type="QString" key="PythonEditor.RunConfiguation.Script">C:\Users\chris\dev\is\isutils\src\models\__init__.py</value>
     <value type="bool" key="RunConfiguration.UseCppDebugger">false</value>
     <value type="bool" key="RunConfiguration.UseCppDebuggerAuto">true</value>
     <value type="bool" key="RunConfiguration.UseQmlDebugger">false</value>
     <value type="bool" key="RunConfiguration.UseQmlDebuggerAuto">true</value>
-    <value type="QString" key="RunConfiguration.WorkingDirectory.default">/Users/clp/isu/isutils/src/qml</value>
+    <value type="QString" key="RunConfiguration.WorkingDirectory.default">C:/Users/chris/dev/is/isutils/src/models</value>
    </valuemap>
    <valuemap type="QVariantMap" key="ProjectExplorer.Target.RunConfiguration.9">
     <value type="bool" key="Analyzer.Perf.Settings.UseGlobalSettings">true</value>
@@ -440,15 +460,16 @@
     <valuelist type="QVariantList" key="CustomOutputParsers"/>
     <value type="int" key="PE.EnvironmentAspect.Base">2</value>
     <valuelist type="QVariantList" key="PE.EnvironmentAspect.Changes"/>
-    <value type="QString" key="ProjectExplorer.ProjectConfiguration.DisplayName">/Users/clp/isu/isutils/src/models/demo/audio.py</value>
-    <value type="QString" key="ProjectExplorer.ProjectConfiguration.Id">PythonEditor.RunConfiguration./Users/clp/isu/isutils/src/models/demo/audio.py</value>
-    <value type="QString" key="ProjectExplorer.RunConfiguration.BuildKey">/Users/clp/isu/isutils/src/models/demo/audio.py</value>
-    <value type="QString" key="PythonEditor.RunConfiguation.Script">/Users/clp/isu/isutils/src/models/demo/audio.py</value>
+    <value type="QString" key="ProjectExplorer.ProjectConfiguration.DisplayName">C:/Users/chris/dev/is/isutils/src/ui/comp/__init__.py</value>
+    <value type="QString" key="ProjectExplorer.ProjectConfiguration.Id">PythonEditor.RunConfiguration.C:/Users/chris/dev/is/isutils/src/ui/comp/__init__.py</value>
+    <value type="QString" key="ProjectExplorer.RunConfiguration.BuildKey">C:/Users/chris/dev/is/isutils/src/ui/comp/__init__.py</value>
+    <value type="QString" key="PythonEditor.RunConfiguation.Interpreter">{6f3c4206-de3a-4067-9316-f97979e49e8f}</value>
+    <value type="QString" key="PythonEditor.RunConfiguation.Script">C:\Users\chris\dev\is\isutils\src\ui\comp\__init__.py</value>
     <value type="bool" key="RunConfiguration.UseCppDebugger">false</value>
     <value type="bool" key="RunConfiguration.UseCppDebuggerAuto">true</value>
     <value type="bool" key="RunConfiguration.UseQmlDebugger">false</value>
     <value type="bool" key="RunConfiguration.UseQmlDebuggerAuto">true</value>
-    <value type="QString" key="RunConfiguration.WorkingDirectory.default">/Users/clp/isu/isutils/src/models/demo</value>
+    <value type="QString" key="RunConfiguration.WorkingDirectory.default">C:/Users/chris/dev/is/isutils/src/ui/comp</value>
    </valuemap>
    <value type="int" key="ProjectExplorer.Target.RunConfigurationCount">20</value>
   </valuemap>

@@ -1,7 +1,9 @@
 pathlib
 PyQt5
 pillow
+pyqt6
 lxml
 python-docx
 mutagen
 opencv-python
+ffmpeg
