@@ -1,18 +1,31 @@
-from cx_Freeze import setup, Executable
-
-# Dependencies are automatically detected, but it might need
-# fine tuning.
-buildOptions = dict(packages = [], excludes = [])
-
+"""
+@file setup.py
+@author Chris P <clp@clp.is>
+"""
+# from cx_Freeze import setup, Executable
+from __future__ import annotations 
+from setuptools import setup
+from rich import progress_bar, color, color_triplet, print
+import os
 import sys
-base = 'Win32GUI' if sys.platform=='win32' else None
+from shutil import copytree, rmtree, copy
+import subprocess
 
-executables = [
-    Executable('main.py', base=base, targetName = 'isutils')
-]
+PATH = os.path.dirname(os.path.realpath(__file__))
 
-setup(name='impresys utils',
-      version = '0.1',
-      description = '',
-      options = dict(build_exe = buildOptions),
-      executables = executables)
+print("[bold green]BEGINNING INSTALLATION...[/bold green]", locals())
+print("[green]BEGINNING INSTALLATION...[/green]", locals())
+
+# buildOptions = dict(packages = [], excludes = [])
+
+# base = 'Win32GUI' if sys.platform=='win32' else None
+
+# executables = [
+#     Executable('main.py', base=base, targetName = 'isutils')
+# ]
+
+# setup(name='impresys utils',
+#       version = '0.1',
+#       description = '',
+#       options = dict(build_exe = buildOptions),
+#       executables = executables)

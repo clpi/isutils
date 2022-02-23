@@ -9,17 +9,22 @@ import sys, os, functools, typing
 from pathlib import Path
 from dataclasses import dataclass, field
 from typing import List, Tuple, Dict, Optional, Type, Any
-from PyQt6.QtCore import ( Qt,
-    QObject, pyqtSlot, QFileSelector, QSaveFile, QFileSelector, QTemporaryDir, 
-    QTemporaryFile, QAbstractItemModel, QAbstractListModel, pyqtSignal, QModelIndex,
-    QSignalMapper
+from PySide6.QtCore import ( 
+    QObject, Slot, QFileSelector, QSaveFile, QFileSelector, QTemporaryDir, 
+    QTemporaryFile, QAbstractItemModel, QAbstractListModel, Signal, QModelIndex,
+    QSignalMapper, QProcess
 )
-from PyQt6.QtGui import (QIcon,
+from PySide6.QtGui import (QIcon,
     QImageIOHandler, QImage, QImageReader, QAction, QIcon,
-    QImageWriter, QStandardItemModel, QStandardItem, QPalette, QColor
+    QImageWriter, QStandardItemModel, QStandardItem, QPalette, QColor, QColorConstants,
 )
-from PyQt6.QtWidgets import ( QWidget,
+from PySide6.QtDesigner import QPyDesignerCustomWidgetCollection, QFormBuilder
+from PySide6.QtMultimedia import QMediaPlayer, QAudio, QMediaFormat
+from PySide6.QtMultimediaWidgets import QGraphicsVideoItem, QVideoWidget
+from PySide6.QtWidgets import ( QWidget,
     QColorDialog,
+
+    QMenuBar,QProgressDialog,
     QApplication, QMainWindow, QPushButton, QLineEdit, QSpinBox, QMessageBox, QFileDialog, QListWidgetItem,
     QListWidget, QTreeWidget, QTableWidget, QLabel, QTabWidget, QComboBox, QTreeWidgetItem, QTableWidgetItem,
     QWizard, QWizardPage, QDialog, QUndoView, QProgressBar, QStyle, QStackedWidget, QGroupBox,
@@ -32,53 +37,49 @@ from models.operation import Op, ShellOp, InsertOp, SectionOp, AudioOp, CropOp, 
 from ui.comp.op import OpWidget
 from ui.comp.prefs import Prefs
 
-from PyQt6 import uic
+from PySide6.QtUiTools import QUiLoader
 
 #TODO make function/class which automatically goes thru list of widget names
 #     and attaches appropriate functions/functionality
-class MainWindow(QMainWindow):
+class MainWindow(QWidget):
 
     def __init__(self, *args, **kwargs) -> None:
-        super().__init__(*args, **kwargs)
-        path = os.path.join(os.path.dirname(__file__), "main.ui")
-        uic.loadUi(path, self)
         self.cx = Context()
         self.load_btn()
         self.load_data()
-        self.menubar.setVisible(True)
+        self.menubar.setVisible(True) #type: ignore
 
     def load_btn(self) -> None:
-        self.runBtn: QPushButton
-        self.addStepBtn: QPushButton
-        self.removeStepBtn: QPushButton
-        self.browseDemoBtn: QPushButton
-        self.browseAudioBtn: QPushButton
-        self.browseScriptBtn: QPushButton
-        self.loadScriptBtn: QPushButton
-        self.loadAudioBtn: QPushButton
-        self.infoBtn: QPushButton
-        self.addDemoBtn: QPushButton
-        self.removeDemoBtn: QPushButton
-        self.stepUpBtn: QPushButton
-        self.stepDownBtn: QPushButton
+        self.runBtn: QPushButton # type: ignore
+        self.addStepBtn: QPushButton # type: ignore
+        self.removeStepBtn: QPushButton # type: ignore
+        self.browseDemoBtn: QPushButton # type: ignore
+        self.browseAudioBtn: QPushButton # type: ignore
+        self.browseScriptBtn: QPushButton # type: ignore
+        self.loadScriptBtn: QPushButton # type: ignore
+        self.loadAudioBtn: QPushButton # type: ignore
+        self.infoBtn: QPushButton # type: ignore
+        self.addDemoBtn: QPushButton # type: ignore
+        self.removeDemoBtn: QPushButton # type: ignore
+        self.stepUpBtn: QPushButton # type: ignore
+        self.stepDownBtn: QPushButton # type: ignore
 
+        self.loadScriptBtn.setEnabled(False)
+        self.loadAudioBtn.setEnabled(False)
+        self.runBtn.setEnabled(False)
 
-        #self.loadScriptBtn.setEnabled(False)
-        #self.loadAudioBtn.setEnabled(False)
-        #self.runBtn.setEnabled(False)
+        self.runBtn.clicked.connect(self.run_ops) # type: ignore
+        self.addStepBtn.clicked.connect(self.add_step) # type: ignore
+        self.removeStepBtn.clicked.connect(self.remove_step) # type: ignore
+        self.browseDemoBtn.clicked.connect(self.browse_demo) # type: ignore
+        self.addDemoBtn.clicked.connect(self.browse_demo) # type: ignore
+        self.browseAudioBtn.clicked.connect(self.browse_audio) # type: ignore
+        self.browseScriptBtn.clicked.connect(self.browse_script) # type: ignore
+        self.loadScriptBtn.clicked.connect(self.browse_script) # type: ignore
+        self.loadAudioBtn.clicked.connect(self.browse_audio) # type: ignore
+        self.infoBtn.clicked.connect(self.get_demo_info) # type: ignore
 
-        self.runBtn.clicked.connect(self.run_ops)
-        self.addStepBtn.clicked.connect(self.add_step)
-        self.removeStepBtn.clicked.connect(self.remove_step)
-        self.browseDemoBtn.clicked.connect(self.browse_demo)
-        self.addDemoBtn.clicked.connect(self.browse_demo)
-        self.browseAudioBtn.clicked.connect(self.browse_audio)
-        self.browseScriptBtn.clicked.connect(self.browse_script)
-        self.loadScriptBtn.clicked.connect(self.browse_script)
-        self.loadAudioBtn.clicked.connect(self.browse_audio)
-        self.infoBtn.clicked.connect(self.get_demo_info)
-
-       # self.browseInsertBtn.clicked.connect(self.browse_insert)
+        # self.browseInsertBtn.clicked.connect(self.browse_insert)
 
     def load_data(self):
         self.demoTreeBox: QGroupBox
@@ -121,9 +122,9 @@ class MainWindow(QMainWindow):
         home_dir = str(Path.home()) + "\\Documents\\My Demos"
         print(home_dir)
         print("TRYING TO GET QFILEDIALOG")
-        # demo_path, _ok = QFileDialog.getOpenFileName(self,"Browse for .demo files", "","Demo files (*.demo);;All Files (*)")
+        demo_path, _ok = QFileDialog.getOpenFileName(self,"Browse for .demo files", "","Demo files (*.demo);;All Files (*)")
         # demo_path = QFileDialog.getOpenFileName(self,"Browse for demo files", str(Path.home()))
-        demo_path = QInputDialog.getText(self, "Input", "Enter name")
+        # demo_path = QInputDialog.getText(self, "Input", "Enter name")
         # c, ok = QColorDialog.getColor()
         # demo_path, ok = QFileDialog.getOpenFileName(self, "Browse for demo file")
         # demo_p, ok = QFileDialog.get
@@ -170,8 +171,8 @@ class MainWindow(QMainWindow):
         self.demoListTreeWidget.addTopLevelItem(demo_item)
         self.cx.demo_load.append(demo)
         for i in range(self.stepsTreeWidget.topLevelItemCount()):
-            self.stepTabs.widget(i).demoTargetCombo.clear()
-            self.stepTabs.widget(i).demoTargetCombo.addItems(self.cx.get_demo_list_items())
+            self.stepTabs.widget(i).demoTargetCombo.clear() # type: ignore
+            self.stepTabs.widget(i).demoTargetCombo.addItems(self.cx.get_demo_list_items()) # type: ignore
         self.update_steps()
         self.loadScriptBtn.setEnabled(True)
         self.loadAudioBtn.setEnabled(True)
@@ -376,7 +377,7 @@ class AboutDialog(QDialog):
     def __init__(self, *args, **kwargs):
         super(AboutDialog, self).__init__(*args, **kwargs)
 
-@pyqtSlot(MainWindow)
+@Slot(MainWindow)
 def msg(txt: str, inf: str, title: str, det: str = "") -> None:
     msg = QMessageBox()
     # msg.setIcon(QMessageBox.Information)
@@ -415,7 +416,7 @@ class DemoTreeWidget(QTreeWidget):
 
     def __init__(self, demo_model: DemoModel):
         signal_mapper = QSignalMapper(self)
-        self.model = demo_model
+        # self.model = demo_model
         pass
 
 class StepMetadata(QStandardItemModel):
@@ -433,24 +434,25 @@ class DemoList(QAbstractItemModel):
     def __init__(self):
         pass
 
-def set_fusion(app: QApplication, dark: bool = False):
-    app.setStyle("Fusion")
-    if dark:
-        palette = QPalette()
-        palette.setColor(QPalette.Window, QColor(53, 53, 53))
-        palette.setColor(QPalette.WindowText, Qt.white)
-        palette.setColor(QPalette.Base, QColor(25, 25, 25))
-        palette.setColor(QPalette.AlternateBase, QColor(53, 53, 53))
-        palette.setColor(QPalette.ToolTipBase, Qt.white)
-        palette.setColor(QPalette.ToolTipText, Qt.white)
-        palette.setColor(QPalette.Text, Qt.white)
-        palette.setColor(QPalette.Button, QColor(53, 53, 53))
-        palette.setColor(QPalette.ButtonText, Qt.white)
-        palette.setColor(QPalette.BrightText, Qt.red)
-        palette.setColor(QPalette.Link, QColor(42, 130, 218))
-        palette.setColor(QPalette.Highlight, QColor(42, 130, 218))
-        palette.setColor(QPalette.HighlightedText, Qt.black)
-        app.setPalette(palette)
+# def set_fusion(app: QApplication, dark: bool = False):
+#     app.setStyle("Fusion")
+#     if dark:
+#         palette = QPalette()
+#         palette.setColor(Qt)
+#         palette.setColor(QPalette.Window, QColor(53, 53, 53))
+#         palette.setColor(QPalette.WindowText, Qt.white)
+#         palette.setColor(QPalette.Base, QColor(25, 25, 25))
+#         palette.setColor(QPalette.AlternateBase, QColor(53, 53, 53))
+#         palette.setColor(QPalette.ToolTipBase, Qt.white)
+#         palette.setColor(QPalette.ToolTipText, Qt.white)
+#         palette.setColor(QPalette.Text, Qt.white)
+#         palette.setColor(QPalette.Button, QColor(53, 53, 53))
+#         palette.setColor(QPalette.ButtonText, Qt.white)
+#         palette.setColor(QPalette.BrightText, Qt.red)
+#         palette.setColor(QPalette.Link, QColor(42, 130, 218))
+#         palette.setColor(QPalette.Highlight, QColor(42, 130, 218))
+#         palette.setColor(QPalette.HighlightedText, Qt.black)
+#         app.setPalette(palette)
 
 @dataclass
 class Context:
@@ -473,7 +475,10 @@ def set_op_widget():
 
 def run():
     app = QApplication(sys.argv)
-    set_fusion(app, dark=False)
-    window = MainWindow()
-    window.show()
+    loader = QUiLoader()
+    loader.registerCustomWidget(MainWindow)
+    path = os.path.join(os.path.dirname(__file__), "window.ui")
+    ui: QMainWindow = loader.load(path, None)
+    # window = MainWindow()
+    ui.show()
     sys.exit(app.exec())

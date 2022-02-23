@@ -1,4 +1,4 @@
-
+use pyo3::types::IntoPyDict;
 use pyo3::prelude::*;
 use pyo3::wrap_pyfunction;
 
@@ -9,24 +9,22 @@ fn sum_as_string(a: usize, b: usize) -> PyResult<String> {
 }
 
 /// A Python module implemented in Rust.
-#[pymodule]
-fn string_sum(py: Python, m: &PyModule) -> PyResult<()> {
-    m.add_wrapped(wrap_pyfunction!(sum_as_string))?;
+// #[pyfunction]
+// fn string_sum(py: Python, m: &PyModule) -> PyResult<()> {
+//     m.add_wrapped(wrap_pyfunction!(sum_as_string))?;
 
-    Ok(())
-}
-use pyo3::prelude::*;
-use pyo3::types::IntoPyDict;
+//     Ok(())
+// }
 
-fn test() -> Result<(), ()> {
-    Python::with_gil(|py| {
-        main_(py).map_err(|e| {
-          // We can't display Python exceptions via std::fmt::Display,
-          // so print the error here manually.
-          e.print_and_set_sys_last_vars(py);
-        })
-    })
-}
+// fn test() -> Result<(), ()> {
+//     Python::with_gil(|py| {
+//         main_(py).map_err(|e| {
+//           // We can't display Python exceptions via std::fmt::Display,
+//           // so print the error here manually.
+//           e.print_and_set_sys_last_vars(py);
+//         })
+//     })
+// }
 
 fn test_(py: Python) -> PyResult<()> {
     let sys = py.import("sys")?;

@@ -18,7 +18,8 @@ import models.demo.demo_tags as dt
 from collections import deque, namedtuple
 from PIL import Image
 import shutil
-import ffmpeg
+import ffmpeg as ff
+import moviepy.editor as mp
 
 #----------------------------DEMO------------------------------------#
 
@@ -150,11 +151,11 @@ class Demo:
 
     def add_audio(self, start:int = 0, end: int = -1):
         """
-        if not self.is_sectioned:
-            self.process_sections()
-        if self.audio_attached:
-            return
         """
+        # if not self.is_sectioned:
+            # self.process_sections()
+        # if self.audio_attached:
+            # return
         #TODO: Implement functionality to PROMPT to use alternates when they appear instead of skipping
         audio_i = 0
         for i, (step, is_step_audio) in enumerate(self.iter_audio_step()):

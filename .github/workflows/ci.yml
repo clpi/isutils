@@ -1,0 +1,36 @@
+name: isutils CI
+on: push
+defaults:
+  run:
+    shell: powershell
+jobs:
+  build:
+    runs-on: windows-latest
+    steps:
+    - name: Check out code
+      uses: actions/checkout@v2
+
+    - name: Insall ffmpeg & python
+      run: choco install ffmpeg python3
+
+    - name: Install dependencies
+      run: |
+        pip3 install setuptools wheel PyQt6 PySide6 cx_Freeze urllib3
+        pip3 install lxml mutagen python-ffmpeg python-docx pillow
+        pip3 install moviepy opencv-python scikit-image
+
+    - name: Install deps (poetry)
+      run: |
+        pip3 install poetry
+        poetry install 
+        poetry shell 
+        poetry run
+
+    - name: Build Python package
+      run: python3 setup.py build
+
+    - name: Test
+      run: python3 test/test.py
+
+  # publish:
+    # runs-on: windows-latest
