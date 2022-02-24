@@ -1,4 +1,4 @@
-from window import MainWindow
+from ui.window import MainWindow
 import sys, os
 from PySide6 import QtGui, QtWidgets, QtCore
 from PySide6.QtGui import QAction, QGuiApplication, QActionEvent, QEnterEvent, QColor, QPen, QFont
@@ -13,7 +13,8 @@ class MainApp(QApplication):
 
    def __init__(self, *args): 
        super().__init__(*args)
-       window = MainWindow(args)
+       window = MainWindow(self, args)
+       window.show()
        sys.exit(self.exec())
 
 if __name__ == "__main__":

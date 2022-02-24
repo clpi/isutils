@@ -5,11 +5,12 @@
 """
 from typing import NoReturn
 from ui.window import MainWindow, run
+from ui.app import MainApp
 import os, sys
 import tkinter as tk
 
 def main():
-    run()
+    app = MainApp(sys.argv)
 
 
 if __name__ == "__main__":

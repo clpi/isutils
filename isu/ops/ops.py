@@ -1,5 +1,7 @@
 import time, sys, traceback
+from contextlib import AbstractContextManager
 import enum
+from dataclasses import dataclass, field
 from typing import Sequence
 from PyQt6.QtCore import (
     QRunnable, pyqtSignal, pyqtSlot, pyqtEnum, QThread, QThreadPool, QObject, QTimer, QTime

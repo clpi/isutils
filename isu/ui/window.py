@@ -34,7 +34,7 @@ from PyQt6.QtWidgets import ( QWidget,
 )
 from PIL import Image
 
-from models.demo import Demo
+from models.demo.demo import Demo
 from models.operation import Op, ShellOp, InsertOp, SectionOp, AudioOp, CropOp, OP_TYPES
 from ui.comp.op import OpWidget
 from ui.comp.prefs import Prefs
@@ -45,12 +45,14 @@ from PySide6.QtUiTools import QUiLoader
 #     and attaches appropriate functions/functionality
 class MainWindow(QMainWindow):
 
-    def __init__(self, *args, **kwargs) -> None:
-        super().__init__(*args, **kwargs)
+    def __init__(self, parent = None, *args, **kwargs) -> None:
+        super().__init__()
         path = os.path.join(os.path.dirname(__file__), "window.ui")
         uic.loadUi(path, self)
+        self.parentW = parent
         self.cx = Context()
         self.load_btn()
+        self.load_actions()
         self.load_data()
         self.menubar.setVisible(True) #type: ignore
         self.setAcceptDrops(True)
@@ -494,9 +496,9 @@ def set_op_widget():
 
 def run():
     app = QApplication(sys.argv)
-    loader = QUiLoader()
+    # loader = QUiLoader()
     # loader.registerCustomWidget(MainWindow)
-    path = os.path.join(os.path.dirname(__file__), "window.ui")
+    # path = os.path.join(os.path.dirname(__file__), "window.ui")
     window = MainWindow()
     window.show()
     sys.exit(app.exec())

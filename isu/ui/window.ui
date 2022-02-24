@@ -428,8 +428,17 @@
         <item>
          <layout class="QVBoxLayout" name="demoLayout">
           <item>
-           <widget class="QStackedWidget" name="objectViewTabW">
-            <widget class="QWidget" name="objectViewTabWPage1">
+           <widget class="QTabWidget" name="objectViewTabW">
+            <property name="currentIndex">
+             <number>0</number>
+            </property>
+            <property name="documentMode">
+             <bool>false</bool>
+            </property>
+            <widget class="QWidget" name="Demo" native="true">
+             <attribute name="title">
+              <string/>
+             </attribute>
              <layout class="QVBoxLayout" name="verticalLayout_9">
               <item>
                <widget class="QGroupBox" name="demoTreeBox">
@@ -526,6 +535,9 @@
                 </property>
                 <property name="flat">
                  <bool>true</bool>
+                </property>
+                <property name="checkable">
+                 <bool>false</bool>
                 </property>
                 <layout class="QVBoxLayout" name="verticalLayout_8">
                  <property name="leftMargin">
@@ -645,9 +657,21 @@
               </item>
              </layout>
             </widget>
-            <widget class="QWidget" name="objectViewTabWPage2"/>
-            <widget class="QWidget" name="objectViewTabWPage3"/>
-            <widget class="QWidget" name="objectViewTabWPage4"/>
+            <widget class="QWidget" name="objectViewTabWPage2_2" native="true">
+             <attribute name="title">
+              <string/>
+             </attribute>
+            </widget>
+            <widget class="QWidget" name="objectViewTabWPage3_2" native="true">
+             <attribute name="title">
+              <string/>
+             </attribute>
+            </widget>
+            <widget class="QWidget" name="objectViewTabWPage4_2" native="true">
+             <attribute name="title">
+              <string/>
+             </attribute>
+            </widget>
            </widget>
           </item>
          </layout>
