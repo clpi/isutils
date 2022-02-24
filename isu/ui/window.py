@@ -9,30 +9,32 @@ import sys, os, functools, typing
 from pathlib import Path
 from dataclasses import dataclass, field
 from typing import List, Tuple, Dict, Optional, Type, Any
-from PySide6.QtCore import ( 
-    QObject, Slot, QFileSelector, QSaveFile, QFileSelector, QTemporaryDir, 
-    QTemporaryFile, QAbstractItemModel, QAbstractListModel, Signal, QModelIndex,
-    QSignalMapper, QProcess
+import qtpy
+from PyQt6.QtCore import ( 
+    QObject, pyqtSlot, QFileSelector, QSaveFile, QFileSelector, QTemporaryDir, 
+    QTemporaryFile, QAbstractItemModel, QAbstractListModel, pyqtSignal, QModelIndex,
+    QSignalMapper, QProcess, Qt, QDir, QFile, QFileInfo, QUrl, QUuid
 )
-from PySide6.QtGui import (QIcon,
-    QImageIOHandler, QImage, QImageReader, QAction, QIcon,
+from PyQt6.QtGui import (QIcon,
+    QDragEnterEvent, QDropEvent,
+    QImageIOHandler, QImage, QImageReader, QAction, QIcon, QAction, 
+    QActionEvent, QIconEngine,
     QImageWriter, QStandardItemModel, QStandardItem, QPalette, QColor, QColorConstants,
 )
-from PySide6.QtDesigner import QPyDesignerCustomWidgetCollection, QFormBuilder
-from PySide6.QtMultimedia import QMediaPlayer, QAudio, QMediaFormat
-from PySide6.QtMultimediaWidgets import QGraphicsVideoItem, QVideoWidget
-from PySide6.QtWidgets import ( QWidget,
+from PyQt6.QtMultimediaWidgets import QGraphicsVideoItem, QVideoWidget
+from PyQt6 import uic
+from PyQt6.QtWidgets import ( QWidget,
     QColorDialog,
 
     QMenuBar,QProgressDialog,
     QApplication, QMainWindow, QPushButton, QLineEdit, QSpinBox, QMessageBox, QFileDialog, QListWidgetItem,
     QListWidget, QTreeWidget, QTableWidget, QLabel, QTabWidget, QComboBox, QTreeWidgetItem, QTableWidgetItem,
     QWizard, QWizardPage, QDialog, QUndoView, QProgressBar, QStyle, QStackedWidget, QGroupBox,
-    QInputDialog
+    QInputDialog,
 )
 from PIL import Image
 
-from models.demo.demo import Demo
+from models.demo import Demo
 from models.operation import Op, ShellOp, InsertOp, SectionOp, AudioOp, CropOp, OP_TYPES
 from ui.comp.op import OpWidget
 from ui.comp.prefs import Prefs
@@ -41,13 +43,17 @@ from PySide6.QtUiTools import QUiLoader
 
 #TODO make function/class which automatically goes thru list of widget names
 #     and attaches appropriate functions/functionality
-class MainWindow(QWidget):
+class MainWindow(QMainWindow):
 
     def __init__(self, *args, **kwargs) -> None:
+        super().__init__(*args, **kwargs)
+        path = os.path.join(os.path.dirname(__file__), "window.ui")
+        uic.loadUi(path, self)
         self.cx = Context()
         self.load_btn()
         self.load_data()
         self.menubar.setVisible(True) #type: ignore
+        self.setAcceptDrops(True)
 
     def load_btn(self) -> None:
         self.runBtn: QPushButton # type: ignore
@@ -120,15 +126,8 @@ class MainWindow(QWidget):
     #TODO detach these from class
     def browse_demo(self):
         home_dir = str(Path.home()) + "\\Documents\\My Demos"
-        print(home_dir)
-        print("TRYING TO GET QFILEDIALOG")
         demo_path, _ok = QFileDialog.getOpenFileName(self,"Browse for .demo files", "","Demo files (*.demo);;All Files (*)")
-        # demo_path = QFileDialog.getOpenFileName(self,"Browse for demo files", str(Path.home()))
-        # demo_path = QInputDialog.getText(self, "Input", "Enter name")
-        # c, ok = QColorDialog.getColor()
-        # demo_path, ok = QFileDialog.getOpenFileName(self, "Browse for demo file")
-        # demo_p, ok = QFileDialog.get
-        if demo_path[0]:
+        if demo_path != "":
             self.cx.demo_paths.append(demo_path[0])
             print(demo_path[0])
             self.load_demo(demo_path[0])
@@ -371,13 +370,33 @@ class MainWindow(QWidget):
         op_wid = OpWidget()
         """Consider making op param non-string, enum or something"""
         pass
-        
 
+    def dragEnterEvent(self, e: QDragEnterEvent) -> None:
+        data = e.mimeData()
+        if data.hasUrls():
+            url = data.urls()[0].toLocalFile()
+            if os.path.splitext(url)[1].lower() == ".demo":
+                e.accept()
+
+    # TODO finish
+    def dropEvent(self, e: QDropEvent) -> None:
+        data = e.mimeData()
+        path = data.urls()[0].toLocalFile()
+        self.load_demo(path)
+
+    def err(self, err):
+        exctype, value, traceback = err
+        self.update_progress(1)  # Reset the Pez bar.
+        dlg = QMessageBox(self)
+        dlg.setText(traceback)
+        dlg.setIcon(QMessageBox.Critical)
+        dlg.show() 
+        
 class AboutDialog(QDialog):
     def __init__(self, *args, **kwargs):
         super(AboutDialog, self).__init__(*args, **kwargs)
 
-@Slot(MainWindow)
+@pyqtSlot(MainWindow)
 def msg(txt: str, inf: str, title: str, det: str = "") -> None:
     msg = QMessageBox()
     # msg.setIcon(QMessageBox.Information)
@@ -476,9 +495,8 @@ def set_op_widget():
 def run():
     app = QApplication(sys.argv)
     loader = QUiLoader()
-    loader.registerCustomWidget(MainWindow)
+    # loader.registerCustomWidget(MainWindow)
     path = os.path.join(os.path.dirname(__file__), "window.ui")
-    ui: QMainWindow = loader.load(path, None)
-    # window = MainWindow()
-    ui.show()
+    window = MainWindow()
+    window.show()
     sys.exit(app.exec())

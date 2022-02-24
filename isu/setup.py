@@ -1,13 +1,10 @@
-"""
-@file setup.py
-@author Chris P <clp@clp.is>
-"""
+#!/usr/bin/env python
 # from cx_Freeze import setup, Executable
 from __future__ import annotations 
 from setuptools import setup
+from collections import OrderedDict
 from rich import progress_bar, color, color_triplet, print
-import os
-import sys
+import os, io, sys
 from shutil import copytree, rmtree, copy
 import subprocess
 

@@ -4,7 +4,7 @@ TODO: Consider having op type selection be before view is created?
 TODO: Consider having op-type params be non-str
 TODO: Make default op view be blank, only show params view when one is selected
 """
-import sys, os
+import sys, os, pathlib
 from typing import Optional, List, Dict, Any, Type, Tuple
 from PIL import Image
 from pathlib import Path
@@ -87,7 +87,7 @@ class OpWidget(QWidget):
 
     def set_demo(self, demo: Demo):
         self.apply_to_demo = demo
-        self.demoTargetCombo.set
+        # self.demoTargetCombo.set
 
     def set_op(self, op_idx: int):
         self.op = get_op(op_idx)()
@@ -152,7 +152,7 @@ class OpWidget(QWidget):
                 out_path = os.path.join(out_dir, out_title + "." + out_format)
                 print("OUTPATH: " + out_path)
                 # out_path: str = self.renderOutputDir.text() + "\\" + self.renderOutputTitle.text()
-                RenderOp(out_path=out_path).run(demo)
+                RenderOp(out_path=pathlib.Path(out_path)).run(demo)
             else:
                 print("NOT VALID DIR")
 
@@ -160,7 +160,7 @@ class OpWidget(QWidget):
             pass
             
 
-        op_type = self.opCombo.currentIndex()
+        # op_type = self.opCombo.currentIndex()
         params = self.get_params()
 
     def add_step(self) -> None:

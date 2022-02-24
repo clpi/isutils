@@ -18,7 +18,6 @@ class Prefs(QDialog):
 if __name__ == "__main__":
 
     app = QApplication(sys.argv)
-    app.setStyle("Fusion")
     prefs = Prefs()
     prefs.show()
     app.exec()

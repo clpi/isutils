@@ -108,7 +108,7 @@
              <enum>QTabWidget::Rounded</enum>
             </property>
             <property name="currentIndex">
-             <number>0</number>
+             <number>1</number>
             </property>
             <property name="usesScrollButtons">
              <bool>false</bool>
@@ -352,7 +352,6 @@
                   </property>
                   <property name="font">
                    <font>
-                    <weight>50</weight>
                     <bold>false</bold>
                    </font>
                   </property>
@@ -429,17 +428,8 @@
         <item>
          <layout class="QVBoxLayout" name="demoLayout">
           <item>
-           <widget class="QTabWidget" name="objectViewTabW">
-            <property name="currentIndex">
-             <number>0</number>
-            </property>
-            <property name="documentMode">
-             <bool>false</bool>
-            </property>
-            <widget class="QWidget" name="demoViewTabW">
-             <attribute name="title">
-              <string>Demo View</string>
-             </attribute>
+           <widget class="QStackedWidget" name="objectViewTabW">
+            <widget class="QWidget" name="objectViewTabWPage1">
              <layout class="QVBoxLayout" name="verticalLayout_9">
               <item>
                <widget class="QGroupBox" name="demoTreeBox">
@@ -655,21 +645,9 @@
               </item>
              </layout>
             </widget>
-            <widget class="QWidget" name="tab_2">
-             <attribute name="title">
-              <string>Preview</string>
-             </attribute>
-            </widget>
-            <widget class="QWidget" name="tab_8">
-             <attribute name="title">
-              <string>Audio</string>
-             </attribute>
-            </widget>
-            <widget class="QWidget" name="tab_9">
-             <attribute name="title">
-              <string>Script</string>
-             </attribute>
-            </widget>
+            <widget class="QWidget" name="objectViewTabWPage2"/>
+            <widget class="QWidget" name="objectViewTabWPage3"/>
+            <widget class="QWidget" name="objectViewTabWPage4"/>
            </widget>
           </item>
          </layout>
@@ -696,7 +674,7 @@
      <x>0</x>
      <y>0</y>
      <width>1440</width>
-     <height>20</height>
+     <height>21</height>
     </rect>
    </property>
    <property name="defaultUp">
@@ -1784,22 +1762,6 @@
     <hint type="destinationlabel">
      <x>98</x>
      <y>135</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
-   <sender>actionPreferences</sender>
-   <signal>toggled(bool)</signal>
-   <receiver>demoAddStepBtn</receiver>
-   <slot>hide()</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>-1</x>
-     <y>-1</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>1317</x>
-     <y>536</y>
     </hint>
    </hints>
   </connection>
