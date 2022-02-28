@@ -1,15 +1,22 @@
+from email.mime import audio
 from PyQt6 import QtWidgets, QtCore, QtGui
+from isu.models.demo.audio import Audio
+from isu.models.demo.script import Script
 from PyQt6.QtWidgets import (
     QMenu
 )
 from PyQt6.QtGui import (QAction, QWindowStateChangeEvent, QContextMenuEvent)
 from PyQt6.QtCore import (
     QAbstractItemModel, QXmlStreamEntityDeclaration, QXmlStreamEntityResolver, QXmlStreamAttribute,
-    QDataStream,
+    QDataStream, pyqtSignal, pyqtSlot, pyqtClassInfo, pyqtEnum, pyqtPickleProtocol, 
 )
+
 
 class DemoView(QtWidgets.QTreeView):
     menu = QMenu
+    loaded = pyqtSignal(bool, "dload")
+    au = pyqtSignal(Audio, "daudio")
+    sc = pyqtSignal(Script, "dscript")
 
     def __init__(self, parent: QtWidgets.QWidget = None):
         super().__init__(parent)

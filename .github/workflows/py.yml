@@ -1,0 +1,18 @@
+name: isutils poetryy
+on: push
+defaults:
+  run:
+    shell: python
+
+env:
+  PIP_CACHE_DIR: "$CI_PROJECT_DIR/.cache/pip"
+
+jobs:
+  build:
+    runs-on: windows-latest
+    steps:
+      - name: install poetry
+        run: pip3 install poetry
+
+      - name: poetry install
+        run: poetry install

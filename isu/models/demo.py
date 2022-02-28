@@ -9,12 +9,12 @@ from typing import List, Tuple, Dict, Union, Optional, Iterable, Any
 from pathlib import Path, PurePath
 from itertools import islice
 from copy import deepcopy
-from models.demo.section import Section
-from models.demo.step import Step
-from models.demo.script import Script, TextBox
-from models.demo.audio import Audio
-from common.utils import validate_path, timefunc, logger
-import models.demo.demo_tags as dt
+from isu.models.section import Section
+from isu.models.step import Step
+from isu.models.script import Script, TextBox
+from isu.models.audio import Audio
+import isu.models.demo_tags as dt
+from isu.common.utils import validate_path, timefunc, logger
 from collections import deque, namedtuple
 from PIL import Image
 import shutil

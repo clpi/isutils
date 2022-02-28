@@ -1,9 +1,15 @@
 pathlib
-PyQt5
+PyQt6
 pillow
+imageio-ffmpeg
 lxml
 python-docx
 mutagen
 opencv-python
-moviepy
 ffmpeg-python
+av
+vidgear
+srt
+pyscreenshot
+gizeh
+ffsubsync

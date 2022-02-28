@@ -5,20 +5,27 @@ description = ""
 authors = ["Chris P <chrisp1877@gmail.com>"]
 
 [tool.poetry.dependencies]
-python = "^3.8"
-lxml="*"
-python-docx="*"
-PyQt5="*"
-pyqt6="*"
-opencv-python="*"
-ffmpeg="*"
-mutagen="*"
-pillow="*"
-pylint = "^2.8.2"
-moviepy="*"
+python = "^3.10"
+lxml="^4.8.0"
+python-docx="^0.8.11"
+pyqt6="^6.2.3"
+opencv-python="^4.5.5"
+mutagen="^1.45.1"
+pillow="^9.0.1"
+python-ffmpeg = "^1.0.13"
+av = "^8.1.0"
+pyscreenshot = "^3.0"
+gizeh = "^0.1.11"
+Pillow = "^9.0.1"
+PyQt6 = "^6.2.3"
+ffmpeg-python = "^0.2.0"
+numpy = "^1.22.2"
+moviepy = "^1.0.3"
+
 
 [tool.poetry.dev-dependencies]
 mypy="*"
+pylint = "^2.8.2"
 black = {version = "^20.8b1", allow-prereleases = true}
 
 [tool.poetry.scripts]

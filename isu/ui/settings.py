@@ -1,31 +1,30 @@
-from rich import print
 from pathlib import Path, PurePath, PureWindowsPath
 import sys, os
 import ffmpeg as ff
 import moviepy.editor as mp
-from PySide6.QtUiTools import QUiLoader
-from PySide6.QtWidgets import (
+from PyQt6 import uic
+from PyQt6.QtWidgets import (
     QWidget, QMainWindow, QPushButton, QApplication, QCheckBox, QLabel, QLayout,
     QLineEdit, QSpinBox, QSplashScreen, QProgressBar, QMessageBox, QFileDialog,
     QHBoxLayout, QHeaderView, QVBoxLayout, QTableWidget, QTableView, QListView, QListWidget,
     QComboBox,
 )
-from PySide6.QtGui import (
+from PyQt6.QtGui import (
     QAction, QColor, QCloseEvent, QCursor, QDropEvent, QGuiApplication, QIcon,
     QPen, QColorConstants, QPainter
 )
-from PySide6.QtCore import (
+from PyQt6.QtCore import (
     QBuffer, QXmlStreamAttributes, QItemSelection, QXmlStreamReader, QXmlStreamWriter,
     QTimer, QUrl, QFile, QDir, 
     # pyqtSignal, pyqtPickleProtocol, pyqtSlot, QUrl, Qt, QObject
 )
-from PySide6.QtQuick import QQuickView, QQuickPaintedItem
+from PyQt6.QtQuick import QQuickView, QQuickPaintedItem
 
 class Settings(QWidget):
 
     def __init__(self) -> None:
         super().__init__()
-        # window = loader.load("settings.ui", None)
+        uic.load_ui("settings.ui", self)
         self.setWindowTitle("Settings - isutils")
         self.setGeometry(500, 500, 500, 500)
         self.setFixedHeight(500)

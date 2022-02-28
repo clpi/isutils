@@ -1,6 +1,9 @@
 """
 Operation to stitch together images of demo to form exported mp4 file
 """
+import av
+from av import VideoFormat, VideoFrame, buffer 
+import cv2
 from pathlib import WindowsPath
 from typing import Sequence, Optional, Tuple
 import enum
@@ -19,15 +22,27 @@ def render(path: str):
 class Format(enum.Enum):
     Mp4, Avi, Mkv = range(3)
 
-class Clip:
-    pass
+class Codec:
+    def ctx(self):
+        cc = av.CodecContext.create('h264', 'r')
 
-class StepClip(Clip):
+class Output:
+    def __init__(self, path: WindowsPath):
+        v = av.open(str(path))
+
+class Clip:
+    f: VideoFrame
+
+    def __init__(self):
+        pass
+
+class StepClip(Clip, VideoFrame):
     img: str
     hover: Optional[str] = None
     delay: float
     animated: bool = False
     audio: Optional[str] = None
+        
 
     def __init__(self, 
             img: str, 

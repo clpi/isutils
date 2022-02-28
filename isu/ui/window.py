@@ -5,12 +5,16 @@ TODO: Add op_type indicator for qtreewidgetitems in step list
 TODO: Make separate model / item classes for step list OR sep. QTreeWidget for stepsListTreeWidget
 TODO: Figure out script/audio/demo association functionality
 """
-import sys, os, functools, typing
+import sys
+import os
+import functools
+import typing
 from pathlib import Path
 from dataclasses import dataclass, field
 from typing import List, Tuple, Dict, Optional, Type, Any
-import qtpy
 from PyQt6.QtCore import ( 
+    QPoint, QAbstractItemModel, QCoreApplication, pyqtEnum,
+    pyqtPickleProtocol,
     QObject, pyqtSlot, QFileSelector, QSaveFile, QFileSelector, QTemporaryDir, 
     QTemporaryFile, QAbstractItemModel, QAbstractListModel, pyqtSignal, QModelIndex,
     QSignalMapper, QProcess, Qt, QDir, QFile, QFileInfo, QUrl, QUuid
@@ -19,7 +23,7 @@ from PyQt6.QtGui import (QIcon,
     QDragEnterEvent, QDropEvent,
     QImageIOHandler, QImage, QImageReader, QAction, QIcon, QAction, 
     QActionEvent, QIconEngine,
-    QImageWriter, QStandardItemModel, QStandardItem, QPalette, QColor, QColorConstants,
+    QImageWriter,QStandardItemModel, QStandardItem, QPalette, QColor, QColorConstants,
 )
 from PyQt6.QtMultimediaWidgets import QGraphicsVideoItem, QVideoWidget
 from PyQt6 import uic
@@ -34,12 +38,12 @@ from PyQt6.QtWidgets import ( QWidget,
 )
 from PIL import Image
 
-from models.demo.demo import Demo
-from models.operation import Op, ShellOp, InsertOp, SectionOp, AudioOp, CropOp, OP_TYPES
-from ui.comp.op import OpWidget
-from ui.comp.prefs import Prefs
+from isu.models.demo import Demo
+from isu.models.operation import Op, ShellOp, InsertOp, SectionOp, AudioOp, CropOp, OP_TYPES
+from isu.ui.comp.op import OpWidget
+from isu.ui.comp.prefs import Prefs
 
-from PySide6.QtUiTools import QUiLoader
+# from PySide6.QtUiTools import QUiLoader
 
 #TODO make function/class which automatically goes thru list of widget names
 #     and attaches appropriate functions/functionality
@@ -128,8 +132,8 @@ class MainWindow(QMainWindow):
     #TODO detach these from class
     def browse_demo(self):
         home_dir = str(Path.home()) + "\\Documents\\My Demos"
-        demo_path, _ok = QFileDialog.getOpenFileName(self,"Browse for .demo files", "","Demo files (*.demo);;All Files (*)")
-        if demo_path != "":
+        demo_path, ok = QFileDialog.getOpenFileName(self,"Browse for .demo files", "","Demo files (*.demo);;All Files (*)")
+        if ok:
             self.cx.demo_paths.append(demo_path[0])
             print(demo_path[0])
             self.load_demo(demo_path[0])

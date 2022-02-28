@@ -4,13 +4,13 @@
 @author Chris P <clp@clp.is>
 """
 from typing import NoReturn
-from ui.window import MainWindow, run
-from ui.app import MainApp
+from isu.ui.window import MainWindow, run
+from isu.ui.app import MainApp
 import os, sys
 import tkinter as tk
 
 def main():
-    app = MainApp(sys.argv)
+    app = MainApp(sys.argv).run()
 
 
 if __name__ == "__main__":

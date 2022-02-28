@@ -13,8 +13,8 @@ from PyQt6.QtCore import (Qt, QObject, pyqtSlot, pyqtSignal)
 from PyQt6.QtWidgets import (QWidget, QDialog, QListWidget, QPushButton,
     QComboBox, QListWidgetItem, QTreeWidget, QTreeWidgetItem, 
     QApplication, QLineEdit, QSpinBox, QStackedWidget, QFileDialog, QCheckBox)
-from models.operation import Op, ShellOp, InsertOp, SectionOp, AudioOp, CropOp, RenderOp, get_op
-from models.demo.demo import Demo
+from isu.models.operation import Op, ShellOp, InsertOp, SectionOp, AudioOp, CropOp, RenderOp, get_op
+from isu.models.demo import Demo
 
 class OpWidget(QWidget):
 
@@ -84,6 +84,10 @@ class OpWidget(QWidget):
         self.renderOutputFormat: QComboBox
 
         self.opCombo.currentIndexChanged.connect(self.set_op)
+        self.renderOutputTitle.textChanged[str].connect(self.set_rtitle)
+
+    def set_rtitle(self, t: str):
+        self.renderOutputTitleStr = t
 
     def set_demo(self, demo: Demo):
         self.apply_to_demo = demo
@@ -209,3 +213,8 @@ class OpContext:
     def __init__(self, op_idx: int):
         self.op_idx = op_idx
 
+if __name__ == "__main__":
+    a = QApplication(sys.argv)
+    o = OpWidget()
+    o.show()
+    sys.exit(a.exec())

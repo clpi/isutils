@@ -1,11 +1,13 @@
 from PIL import Image
+import numpy as np
+import av
 import re
 from uuid import uuid4
 from typing import List, Tuple, Dict, Optional, Any, Iterable, Union
 from pathlib import Path, PurePath
-import models.demo.demo_tags as dt
-from models.demo.audio import SoundBite
-from models.demo.script import TextBox
+import isu.models.demo_tags as dt
+from isu.models.audio import SoundBite
+from isu.models.script import TextBox
 import shutil
 from copy import deepcopy
 
@@ -238,6 +240,12 @@ class Step:
 
     def add_audio(self):
         pass
+
+    def from_array(self, a: np.ndarray):
+        i = Image.fromarray(a, 'RGB')
+        i.resize((1920, 1080))
+        return i
+
 
     def __eq__(self, other):
         return self.idx == other.idx

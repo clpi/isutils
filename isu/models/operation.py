@@ -6,7 +6,7 @@ from abc import abstractmethod, abstractproperty, ABC, ABCMeta
 from enum import Enum, auto
 from typing import Tuple, Optional, List, Union, Type, Any, Dict, Sequence, MutableSequence, Iterable
 from dataclasses import dataclass
-from models.demo.demo import Demo, section
+from isu.models.demo import Demo, section
 #from ui.comp.op import OpWidget
 
 SECTION_RULES: list = []

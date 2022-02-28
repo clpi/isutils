@@ -3,7 +3,7 @@ from pathlib import Path, PurePath
 from itertools import islice
 from typing import List, Tuple
 import sys
-from common.utils import validate_path, logger
+from isu.common.utils import validate_path, logger
 import re
 
 class Script:
@@ -95,10 +95,10 @@ class Script:
     def __setitem__(self, key: Tuple[int, str], text) -> None:
         if type(text) is str:
             if key[1] == "ci":
-                self.ci[key[0]] = text
+                self.ci[key[0]] = text # type: ignore
             if key[1] == "tp":
-                self.tp[key[0]] = text
-        if type(text) is tuple:
+                self.tp[key[0]] = text # type: ignore
+        if type(text) is tuple: 
             if type(text[0]) is str and type(text[1]) is str:
                 self.ci[key[0]], self.tp[key[0]] = text
 
@@ -159,7 +159,7 @@ class TextBox:
         if self.text:
             freq = dict.fromkeys(self.words.__dict__)
             for word in freq.keys():
-                freq[word] += 1
+                freq[word] += 1 #type: ignore
             return freq
         return {}
 
