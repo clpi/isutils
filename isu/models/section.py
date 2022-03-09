@@ -8,11 +8,12 @@ from pathlib import Path, PurePath
 from copy import deepcopy
 import shutil
 from collections import deque
+from PyQt6.QtCore import QObject
 
 #TODO implement steps in deque
 #TODO: Check performance of deque vs list
 
-class Section:
+class Section(QObject):
 
     def __init__(self,
                  elem = None,
@@ -22,6 +23,7 @@ class Section:
                  demo_idx: int = -1, 
                  title: str = "", 
                  audio: str = "",
+                 verbose: bool = False,
                  is_special: bool = False):
         """
         Object to hold section data. If initializing from elem in etree, must provide
@@ -29,10 +31,10 @@ class Section:
         """
         if not copy:
             self.root = elem
-            self.children = self.root.find("Steps")
+            self.ch = self.root.find("Steps")
         else:
             self.root = deepcopy(elem)
-            self.children = self.root.find("Steps")
+            self.ch = self.root.find("Steps")
         self.idx = idx
         self.demo_idx = demo_idx
         self.length = 0
@@ -63,31 +65,31 @@ class Section:
 
     def extend(self, steps: deque):
         self.steps.extend(steps)
-        self.children.extend(step.root for step in steps)
+        self.ch.extend(step.root for step in steps)
 
     def append(self, step: Step):
         self.steps.append(step)
-        self.children.append(deepcopy(step.root))
+        self.ch.append(deepcopy(step.root))
 
     def pop(self):
         pop = self.steps.pop()
-        self.children.remove(pop.root)
+        self.ch.remove(pop.root)
         return pop
 
     def popleft(self):
         pop = self.steps.popleft()
-        self.children.remove(pop.root)
+        self.ch.remove(pop.root)
 
     def duplicate_step(self, idx: int, as_pacing: bool = False):
         dupe = deepcopy(self.steps[idx])
         if as_pacing:
             dupe.set_animated()
         self.steps.insert(idx, dupe)
-        self.children.insert(idx, dupe.root)
+        self.ch.insert(idx, dupe.root)
 
     def delete_step(self, idx: int):
         self.steps.remove(self.steps[idx])
-        self.children.remove(self.children[idx])
+        self.ch.remove(self.ch[idx])
 
     def insert_step(self, step: Step, before=True):
         pass

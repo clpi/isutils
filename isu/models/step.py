@@ -1,4 +1,7 @@
+from dataclasses import dataclass
 from PIL import Image
+import lxml.etree as et
+import lxml
 import numpy as np
 import av
 import re
@@ -10,29 +13,52 @@ from isu.models.audio import SoundBite
 from isu.models.script import TextBox
 import shutil
 from copy import deepcopy
+from PyQt6.QtCore import QObject
 
-class Step:
+class Step(QObject):
+
+    @dataclass()
+    class Video(QObject):
+        pos: Tuple[int, int] = (0, 0)
+        size: Tuple[int, int] = (1920, 1080)
+        vidsize: Tuple[int, int] = (1920, 1080)
+
+        autoplay: bool = True
+        asp_locked: bool = True
+        file: str = "Video.mp4"
+        dur_ticks: str = "80000000"
+
+    @dataclass()
+    class Text(QObject):
+        font: str = ""
+        text: str = ""
+        color: str = ""
+        size: str = ""
+        
 
     #TODO check if step delaya is None if not specified
     def __init__(self,
-                elem = None,
+                elem: et.ElementTree = None,
                 copy: bool = False,
                 demo_dir: str = None,
                 idx: int = -1,
+                verbose: bool = False,
                 demo_idx: int = -1,
                 img_path: str = "",
                 hover_img_path: str = "",
                 click_instr: str = "",
                 talking_pt: str = "",
                 audio_path: str = "",
+                step_section: bool = False,
                 animated: bool = False,
                 guided: bool = False,
                 step_delay: float = 1.0):
         if not copy:
-            self.root = elem
+            self.root: et.ElementTree = elem
         else:
             self.root = deepcopy(elem)
         self.idx = idx
+        self.verbose = verbose
         self.demo_idx = demo_idx
         self.demo_dir = demo_dir
         self.tp, self.ci = TextBox(talking_pt), TextBox(click_instr)
@@ -40,11 +66,12 @@ class Step:
 
     def load(self):
         s = []
+        self.mouse_hover: Optional[tuple[float, float]] = None
         self.props = self.root.find("StartPicture")
         self.boxes = {k:dict.fromkeys({*v["props"], *dt.DIRS}, None) for k, v in dt.BOX_PROPS.items()}
         self.assets = Path(self.demo_dir, self.props.find("AssetsDirectory").text)
         self.img = PurePath(self.assets, self.props.find("PictureFile").text)
-        print(f"IMAGE: {self.img}")
+        if self.verbose: print(f"IMAGE: {self.img}")
         self.time = self.props.find("Time").text
         if (hover := self.props.find("MouseEnterPicture")) is not None and hover.text is not None:
             self.hover = PurePath(self.assets, hover.find("PictureFile").text)
@@ -57,7 +84,7 @@ class Step:
             self.hover = None
         self.mouse = (float(self.props.find(dt.MOUSE_X).text), float(self.props.find(dt.MOUSE_Y).text))
         if (soundbite := self.root.find("SoundBite")) is not None:
-            print(f"SOUNDBITE: {soundbite}")
+            if self.verbose: print(f"SOUNDBITE: {soundbite}")
             self.audio = SoundBite(elem=soundbite, asset_path=str(self.assets))
         else:
             self.audio = None
@@ -67,6 +94,7 @@ class Step:
                 setattr(self, prop, prop_type(self.root.find(prop_tag).text))
             except:
                 setattr(self, prop, None)
+        # setattr(self,"delay", float)
         for box_key, box_dict in dt.BOX_PROPS.items():
             box_props = {**box_dict["props"], **dt.DIRS}
             tag = box_dict["tag"]
@@ -116,7 +144,7 @@ class Step:
                 d = dt.DIR_KEYS[j]
                 self.boxes[box][d][i] = dim
                 xmlbox.find(dt.DIRS[d]["tag"]).text = str(int(dim))
-                print(dim, xmlbox.find(dt.DIRS[d]["tag"]).text)
+                if self.verbose: print(dim, xmlbox.find(dt.DIRS[d]["tag"]).text)
 
 
     def transform_coords(self, scale: Tuple[float, float], offset: Tuple[float, float]):
@@ -152,9 +180,9 @@ class Step:
         for box, box_props in self.boxes.items():
             for i in range(len(box_props['x1'])):
                 dims = [box_props[d][i] for d in dt.DIR_KEYS]
-                print("OLD: " + str(dims))
+                if self.verbose: print("OLD: " + str(dims))
                 coords = transf(dims)
-                print("NEW: " + str(coords))
+                if self.verbose: print("NEW: " + str(coords))
                 self.set_box_dims(box, coords)
                 if box == "video":
                     w, h = transf([box_props["width"][i], box_props["height"][i]], False)
@@ -165,14 +193,24 @@ class Step:
                     self.props.find(tag).text = str(box_props["size"][i])
         self.set_mouse(self.mouse[0]*rx+ox, self.mouse[1]*ry+oy)
         if self.hover is not None:
-            self.set_mouse_hover(self.mouse_hover[0]*rx*ox, self.mouse_hover[1]*ry*oy)
+            if self.mouse_hover:
+                self.set_mouse_hover(self.mouse_hover[0]*rx*ox, self.mouse_hover[1]*ry*oy)
         if dt.DEBUG:
-            print(f"SHIFTED: Step {self.idx}")
+            if self.verbose: print(f"SHIFTED: Step {self.idx}")
 
 
 
     def set_guided(self, guided: bool):
         pass
+
+    def get_delay(self) -> float:
+        sd = self.boxes["StepDelay"]
+        return sd
+        # # if self.root.find("StepDelay").attributes["xsi:nil"] == "true"
+        # if self.root.find("StepDelay") is not None:
+        #     return float(self.root.find("StepDelay").text)
+        # else:
+            # return 1.0
 
     def set_delay(self, length: float = 1.0, off: bool = False):
         if off:

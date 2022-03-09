@@ -1,0 +1,99 @@
+
+<ui version="4.0" >
+ <author></author>
+ <comment></comment>
+ <exportmacro></exportmacro>
+ <class>Form</class>
+
+        <widget class="QWidget" name="sectionOp">
+         <layout class="QFormLayout" name="formLayout_6">
+          <item row="1" column="1">
+           <widget class="QListWidget" name="sectionRulesListWidget">
+            <property name="maximumSize">
+             <size>
+              <width>16777215</width>
+              <height>100</height>
+             </size>
+            </property>
+            <item>
+             <property name="text">
+              <string>Step has TP, next step without TP</string>
+             </property>
+            </item>
+            <item>
+             <property name="text">
+              <string>Step has TP, next step with TP</string>
+             </property>
+            </item>
+            <item>
+             <property name="text">
+              <string>Step has TP, previous step without TP</string>
+             </property>
+            </item>
+            <item>
+             <property name="text">
+              <string>Step has TP, previous step with TP</string>
+             </property>
+            </item>
+            <item>
+             <property name="text">
+              <string>Step has fade-in</string>
+             </property>
+            </item>
+            <item>
+             <property name="text">
+              <string>Step has jump box</string>
+             </property>
+            </item>
+            <item>
+             <property name="text">
+              <string>Step TP contains text pattern...</string>
+             </property>
+            </item>
+           </widget>
+          </item>
+          <item row="0" column="1">
+           <widget class="QLabel" name="label_10">
+            <property name="maximumSize">
+             <size>
+              <width>16777215</width>
+              <height>20</height>
+             </size>
+            </property>
+            <property name="text">
+             <string>Insert new section on...</string>
+            </property>
+           </widget>
+          </item>
+          <item row="2" column="1">
+           <widget class="QLabel" name="sectionCoverageLabel">
+            <property name="maximumSize">
+             <size>
+              <width>16777215</width>
+              <height>20</height>
+             </size>
+            </property>
+            <property name="text">
+             <string>Covers 0 steps in selected sections/steps</string>
+            </property>
+           </widget>
+          </item>
+          <item row="3" column="1">
+           <widget class="QLabel" name="label_11">
+            <property name="maximumSize">
+             <size>
+              <width>16777215</width>
+              <height>20</height>
+             </size>
+            </property>
+            <property name="text">
+             <string>May not match number of audio soundbites (audio not imported)</string>
+            </property>
+           </widget>
+          </item>
+         </layout>
+        </widget>
+
+ <pixmapfunction></pixmapfunction>
+ <connections/>
+</ui>

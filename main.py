@@ -1,17 +1,21 @@
-#/usr/bin/env python3
+﻿#/usr/bin/env python3
 """
 @file main.py
 @author Chris P <clp@clp.is>
 """
 from typing import NoReturn
-from isu.ui.window import MainWindow, run
-from isu.ui.app import MainApp
+from isu.ui.window import MainWindow
+from isu.app import MainApp
 import os, sys
-import tkinter as tk
+from PyQt6.QtCore import QCoreApplication
+from PyQt6.QtWidgets import QApplication
 
-def main():
-    app = MainApp(sys.argv).run()
+def run():
+    app = MainApp([])
+    app.window.show()
+    sys.exit(app.exec())
+    # app = QApplication()
 
 
 if __name__ == "__main__":
-    main()
+    run()

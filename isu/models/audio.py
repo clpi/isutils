@@ -4,15 +4,23 @@ from itertools import islice
 from typing import List, Tuple
 from isu.common.utils import validate_path, logger
 import lxml.etree as ET
+from PyQt6.QtCore import (
+    QObject, QMetaObject, QAbstractItemModel, QAbstractListModel,
+    QAbstractTableModel,
+    QXmlStreamReader, QXmlStreamWriter, QAbstractEventDispatcher, Qt,
+)
 
-class Audio:
+class Audio(QAbstractItemModel):
 
-    def __init__(self, path: str = ""):
+    def __init__(self, 
+                 path: str = "",
+                 verbose: bool = False):
         self.dir = path
+        self.verbose = verbose
         self.mp3: List[MP3] = []
         self.len = 0
         try:
-            print("LOADING AUDIO")
+            if self.verbose: print("LOADING AUDIO")
             self.loaded = self.load_dir(path)
         except BaseException as exc:
             logger.error("Audio failed to import. %s", str(exc))
@@ -26,9 +34,9 @@ class Audio:
             soundbite = SoundBite(path=str(filepath)) #guaranteed to load
             self.mp3.append(soundbite)
             self.len += 1
-        print("Audio:  loaded {} soundbites.".format(self.len))
+        if self.verbose: print("Audio:  loaded {} soundbites.".format(self.len))
         self.mp3 = [SoundBite(path=str(filepath)) for filepath in self.path.glob("*.mp3")]
-        print(self.mp3)
+        if self.verbose: print(self.mp3)
         return True
 
 

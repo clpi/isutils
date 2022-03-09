@@ -5,6 +5,7 @@ import uuid
 import copy
 import cv2
 import moviepy.editor as mpy
+import ffmpeg, av, cv2
 from typing import List, Tuple, Dict, Union, Optional, Iterable, Any
 from pathlib import Path, PurePath
 from itertools import islice
@@ -20,19 +21,29 @@ from PIL import Image
 import shutil
 import ffmpeg as ff
 import moviepy.editor as mp
+from PyQt6.QtWidgets import QApplication
+from PyQt6.QtCore import *
 
 #----------------------------DEMO------------------------------------#
 
-class Demo:
+class Demo(QAbstractItemModel):
+
+    added_step = pyqtSignal(Step)
+    added_sect = pyqtSignal(Section)
+    added_audio = pyqtSignal(Audio)
+    added_script = pyqtSignal(Script)
 
     def __init__(self,
                 path: str = "",
                 script_path: str = "",
                 audio_dir: str = "",
+                verbose: bool = False,
                 is_sectioned: bool = False,
-                audio_attached: bool = False):
-        print("Demo loading...")
+                audio_attached: bool = False,
+                parent: QCoreApplication = QApplication.instance()):
+        super().__init__(parent)
         self.file: str = path
+        self.verbose = verbose
         self.script_path: str = script_path
         self.audio_dir: str = audio_dir
         self.is_sectioned: bool = is_sectioned
@@ -59,7 +70,7 @@ class Demo:
         section #, click instructions, and secon element contains talking points (where applicable)
         """
         self.path = Path(path)
-        parser = ET.XMLParser(strip_cdata=False, remove_blank_text=True)
+        parser = ET.XMLParser(strip_cdata=False, remove_blank_text=False)
         try:
             if root is None:
                 self.tree = ET.parse(path, parser)
@@ -75,31 +86,32 @@ class Demo:
             self.sections = []
             self.id = self.root.find("ID").text
             self.title = self.root.find("DemoName").text
-            for i, sect in enumerate(self.root.findall('Chapters/Chapter')):
-                print(f"SECTION {i+1}: Processing...")
+            sect_xml = self.root.findall('Chapters/Chapter')
+            for i, sect in enumerate(sect_xml):
+                if self.verbose: print(f"SECTION {i+1}: Processing...")
                 self.lstep.append([])
                 self.lstepprops.append([])
                 self.lsect.append(sect)
                 for j, step in enumerate(sect.findall("Steps/Step")):
-                    print(f"SECTION {i+1} STEP {j+1}: Processing...")
+                    if self.verbose: print(f"SECTION {i+1} STEP {j+1}: Processing...")
                     self.lstep[i].append(step)
                     self.lstepprops[i].append(step.find("StartPicture"))
                 section = Section(elem=sect, demo_dir=self.file, idx=i, demo_idx=self.len)
                 self.len += len(section)
                 self.sections.append(section)
             self.steps =[step for sect in self for step in sect]
-            print(f"Imported demo with {len(self.sections)} sections and {len(self.steps)} steps.")
+            if self.verbose: print(f"Imported demo with {len(self.sections)} sections and {len(self.steps)} steps.")
         self.script = Script(self.script_path)
         if self.script.loaded:
             if self.matches_script(self.script):
-                print("Script: Matches demo. Script imported successfully.")
+                if self.verbose: print("Script: Matches demo. Script imported successfully.")
                 self.set_text(self.script)
         else:
             if (exp_script := self.path.with_suffix('.docx')).exists():
                 self.script = Script(str(exp_script))
                 if self.script.loaded:
                     if self.matches_script(self.script):
-                        print("Script: Matches demo. Script imported successfully.")
+                        if self.verbose: print("Script: Matches demo. Script imported successfully.")
                         self.set_text(self.script)
         self.audio = Audio(self.audio_dir)
         if self.audio.loaded:
@@ -112,11 +124,11 @@ class Demo:
         if script is None:
             script = self.script
         if (self.len) != (len(script)):
-            print("Script does not match demo. Demo has {} steps, script has {} steps.\n"
+            if self.verbose: print("Script does not match demo. Demo has {} steps, script has {} steps.\n"
                     .format(len(self), len(script)))
             return False
         if len(self.sections) != script.num_sections and not naive:
-            print("""Script does not match demo.Demo has same number of steps,
+            if self.verbose: print("""Script does not match demo.Demo has same number of steps,
                     but has {} sections, while script has {} sections.\n"""
                     .format(len(self.sections), script.num_sections))
             return False
@@ -125,12 +137,12 @@ class Demo:
             for i, sect in enumerate(self.sections):
                 sect_lens.append(len(sect))
                 if (len(sect)) != len(script.tp):
-                    print("""Demo and script have same number
+                    if self.verbose: print("""Demo and script have same number
                         of steps and sections, but the lengths of sections are unequal.
                         Stopped at section {} ({}): script has {} steps, demo has {} steps.\n"""
                         .format(i, sect.title, len(sect), len(script.tp)))
                     return False
-        print("Script length, demo length: " + str(len(script)) + ", " + str(self.len))
+        if self.verbose: print("Script length, demo length: " + str(len(script)) + ", " + str(self.len))
         return True
 
     def load_from_root(self, tree: ET.ElementTree):
@@ -143,9 +155,9 @@ class Demo:
             audio = self.audio
         demo_audio_len = sum(1 for _ in self.iter_audio_step(by_tp))
         if len(audio) == demo_audio_len:
-            print(f"Audio: Matches demo. Both have {len(audio)} soundbites.")
+            if self.verbose: print(f"Audio: Matches demo. Both have {len(audio)} soundbites.")
             return True
-        print(f"""Warning: Audio does not match demo. Audio has {len(audio)}
+        if self.verbose: print(f"""Warning: Audio does not match demo. Audio has {len(audio)}
                 soundbites, demo should have {demo_audio_len} soundbites.""")
         return False
 
@@ -163,7 +175,7 @@ class Demo:
             num = sb.path.name.rsplit(".")[0].rsplit("_")[1]
             if "a" in num:
                 audio_i += 1
-                print(i)
+                if self.verbose: print(i)
                 sb = self.audio[audio_i]
             if start > i or (end != -1 and end < 1):
                 continue
@@ -178,7 +190,6 @@ class Demo:
         self.write()
 
     def set_text(self, script: Optional[Script] = None) -> None:
-        print('setting text')
         if script is None:
             script = self.script
         for step, (ci, tp) in zip(self.iter_step(), script):
@@ -316,7 +327,7 @@ class Demo:
 
     def set_res(self):
         x, y = Image.open(str(self[0][0].img)).size
-        print(x, y)
+        if self.verbose: print(x, y)
         self.res: Tuple[int, int] = (x, y)
         dt.DEMO_RES = (x, y)
 
@@ -356,6 +367,13 @@ class Demo:
                 self.path = new_path
         else:
             tree.write(str(self.path), pretty_print=True, xml_declaration=True, encoding='utf-8')
+
+    # def insertRow(self, row: Step, parent: QModelIndex) -> bool:
+    #     return super().insertRow(row, parent)
+
+
+    # def insertRows(self, row: int, count: int, parent: QModelIndex = ...) -> bool:
+    #     return super().insertRows(row, count, parent)
 
     def search(self, phrase: str, action: str = None):
         return self.root.findtext(phrase)
@@ -398,6 +416,7 @@ class Demo:
                     shell_path: str = None, # if provided, path of img to be placed on top of bg_img but below asset (must be smaller than asset)
                     shell_new_coord: Tuple[int, int] = None, # if provided, coordinates (as above) of shell img on bg img
                     shell_new_size: Tuple[int, int] = None, # if provied, size (as above) of shell img on bg img
+                    verbose: bool = False,
                     ):
         """
         Performs shelling on all/selected sections of demo. Options:
@@ -412,7 +431,7 @@ class Demo:
         #TODO Back up asset image in backup folder before overwriting?
         #TODO Allow user to choose to crop image THEN resize
         if dt.DEBUG:
-            print("STARTING: Shelling assets...")
+            if self.verbose: print("STARTING: Shelling assets...")
 
         fit_res_to_bg: bool = False
         sections = [s.lower() for s in to_sect]
@@ -427,7 +446,7 @@ class Demo:
         bound = lambda size, loc: tuple(map(sum, zip(size, loc)))
         exceeds_res = lambda bound: bound[0]>self.res[0] or bound[1]>self.res[1]
 
-        print(f"DEMO RES: {self.res}")
+        if verbose: print(f"DEMO RES: {self.res}")
         print(f"ASSET NEW SIZE: {asset_new_size}")
         print(f"ASSET NEW COORD: {asset_new_coord}")
 
@@ -510,59 +529,6 @@ class Demo:
                                 print(f"INSERTED: {str(img)}")
                                 print(f"FINISHED: Section {sect_i}, step {step_i}")
 
-    def render_video(self, out_path: Path):
-        """
-        Renders composite of all demo's images into video using python mmpeg
-        0. Create an empty list of size n where n = number of steps for 
-            (a) images (b) each step's audio, and (c) click coordinates, and (d) fade in, 
-            (e). step delay (f) hover image (g) hover image time (h) rects (i) text
-        1. From demo object, iterate through every step, and load each step image + hover, audio (if appl.), and click coordinates, and fade in status
-            A. Add length of soundbite (if applicable) to step delay of step in step delay list
-            B. Paste image of cursor on coordinates onto image
-        2. Create empty output video with ffmpeg
-        3. With ffmpeg, loop from 0..n (num of steps) and:
-            A. Add image
-        """
-        print("[Demo.render_video] RUNNING render_video to path " + str(out_path))
-        imgs = []
-        for sect_i, sect in enumerate(self):
-            for step_i, step in enumerate(sect.steps):
-                if step.img is not None:
-                    print("\nSECTION " + str(sect_i) + ", STEP " + str(step_i) + " info:")
-                    if step.img: print("IMAGE: " + str(step.img))
-                    if step.hover: 
-                        print("HOVER: " + str(step.hover))
-                        if step.hover_time: 
-                            print("HOVER TIME: " + str(step.hover_time))
-                    mpy.Video
-                    if step.audio:
-                        print("AUDIO: " + str(step.audio))
-                    if step.animated: print("ANIMATED: " + str(step.animated))
-                    if step["has_mouse"]: print("HAS MOUSE: " + str(step.has_mouse))
-                    if step["delay"]: print("DELAY: " + str(step.delay))
-                    if step.time: print("TIME: " + str(step.time))
-                    if step.transition: print("")
-                    if step.boxes["hotspot"]:
-                        print("HOTSPOT:   (" + str(step.boxes["hotspot"]["x1"]) + ", " + str(step.boxes["hotspot"]["y1"]) + ")")
-                    if step.boxes["highlight"]:
-                        print("HIGHLIGHT: (" + str(step.boxes["highlight"]["x1"]) + ", " + str(step.boxes["highlight"]["y1"]) + "), color: " + str(step.boxes["highlight"]["color"]))
-                    if step.boxes["text"]:
-                        print("TEXT:      (" + str(step.boxes["text"]["text"]) + " (font: " + str(step.boxes["text"]["font"]) + ", size: " + str(step.boxes["text"]["size"]) + ", color: " + str(step.boxes["text"]["color"]) + ")")
-                    if step.mouse:
-                        print("MOUSE:     (" + str(step.mouse[0]) + ", " + str(step.mouse[1]) + ")")
-                    if step.mouse_hover:
-                        print("MOUSE HOV: (" + str(step.mouse_hover[0]) + ", " + str(step.mouse_hover[1]) + ")")
-                    step_img = cv2.imread(str(step.img))
-                    h, w, layers = step_img.shape
-                    size = (w, h)
-                    imgs.append(step_img)
-                if step.hover is not None:
-                    pass
-        # out = cv2.VideoWriter("C:\\Users\\chris\\Documents\\out.avi", cv2.VideoWriter_fourcc(*'DIVX'), 15, size)
-        out = cv2.VideoWriter(out_path, cv2.VideoWriter_fourcc(*'DIVX'), 15, size)
-        for img in imgs:
-            out.write(img)
-        out.release()
 
 
     def read_frame_as_jpg(in_filename, frame_num):
@@ -759,6 +725,10 @@ def section(d: Demo, add_intro_outro=False):
             append_step(root_c.findall("Chapters/Chapter")[-1], copy.deepcopy(step_el))
         """
         write(root_c, d.file)
+# -------------------------------- DEMO LIST ----------------------------#
+
+class DemoList(QObject):
+    pass
 
 #-----------------------------ITERATORS--------------------------------
 #TODO: Learn a lot more about generators, implement same functionality

@@ -1,3 +1,2 @@
-from .app import MainApp
-from .settings import Settings
+from isu.app import MainApp
 from .window import MainWindow

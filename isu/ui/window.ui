@@ -108,7 +108,7 @@
              <enum>QTabWidget::Rounded</enum>
             </property>
             <property name="currentIndex">
-             <number>1</number>
+             <number>0</number>
             </property>
             <property name="usesScrollButtons">
              <bool>false</bool>
@@ -435,7 +435,7 @@
             <property name="documentMode">
              <bool>false</bool>
             </property>
-            <widget class="QWidget" name="Demo" native="true">
+            <widget class="QWidget" name="Demo">
              <attribute name="title">
               <string/>
              </attribute>
@@ -657,17 +657,17 @@
               </item>
              </layout>
             </widget>
-            <widget class="QWidget" name="objectViewTabWPage2_2" native="true">
+            <widget class="QWidget" name="objectViewTabWPage2_2">
              <attribute name="title">
               <string/>
              </attribute>
             </widget>
-            <widget class="QWidget" name="objectViewTabWPage3_2" native="true">
+            <widget class="QWidget" name="objectViewTabWPage3_2">
              <attribute name="title">
               <string/>
              </attribute>
             </widget>
-            <widget class="QWidget" name="objectViewTabWPage4_2" native="true">
+            <widget class="QWidget" name="objectViewTabWPage4_2">
              <attribute name="title">
               <string/>
              </attribute>

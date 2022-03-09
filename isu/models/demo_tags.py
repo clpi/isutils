@@ -15,10 +15,6 @@ STEP_PROPS = {
         "tag": "IsGuided",
         "type": bool,
     },
-    "has_mouse": {
-        "tag": "IsPointerSuppressed",
-        "type": bool,
-    },
     "ci_xml": {
         "tag": "XmlInstruction/Instruction",
         "type": str,

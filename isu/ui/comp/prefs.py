@@ -13,6 +13,13 @@ class Prefs(QDialog):
         path = os.path.join(os.path.dirname(__file__), "prefs.ui")
         uic.loadUi(path, self)
 
+    def load_ui(self):
+        pass
+
+    @pyqtSlot()
+    def open(self, parent: None) -> None:
+        self.show()
+
 
 
 if __name__ == "__main__":

@@ -8,4 +8,3 @@ from .script import Script, TextBox
 from .section import Section, SectionIterator
 from .step import Step
 from .video import Video
-from .operation import Op
