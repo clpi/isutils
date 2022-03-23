@@ -1,41 +1,74 @@
-
-<ui version="4.0" >
- <author></author>
- <comment></comment>
- <exportmacro></exportmacro>
- <class>Form</class>
-
-        <widget class="QWidget" name="textOp">
-         <layout class="QFormLayout" name="formLayout_8">
-          <item row="0" column="1">
-           <widget class="QComboBox" name="comboBox">
-            <item>
-             <property name="text">
-              <string>Mixed section and step audio</string>
-             </property>
-            </item>
-            <item>
-             <property name="text">
-              <string>Section audio only</string>
-             </property>
-            </item>
-            <item>
-             <property name="text">
-              <string>Step audio only</string>
-             </property>
-            </item>
-           </widget>
-          </item>
-          <item row="0" column="0">
-           <widget class="QLabel" name="label_8">
-            <property name="text">
-             <string>Audio attachment behavior</string>
-            </property>
-           </widget>
-          </item>
-         </layout>
-        </widget>
-
- <pixmapfunction></pixmapfunction>
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>textOp</class>
+ <widget class="QWidget" name="textOp">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>350</width>
+    <height>276</height>
+   </rect>
+  </property>
+  <layout class="QVBoxLayout" name="verticalLayout">
+   <item>
+    <widget class="QScrollArea" name="scrollArea">
+     <property name="widgetResizable">
+      <bool>true</bool>
+     </property>
+     <widget class="QWidget" name="scrollAreaWidgetContents">
+      <property name="geometry">
+       <rect>
+        <x>0</x>
+        <y>0</y>
+        <width>330</width>
+        <height>206</height>
+       </rect>
+      </property>
+      <widget class="QGroupBox" name="groupBox">
+       <property name="geometry">
+        <rect>
+         <x>10</x>
+         <y>20</y>
+         <width>120</width>
+         <height>80</height>
+        </rect>
+       </property>
+       <property name="title">
+        <string>GroupBox</string>
+       </property>
+      </widget>
+     </widget>
+    </widget>
+   </item>
+   <item>
+    <widget class="QLabel" name="label_8">
+     <property name="text">
+      <string>Audio attachment behavior</string>
+     </property>
+    </widget>
+   </item>
+   <item>
+    <widget class="QComboBox" name="comboBox">
+     <item>
+      <property name="text">
+       <string>Mixed section and step audio</string>
+      </property>
+     </item>
+     <item>
+      <property name="text">
+       <string>Section audio only</string>
+      </property>
+     </item>
+     <item>
+      <property name="text">
+       <string>Step audio only</string>
+      </property>
+     </item>
+    </widget>
+   </item>
+  </layout>
+ </widget>
+ <resources/>
  <connections/>
 </ui>
