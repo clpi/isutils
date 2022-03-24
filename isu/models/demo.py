@@ -1,11 +1,10 @@
 import sys, os
 import lxml.etree as ET
-import re
 import uuid
 import copy
-import cv2
+import cv2,re
 import moviepy.editor as mpy
-import ffmpeg, av, cv2
+import ffmpeg,  cv2
 from typing import List, Tuple, Dict, Union, Optional, Iterable, Any
 from pathlib import Path, PurePath
 from itertools import islice
@@ -13,7 +12,7 @@ from copy import deepcopy
 from isu.models.section import Section
 from isu.models.step import Step
 from isu.models.script import Script, TextBox
-from isu.models.audio import Audio
+from isu.models.audio import Audio,SoundBite
 import isu.models.demo_tags as dt
 from isu.common.utils import validate_path, timefunc, logger
 from collections import deque, namedtuple
@@ -22,8 +21,8 @@ import shutil
 import ffmpeg as ff
 import moviepy.editor as mp
 from PyQt6.QtWidgets import QApplication
-from PyQt6.QtCore import *
 
+from PyQt6.QtCore import pyqtSignal ,pyqtSlot,QCoreApplication,QObject,QAbstractEventDispatcher,QAbstractItemModel
 #----------------------------DEMO------------------------------------#
 
 class Demo(QAbstractItemModel):
@@ -245,7 +244,7 @@ class Demo(QAbstractItemModel):
             if tp.is_valid_tp():
                 num_lines = tp.num_lines(tp)
                 if num_lines > 1 and not is_section_step:
-                    self.process_multiline_tp(i, num_lines, self.audio[i], tp_left, tp_streak)
+                    self.process_multiline_tp(idx=i, num_lines=num_lines, audio=self.audio[i], consec_tp=tp_left, tp_streak=tp_streak)
                     continue
                 if i - prev_tp_i > 1 or prev_tp_i == -1:
                     #tp_left = self.consecutive_tp(i)
@@ -270,7 +269,7 @@ class Demo(QAbstractItemModel):
                 deleted, duped, animated, is_section_step = False, False, False, False
             return deleted, duped, animated, is_section_step
 
-    def process_multiline_tp(self, idx: int, audio: Tuple[str, str], num_lines=2, consec_tp: int = None, tp_streak: int = None):
+    def process_multiline_tp(self, idx: int, audio: SoundBite, num_lines=2, consec_tp: int|None = None, tp_streak: int|None = None):
         self.insert_section(idx)
         self.duplicate_step(idx=idx, as_pacing=True, before=False)
         self.set_animated_step(idx=idx)
@@ -284,6 +283,7 @@ class Demo(QAbstractItemModel):
         set_animated = ['']
         delete_step = ['']
         section_step = ['']
+        return True, True, True, True
         # is_type = lambda type: any(note in type for note in prod_notes)
         # if is_type(delete_step):
         #     del(self[idx])
@@ -326,7 +326,7 @@ class Demo(QAbstractItemModel):
         pass
 
     def set_res(self):
-        x, y = Image.open(str(self[0][0].img)).size
+        x, y = Image.open(str(self.sections[0].steps[0].img)).size
         if self.verbose: print(x, y)
         self.res: Tuple[int, int] = (x, y)
         dt.DEMO_RES = (x, y)
@@ -340,13 +340,14 @@ class Demo(QAbstractItemModel):
     def consecutive_tp(self, step: Step, counter: int = 0, tp: bool = True):
         pass
 
-    def clear_script(self, step_i: int = None, sect_i: int = None, click: bool=True, tp: bool=True):
+    def clear_script(self, step_i:None| int = None, sect_i: None|int = None, click: bool=True, tp: bool=True):
         if step_i is not None:
             if click: pass
             if tp: pass
         if sect_i is not None:
             if click: pass
             if tp: pass
+        return True
 
     def write(self, path: str = "", append: str = ""):
         tree = ET.ElementTree(self.root)
@@ -375,10 +376,10 @@ class Demo(QAbstractItemModel):
     # def insertRows(self, row: int, count: int, parent: QModelIndex = ...) -> bool:
     #     return super().insertRows(row, count, parent)
 
-    def search(self, phrase: str, action: str = None):
+    def search(self, phrase: str, action: None|str = None):
         return self.root.findtext(phrase)
 
-    def search_click_instructions(self, phrase: str, action: str = None):
+    def search_click_instructions(self, phrase: str, action: None|str = None):
         pass
 
     def update(self):
@@ -413,9 +414,9 @@ class Demo(QAbstractItemModel):
                     bg_path: str, # PATH OF LOWEST Z-INDEX BG IMG. If bg img dims > demo asset dims, demo res set to bg img res
                     asset_new_coord: Tuple[int, int], # FROM TOP LEFT OF BG IMG, where foremost top-left point of assets will be placed
                     asset_new_size: Tuple[int, int], # SIZE OF ASSETS AFTER RESIZE. Resize is performed before translating on bg img
-                    shell_path: str = None, # if provided, path of img to be placed on top of bg_img but below asset (must be smaller than asset)
-                    shell_new_coord: Tuple[int, int] = None, # if provided, coordinates (as above) of shell img on bg img
-                    shell_new_size: Tuple[int, int] = None, # if provied, size (as above) of shell img on bg img
+                    shell_path: None|str = None, # if provided, path of img to be placed on top of bg_img but below asset (must be smaller than asset)
+                    shell_new_coord:None| Tuple[int, int] = None, # if provided, coordinates (as above) of shell img on bg img
+                    shell_new_size: None|Tuple[int, int] = None, # if provied, size (as above) of shell img on bg img
                     verbose: bool = False,
                     ):
         """
@@ -531,15 +532,15 @@ class Demo(QAbstractItemModel):
 
 
 
-    def read_frame_as_jpg(in_filename, frame_num):
-        out, err = (
-            ffmpeg
-            .input(in_filename)
-            .filter_('select', 'gte(n,{})'.format(frame_num))
-            .output('pipe:', vframes=1, format='image2', vcodec='mjpeg')
-            .run(capture_stdout=True)
-    )
-        return out
+    # def read_frame_as_jpg(in_filename, frame_num):
+    #     out, err = (
+    #         ffmpeg
+    #         .input(in_filename)
+    #         .filter_('select', 'gte(n,{})'.format(frame_num))
+    #         .output('pipe:', vframes=1, format='image2', vcodec='mjpeg')
+    #         .run(capture_stdout=True)
+    # )
+    #     return out
 
     def clear_talking_points(self, i: int):
         pass

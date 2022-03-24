@@ -1,5 +1,6 @@
 from uuid import uuid4
 from typing import List, Tuple
+import lxml.etree  as ET
 from isu.models.step import Step
 from isu.models.audio import SoundBite
 from isu.models.script import Script
@@ -18,7 +19,7 @@ class Section(QObject):
     def __init__(self,
                  elem = None,
                  copy: bool = False,
-                 demo_dir: str = None,
+                 demo_dir: None|str = None,
                  idx: int = -1, 
                  demo_idx: int = -1, 
                  title: str = "", 
@@ -29,16 +30,18 @@ class Section(QObject):
         Object to hold section data. If initializing from elem in etree, must provide
         elem, overall index in demo (idx), and section index (sect_i).
         """
+        self.root: ET.ElementTree
         if not copy:
             self.root = elem
-            self.ch = self.root.find("Steps")
+            self.ch = self.root.find("Steps") # type: ignore
         else:
             self.root = deepcopy(elem)
-            self.ch = self.root.find("Steps")
+            self.ch = self.root.find("Steps") # type: ignore
         self.idx = idx
         self.demo_idx = demo_idx
         self.length = 0
-        self.demo_dir = demo_dir
+        if demo_dir: self.demo_dir=demo_dir 
+        else: self.demo_dir=""
         if elem is None:
             self.demo_idx = demo_idx
             self.idx = idx
@@ -48,16 +51,17 @@ class Section(QObject):
         self.load()
         
     def load(self):
-        self.id = self.root.find("ID").text
-        self.title = self.root.find('XmlName').find('Name').text
+        self.id: str  = self.root.find("ID").text
+        self.title: str = self.root.find('XmlName').find('Name').text
         self.assets = Path(self.demo_dir + "_Assets", self.id)
-        if (soundbite := self.root.find("SoundBite")) is not None:
-            self.audio = SoundBite(elem=soundbite, asset_path=self.assets)
+        if self.demo_dir != "":
+            if (soundbite := self.root.find("SoundBite")) is not None: #  type: ignore
+                self.audio : None|SoundBite = SoundBite(elem=soundbite, asset_path=str(self.assets)) 
         else:
             self.audio = None
         demo_parent = str(Path(self.demo_dir).parent)
-        self.steps = deque()
-        for i, step in enumerate(self.root.findall('Steps/Step')):
+        # self.steps = deque()
+        for i, step in enumerate(self.root.findall('Steps/Step')):#  type: ignore
             sect_step = Step(elem=step, idx=i, demo_idx=i+self.demo_idx, demo_dir=demo_parent)
             self.steps.append(sect_step)
             self.length += 1
@@ -77,7 +81,7 @@ class Section(QObject):
         return pop
 
     def popleft(self):
-        pop = self.steps.popleft()
+        pop = self.steps.popleft()#  type: ignore
         self.ch.remove(pop.root)
 
     def duplicate_step(self, idx: int, as_pacing: bool = False):
@@ -100,9 +104,10 @@ class Section(QObject):
     def remove_step(self, step_i: int):
         pass
 
-    def set_animated(self, key: str = None):
+    def set_animated(self, key: None|str = None):
         for step in self:
-            step[""]
+            pass
+            # step[""]
 
     def set_guided(self):
         for step in self:
@@ -119,8 +124,8 @@ class Section(QObject):
             self.assets.mkdir()
         if not dest.exists():
             shutil.copy(str(source), str(dest))
-        self.root.append(soundbite.get_root())
-        self.audio = SoundBite(self.root.find("SoundBite"), asset_path=self.assets)
+        self.root.append(soundbite.get_root()) # type: ignore
+        self.audio = SoundBite(self.root.find("SoundBite"), asset_path=self.assets)# type: ignore
         
 
     def iter(self, item="step"):

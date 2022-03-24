@@ -151,67 +151,67 @@ class Context:
 class DataTable(QAbstractTableModel):
     def __init__(self, data, parent=None):
         super(DataTable, self).__init__(parent)
-        self.data = data
+        self.dataee = data
 
-    def rowCount(self, parent=QModelIndex()):
-        return len(self.data)
+    def rowCount(self):
+        return len(self.dataee)
 
-    def columnCount(self, parent=QModelIndex()):
-        return len(self.data[0])
+    def columnCount(self):
+        return len(self.dataee[0])
 
     # def data(self, index, role=Qt.DisplayRole):
     #     if index.isValid() and role == Qt.DisplayRole:
-    #         return self.data[index.row()][index.column()]
+    #         return self.datae[index.row()][index.column()]
     #     return None
 
     # def headerData(self, section, orientation, role=Qt.DisplayRole):
     #     if role == Qt.DisplayRole:
     #         if orientation == Qt.Horizontal:
-    #             return self.data[0][section]
+    #             return self.datae[0][section]
     #         else:
-    #             return self.data[section][0]
+    #             return self.datae[section][0]
     #     return None
     
 class DemoList(QAbstractListModel):
     def __init__(self, data, parent=None):
         super(DemoList, self).__init__(parent)
-        self.data = data
+        self.datae = data
 
     def rowCount(self, parent=QModelIndex()):
-        return len(self.data)
+        return len(self.datae)
 
     # def data(self, index, role=Qt.DisplayRole):
     #     if index.isValid() and role == Qt.DisplayRole:
-    #         return self.data[index.row()]
+    #         return self.datae[index.row()]
     #     return None
 
     # def headerData(self, section, orientation, role=Qt.DisplayRole):
     #     if role == Qt.DisplayRole:
     #         if orientation == Qt.Horizontal:
-    #             return self.data[0][section]
+    #             return self.datae[0][section]
     #         else:
-    #             return self.data[section][0]
+    #             return self.datae[section][0]
     #     return None
 
 class ScriptList(QAbstractListModel):
     def __init__(self, data, parent=None):
         super(ScriptList, self).__init__(parent)
-        self.data = data
+        self.datae = data
 
     def rowCount(self, parent=QModelIndex()):
-        return len(self.data)
+        return len(self.datae)
 
     # def data(self, index, role=Qt.DisplayRole):
     #     if index.isValid() and role == Qt.DisplayRole:
-    #         return self.data[index.row()]
+    #         return self.datae[index.row()]
     #     return None
 
     # def headerData(self, section, orientation, role=Qt.DisplayRole):
     #     if role == Qt.DisplayRole:
     #         if orientation == Qt.Horizontal:
-    #             return self.data[0][section]
+    #             return self.datae[0][section]
     #         else:
-    #             return self.data[section][0]
+    #             return self.datae[section][0]
     #     return None
     
 

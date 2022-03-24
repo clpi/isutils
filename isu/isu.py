@@ -15,8 +15,8 @@ def args() -> argparse.ArgumentParser:
     
 
 def main():
-    argv = sys.argv[1:]
-    parser: argparse.ArgumentParser = args()
-    args: argparse.Namespace = parser.parse_args(argv)
-    app = app.MainApp()
+    # argv = sys.argv[1:]
+    # parser: argparse.ArgumentParser = args()
+    # args: argparse.Namespace = parser.parse_args(argv)
+    app = MainApp()
     app.run()

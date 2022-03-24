@@ -30,5 +30,5 @@ class DemoWriter(QXmlStreamWriter):
     def write(self):
         self.writeDTD(u"<!DOCTYPE Demo>")
         self.writeStartElement("Demo")
-        self.writeAttribute()
+        # self.writeAttribute()
         self.writeEndDocument()

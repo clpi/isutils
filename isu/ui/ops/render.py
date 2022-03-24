@@ -1,5 +1,4 @@
-import os, sys
-import pathlib
+import os, sys, pathlib
 from typing import Optional, Sequence, Dict
 from PIL import Image
 from PyQt6.QtCore import *
@@ -14,12 +13,7 @@ from isu.models.demo import Demo
 from isu.ui.ops.ops import OpUi
 from isu.operation.render import Format, Render
 
-RenderFmt = [
-    Format.Mp4,
-    Format.Avi,
-    Format.Mov,
-    Format.Mkv
-]
+AudioFmt = ["mp3", "wav", "flac", "ogg"]
 
 class RenderOp(OpUi):
 
@@ -91,8 +85,8 @@ class RenderOp(OpUi):
             # with_text=self.withTextCb.isChecked(),
         )
 
-    # def run(self): 
-    #         print("DIR: " + self.renderOutputDir.text() + ", TITLE: " + self.renderOutputTitle.text())
+    def run(self):
+            print("DIR: " + self.renderOutputDir.text() + ", TITLE: " + self.renderOutputTitle.text())
     #         out_title = self.renderOutputTitle.text()
     #         out_dir = Path(self.renderOutputDir.text())
     #         out_format = "avi"

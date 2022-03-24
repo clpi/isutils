@@ -1,0 +1,9 @@
+PIL/Image /Users/clp/isu/isutils/.pytype/imports/default.pyi
+PyQt6/uic/__init__ /Users/clp/isu/isutils/.pytype/imports/default.pyi
+PyQt6/QtCore/pyqtSignal /Users/clp/isu/isutils/.pytype/imports/default.pyi
+PyQt6/QtWidgets/QCheckBox /Users/clp/isu/isutils/.pytype/imports/default.pyi
+isu/operation/__init__ /Users/clp/isu/isutils/.pytype/imports/default.pyi
+isu/operation/operation /Users/clp/isu/isutils/.pytype/imports/default.pyi
+isu/models/demo /Users/clp/isu/isutils/.pytype/imports/default.pyi
+isu/ui/ops/ops /Users/clp/isu/isutils/.pytype/imports/default.pyi
+isu/ui/ops/audio /Users/clp/isu/isutils/.pytype/imports/default.pyi

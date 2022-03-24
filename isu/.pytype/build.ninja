@@ -1,0 +1,9 @@
+rule infer
+  command = /opt/homebrew/opt/python@3.10/bin/python3.10 -m pytype.single --imports_info $imports --module-name $module -V 3.10 -o $out --no-report-errors --nofail --quick $in
+  description = infer $module
+rule check
+  command = /opt/homebrew/opt/python@3.10/bin/python3.10 -m pytype.single --imports_info $imports --module-name $module -V 3.10 -o $out --analyze-annotated --nofail --quick $in
+  description = check $module
+build /Users/clp/isu/isutils/isu/.pytype/pyi/isu/main.pyi: check /Users/clp/isu/isutils/isu/main.py
+  imports = /Users/clp/isu/isutils/isu/.pytype/imports/isu.main.imports
+  module = isu.main

@@ -6,7 +6,6 @@ import os, glob
 from typing import Optional, List, Dict, Any, Tuple
 
 
-
 @dataclass
 class ComposeOp(Op):
     other_path: Optional[str] = None

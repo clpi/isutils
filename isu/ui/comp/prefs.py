@@ -11,13 +11,13 @@ class Prefs(QDialog):
     def __init__(self, parent: Optional[QWidget] = None):
         super().__init__(parent)
         path = os.path.join(os.path.dirname(__file__), "prefs.ui")
-        uic.loadUi(path, self)
+        uic.loadUi(path, self) #type: ignore
 
     def load_ui(self):
         pass
 
     @pyqtSlot()
-    def open(self, parent: None) -> None:
+    def open(self, parent: QWidget|None=None) -> None:
         self.show()
 
 

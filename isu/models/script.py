@@ -147,13 +147,13 @@ class TextBox:
         match = re.match(r"\[(\w+)\]", self.text)
         return bool(match)
 
-    def get_words(self, line: int = None):
+    def get_words(self, line: None|int = None):
         if self.text:
             words = re.findall(r'\w+', self.text)
             low = [word.lower() for word in words]
             return low
 
-    def word_count(self, line: int = None):
+    def word_count(self, line: None|int = None):
         if self.words is None:
             self.words = self.get_words(line)
         if self.text:

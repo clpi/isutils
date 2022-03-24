@@ -21,5 +21,5 @@ class Crop(Op):
         return { "": "" }
 
     def run(self, demo: Demo): #TODO add sect discrim fxn
-        super().run(demo)
-        self.finish()
+        super(Crop, self).run(demo)
+        # self.finish()

@@ -1,44 +1,74 @@
 """
 Operation to stitch together images of demo to form exported mp4 file
 """
-import pathlib
-
 from cv2 import VideoWriter_fourcc
 from isu.utils import log
-import av
 from PIL import Image
 import numpy as np
-from av import VideoFormat, VideoFrame, buffer 
-import cv2
+# from av import VideoFormat, VideoFrame, buffer 
+import cv2, pathlib, enum, os, ffmpeg, mutagen
 from pathlib import WindowsPath, Path
 from typing import Sequence, Optional, List, Dict, Any, Tuple
-import enum
-import mutagen
-import moviepy.editor as mpy
-import ffmpeg
-import os
+# import moviepy.editor as mpy
 from isu.operation import Op
 from dataclasses import dataclass
 from isu.models.demo import Demo
-from PyQt6.QtCore import *
+from PyQt6.QtCore import (
+    pyqtEnum, pyqtSignal, pyqtBoundSignal, pyqtSlot, QDir, QObject, 
+    # QRunnable
+)
 from isu.models.step import Step
 from isu.models.audio import Audio
-from isu.models.cursor import Cursor
+from isu.models.actions.cursor import Cursor
+RenderFmt = [
+]
 
+@pyqtEnum
 class Format(enum.Enum):
-    Mp4, Avi, Mkv, Mov = range(4)
+    Mp4, Avi, Mkv, Mov, Mpv = range(4)
+
+    def __list__(self):
+        return [
+            Format.Mp4,
+            Format.Avi,
+            Format.Mov,
+            Format.Mkv,
+            Format.Mpv,
+        ]
 
     def to_codec(self):
-        if self == Format.Mp4:
-            return cv2.VideoWriter_fourcc(*'mp4v')
-        elif self == Format.Avi:
-            return cv2.VideoWriter_fourcc(*'XVID')
-        else:
-            return cv2.VideoWriter_fourcc(*"x264")
+        match self:
+            case Format.Mpv:
+                return cv2.VideoWriter_fourcc(*'MP42')
+            case Format.Avi:
+                return cv2.VideoWriter_fourcc(*'XVID')
+            case Format.Mov:
+                return cv2.VideoWriter_fourcc(*"x264")
+            case Format.Mkv:
+                return cv2.VideoWriter_fourcc(*"mk4v")
+            case Format.Mpv:
+                return cv2.VideoWriter_fourcc(*"mp4v")
+            case _:
+                return Format.Mp4.to_codec()
 
-def render(path: str):
-    command = os.path.join(os.getcwd(), "ffmpeg")
-    pass
+# def render(path: str):
+#     cmd = os.path.join(os.getcwd(), "ffmpeg")
+#     pass
+
+
+@dataclass
+class RenderContext(object):
+    """
+    Low-level (not user-visible) info for making context-aware render calculations
+    such as animation position, relative duration to next img, etc.
+    """
+    animated: bool = False
+    cursor: Optional[Tuple[int, int]] = None
+    textbox: Optional[Textbox] = None
+    highlight: Optional[Highlight] = None
+    jumpbox: Optional[Jumpbox] = None
+    audio: Optional[Audio] = None
+
 
 @dataclass
 class Render(Op):
@@ -48,7 +78,7 @@ class Render(Op):
     with_audio = True
     with_cursor = True
     with_text = True
-    with_hl=True
+    with_hl: bool = True
     dir: Path = Path(QDir.homePath()) / "Videos"
     res: Tuple[int, int] = (1920, 1080)
     title: str = "out"
@@ -57,41 +87,53 @@ class Render(Op):
     def __str__(self) -> str:
         return "render"
 
-    def run(self, demo: Demo): #TODO add sect discrim fxn
+    def run(self, demo: Demo):
+        """
+
+        """
+        # TODO add sect discrim fxn
         super().run(demo)
         log("[RenderOp.run] RUNNING RENDER OP on " + demo.title)
         self.started()
         self.render_video(demo)
         self.finished()
 
-    def render_video(self, demo: Demo, verbose=False):
-        """
-        Renders composite of all demo's images into video using python mmpeg
-        """
-        path = self.dir / Path(f"{self.title}.{self.format.name}")
-        log("[Demo.render_video] RUNNING render_video to path " + str(path))
-        out = cv2.VideoWriter(
-            filename=str(path),
+    @property
+    def path(self):
+        return self.dir / Path(f"{self.title}.{self.format.name}")
+
+    @property
+    def writer(self):
+        return cv2.VideoWriter(
+            filename=str(self.path),
             fourcc=self.format.to_codec(),
             apiPreference=cv2.CAP_FFMPEG,
             isColor=True,
             fps=self.fps,
             frameSize=self.res,
         )
+
+
+    def render_video(self, demo: Demo, verbose=False):
+        """
+        Renders composite of all demo's images into video using python mmpeg
+        """
+        log("[Demo.render_video] RUNNING render_video to path " + str(self.path))
         # imgs: List[Image] = []
-        imgs: list = []
+        imgs: List[str] = []
         for sect_i, sect in enumerate(demo):
             for step_i, step in enumerate(sect.steps):
                 if step.img is not None:
                     sd: float = 1.0
-                    hov = None
+                    # hov = None
                     mouse: Cursor | None = None
                     animated = False
-                    log("\nSECTION " + str(sect_i) + ", STEP " + str(step_i) + " info:")
-                    if step.img: log("IMAGE: " + str(step.img))
-                    if step.hover: 
+                    log(f"\nSECTION {str(sect_i)}, STEP {str(step_i)} info: ")
+                    if step.img:
+                        log("IMAGE: " + str(step.img))
+                    if step.hover:
                         log("HOVER: " + str(step.hover))
-                        hov = cv2.imread(str(step.hover))
+                        # hov = cv2.imread(str(step.hover))
                         if step.hover_time: 
                             log("HOVER TIME: " + str(step.hover_time))
                     if step.audio:
@@ -99,7 +141,7 @@ class Render(Op):
                         au = step.audio
                     if step.animated: 
                         log("ANIMATED: " + str(step.animated))
-                        animated = True
+                        # animated = True
                     if (m:=step.mouse) is not None:
                         log("MOUSE:     (" + str(m[0]) + ", " + str(m[1]) + ")")
                         mouse = Cursor((int(step.mouse[0]), int(step.mouse[1])))

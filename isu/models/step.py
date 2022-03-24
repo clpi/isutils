@@ -1,23 +1,22 @@
 from dataclasses import dataclass
 from PIL import Image
-import lxml.etree as et
-import lxml
+import lxml.etree as ET
 import numpy as np
-import av
-import re
-from uuid import uuid4
+# from uuid import uuid4
 from typing import List, Tuple, Dict, Optional, Any, Iterable, Union
-from pathlib import Path, PurePath
+from pathlib import WindowsPath, Path
 import isu.models.demo_tags as dt
 from isu.models.audio import SoundBite
 from isu.models.script import TextBox
 import shutil
+import re
 from copy import deepcopy
-from PyQt6.QtCore import QObject
+from PySide6.QtCore import QObject, QEasingCurve, Signal, Property, Slot, QPointF, QPoint
+
 
 class Step(QObject):
 
-    @dataclass()
+    @dataclass
     class Video(QObject):
         pos: Tuple[int, int] = (0, 0)
         size: Tuple[int, int] = (1920, 1080)
@@ -28,63 +27,105 @@ class Step(QObject):
         file: str = "Video.mp4"
         dur_ticks: str = "80000000"
 
-    @dataclass()
+    @dataclass
     class Text(QObject):
         font: str = ""
         text: str = ""
         color: str = ""
         size: str = ""
-        
 
-    #TODO check if step delaya is None if not specified
-    def __init__(self,
-                elem: et.ElementTree = None,
-                copy: bool = False,
-                demo_dir: str = None,
-                idx: int = -1,
-                verbose: bool = False,
-                demo_idx: int = -1,
-                img_path: str = "",
-                hover_img_path: str = "",
-                click_instr: str = "",
-                talking_pt: str = "",
-                audio_path: str = "",
-                step_section: bool = False,
-                animated: bool = False,
-                guided: bool = False,
-                step_delay: float = 1.0):
-        if not copy:
-            self.root: et.ElementTree = elem
-        else:
-            self.root = deepcopy(elem)
-        self.idx = idx
-        self.verbose = verbose
-        self.demo_idx = demo_idx
-        self.demo_dir = demo_dir
+    @dataclass
+    class Img(QObject):
+        hover: bool = False
+        path: str = ""
+
+    @dataclass
+    class Hover(QObject):
+        img: str = ""
+        mouse: QPointF = QPointF(0.0, 0.0)
+
+        def __init__(self, img: str):
+            self.img = img
+
+    def __init__(
+            self,
+            idx: int = 0,
+            root: ET.ElementTree | None = None,
+            copy_root: bool = False,
+            demo_dir: str = "",
+            verbose: bool = False,
+            hover_img_path: str = "",
+            click_instr: str = "",
+            talking_pt: str = "",
+            last_of_sect: bool = False,
+            delay: float = 1.0):
+        self.root: ET.ElementTree | None
+        match copy_root:
+            case True: self.root = deepcopy(root)
+            case False: self.root = root
+        self.sp_el: ET.Element = self.root.find("StartPicture")
+        self.mp_el: ET.Element = self.root.find("MouseEnterPicture")
+        self.demo_dir: str = demo_dir
+        self.last_of_sect: bool = last_of_sect
+        match demo_dir:
+            case None: self.demo_dir = ""
+            case dd: self.demo_dir = dd
+        self.is_guided: bool = is_guided
+        self.has_mouse: bool = has_mouse
+        self.is_animated: bool = is_animated
+        self.hover: HoverImg = Hover(hover_img_path)
+        self.has_audio: bool
+        self.idx: int = idx
+        self.verbose: bool = verbose
         self.tp, self.ci = TextBox(talking_pt), TextBox(click_instr)
         self.load()
 
+    def find_root(self, prop: str) -> ET.Element:
+        " Search under the root XML element"
+        return self.root.find(prop)
+
+    def find_sp(self, prop: str) -> ET.Element:
+        " Search under the 'StartPicture' XML element"
+        return self.sp_el.find(prop)
+
+    def find_mp(self, prop: str) -> ET.Element:
+        " Search under the 'MouseEnterPicture' XML element"
+        return self.mp_el.find(prop)
+
+    @classmethod
     def load(self):
-        s = []
-        self.mouse_hover: Optional[tuple[float, float]] = None
-        self.props = self.root.find("StartPicture")
-        self.boxes = {k:dict.fromkeys({*v["props"], *dt.DIRS}, None) for k, v in dt.BOX_PROPS.items()}
-        self.assets = Path(self.demo_dir, self.props.find("AssetsDirectory").text)
-        self.img = PurePath(self.assets, self.props.find("PictureFile").text)
-        if self.verbose: print(f"IMAGE: {self.img}")
-        self.time = self.props.find("Time").text
-        if (hover := self.props.find("MouseEnterPicture")) is not None and hover.text is not None:
+        self.boxes: Dict[str, Dict[str, List[int]]]
+        for k, v in dt.BOX_PROPS.items():
+            self.boxes[k] = dict.fromkeys({*v["props"], *dt.DIRS}, None)
+        # asset_rel = Path(self.sp_el.find("AssetsDirectory").text)
+        # image_rel = Path(self.sp_el.find("PictureFile").text)
+        ast_rel = Path(self.find_sp("PictureFile").text)
+        img_rel = Path(self.find_sp("PictureFile").text)
+        self.assets = Path(self.demo_dir / ast_rel)
+        self.img = Path(self.assets / img_rel)
+        print(f"IMAGE: {self.img}")
+        self.time = self.find_mep("Time").text
+        self.hover_root = self.find_mep("MouseEnterPicture")
+        self.time = time
+        self.mouse_enter = hover
+        if hover is not None and hover.text is not None:
+            print("self.mouse_enter is not NOne")
             self.hover = PurePath(self.assets, hover.find("PictureFile").text)
             if (hover_time := hover.find("Time").text):
-                self.hover_time = hover.find("Time").text
+                self.hover_time = hover_time
             else:
                 self.hover_time = ""
-            self.mouse_hover = (float(hover.find(dt.MOUSE_X).text), float(hover.find(dt.MOUSE_Y).text))
+            self.mhovx = float(hover.find(dt.MOUSE_X).text)
+            self.mhovy = float(hover.find(dt.MOUSE_Y).text)
+            self.mouse_hover = (self.mhovx, self.mhovy)
         else:
             self.hover = None
-        self.mouse = (float(self.props.find(dt.MOUSE_X).text), float(self.props.find(dt.MOUSE_Y).text))
+        self.mouse_x = float(self.sp_el.find(dt.MOUSE_X).text)
+        self.mouse_y = float(self.sp_el.find(dt.MOUSE_Y).text)
+        self.mouse = self.mouse_x, self.mouse_y
         if (soundbite := self.root.find("SoundBite")) is not None:
-            if self.verbose: print(f"SOUNDBITE: {soundbite}")
+            if self.verbose:
+                print(f"SOUNDBITE: {soundbite}")
             self.audio = SoundBite(elem=soundbite, asset_path=str(self.assets))
         else:
             self.audio = None
@@ -92,44 +133,60 @@ class Step(QObject):
             prop_tag, prop_type = prop_dict["tag"], prop_dict["type"]
             try:
                 setattr(self, prop, prop_type(self.root.find(prop_tag).text))
-            except:
+            except Exception as e:
+                print(e)
                 setattr(self, prop, None)
         # setattr(self,"delay", float)
         for box_key, box_dict in dt.BOX_PROPS.items():
             box_props = {**box_dict["props"], **dt.DIRS}
             tag = box_dict["tag"]
-            props = (self.props.findall(tag+"/"+tag[:-1]))
+            props = (self.sp_el.findall(tag+"/"+tag[:-1]))
             if props is not None:
-                for prop, prop_vals in box_props.items():
+                for prop, propv in box_props.items():
                     self.boxes[box_key][prop] = []
                     for i, box in enumerate(props):
-                        prop_tag, prop_type = prop_vals["tag"], prop_vals["type"]
+                        prop_tag, prop_type = propv["tag"], propv["type"]
                         if (box.find(prop_tag) is not None):
                             box_text = prop_type(box.find(prop_tag).text)
                             self.boxes[box_key][prop].append(box_text)
             if box_key == 'hotspot':
-                if (self.boxes[box_key]['x1'][0] == dt.DEMO_RES[0] and
-                    self.boxes[box_key]['y1'][0] == dt.DEMO_RES[1]):
-                    self.animated = True
-                else:
-                    self.animated = False
-        self.loaded = True
+                self.is_hotspot()
 
-    #TODO Sometimes mouse coords are ints, sometimes floats, in XML. check it out
+    def res(self) -> Tuple[int, int]:
+        s: Tuple[int, int] = Image.open(self.img).size
+        return s[0], s[1]
+
+    def is_hotspot(self) -> bool:
+        hs_x = self.boxes['hotspot']['x1'][0]
+        hs_y = self.boxes['hotspot']['y1'][0]
+        if (hs_x == dt.DEMO_RES[0] and hs_y == dt.DEMO_RES[1]):
+            self.animated = True
+            self.set_delay(0.1, False)
+            self.boxes['hotspot']['x1'][0] = 0
+            self.boxes['hotspot']['y1'][0] = 0
+            self.boxes['hotspot']['x2'][0] = dt.DEMO_RES[0]
+            self.boxes['hotspot']['y2'][0] = dt.DEMO_RES[1]
+            # self.text = {k:dict.fromkeys({*v["props"], *dt.DIRS}, None)
+            # for k, v in dt.TEXT_PROPS.items()}
+        else:
+            self.animated = False
+        return self.animated
+
+    # TODO Sometimes mouse coords are ints, sometimes floats, in XML. check it out
+
     def set_mouse(self, x: float, y: float):
         self.mouse = (x, y)
-        self.props.find(dt.MOUSE_X).text = str(x)
-        self.props.find(dt.MOUSE_Y).text = str(y)
+        self.sp_el.find(dt.MOUSE_X).text = str(x)
+        self.sp_el.find(dt.MOUSE_Y).text = str(y)
 
     def set_mouse_hover(self, x: float, y: float):
         self.mouse_hover = (x, y)
-        self.props.find("MouseEnterPicture/"+dt.MOUSE_X).text = str(x)
-        self.props.find("MouseEnterPicture/"+dt.MOUSE_X).text = str(y)
-
+        self.sp_el.find("MouseEnterPicture/"+dt.MOUSE_X).text = str(x)
+        self.sp_el.find("MouseEnterPicture/"+dt.MOUSE_X).text = str(y)
 
     def set_video_dims(self, x: int, y: int):
-        self.props.find("VideoRects/VideoRect/Video/VideoHeight").text = str(y)
-        self.props.find("VideoRects/VideoRect/Video/VideoWidth").text = str(x)
+        self.sp_el.find("VideoRects/VideoRect/Video/VideoHeight").text = str(y)
+        self.sp_el.find("VideoRects/VideoRect/Video/VideoWidth").text = str(x)
         self.boxes["video"]["width"], self.boxes["video"]["height"] = x, y
 
     def set_box_dims(self, box: str, coords):
@@ -138,14 +195,14 @@ class Step(QObject):
         Output: None. Sets step.box["prop"][dimension] to input value.
         """
         tag = str(dt.BOX_PROPS[box]["tag"])
-        xmlbox = self.props.find(tag+"/"+tag[:-1])
+        xmlbox = self.sp_el.find(tag+"/"+tag[:-1])
         for i in range(len(self.boxes[box]["x1"])):
             for j, dim in enumerate(coords):
                 d = dt.DIR_KEYS[j]
-                self.boxes[box][d][i] = dim
+                self.boxes[box][d][i] = dim  # type: ignore
                 xmlbox.find(dt.DIRS[d]["tag"]).text = str(int(dim))
-                if self.verbose: print(dim, xmlbox.find(dt.DIRS[d]["tag"]).text)
-
+                if self.verbose:
+                    print(dim, xmlbox.find(dt.DIRS[d]["tag"]).text)
 
     def transform_coords(self, scale: Tuple[float, float], offset: Tuple[float, float]):
         """
@@ -158,59 +215,71 @@ class Step(QObject):
         def transf(coord: List[int], use_offset: bool = True):
             out = []
             for i, c in enumerate(coord):
-                if i%2 == 0:
-                    if use_offset: out.append(float(c * rx + ox))
-                    else: out.append(float(c * rx))
+                if i % 2 == 0:
+                    if use_offset:
+                        out.append(float(c * rx + ox))
+                    else:
+                        out.append(float(c * rx))
                 else:
-                    if use_offset: out.append(float(c * ry + oy))
-                    else: out.append(float(c * ry))
+                    if use_offset:
+                        out.append(float(c * ry + oy))
+                    else:
+                        out.append(float(c * ry))
             return out
 
-        def transform(coords: List[float]) -> List[float]: #-> [top, bottom, left, right]
+        # -> [top, bottom, left, right]
+        def transform(coords: List[float]) -> List[float]:
             out = []
-            if len(coords) > 2: # if BOX coordinates (T, B, L, R)
+            if len(coords) > 2:  # if BOX coordinates (T, B, L, R)
                 for i in range(4):
-                    if i % 2 == 0: out.append(float((coords[i] * ry) + oy))
-                    else: out.append(float((coords[i] * rx) + ox))
-            elif len(coords) <= 2: # if CLICK coordinates (X, Y)
+                    if i % 2 == 0:
+                        out.append(float((coords[i] * ry) + oy))
+                    else:
+                        out.append(float((coords[i] * rx) + ox))
+            elif len(coords) <= 2:  # if CLICK coordinates (X, Y)
                 out.append(float(coords[0] * rx + ox))
                 out.append(float(coords[1] * ry + oy))
             return out
 
         for box, box_props in self.boxes.items():
             for i in range(len(box_props['x1'])):
-                dims = [box_props[d][i] for d in dt.DIR_KEYS]
-                if self.verbose: print("OLD: " + str(dims))
+                dims = [box_props[d][i] for d in dt.DIR_KEYS]  # type: ignore
+                if self.verbose:
+                    print("OLD: " + str(dims))
                 coords = transf(dims)
-                if self.verbose: print("NEW: " + str(coords))
+                if self.verbose:
+                    print("NEW: " + str(coords))
                 self.set_box_dims(box, coords)
                 if box == "video":
-                    w, h = transf([box_props["width"][i], box_props["height"][i]], False)
+                    # type: ignore
+                    w, h = transf(
+                        [box_props["width"][i], box_props["height"][i]], False)
                     self.set_video_dims(w, h)
                 if box == "text":
                     tag = "TextRects/TextRect/FontSize"
-                    self.boxes[box]["size"][i] *= (rx*ry + 1)
-                    self.props.find(tag).text = str(box_props["size"][i])
+                    self.boxes[box]["size"][i] *= (rx*ry + 1)  # type: ignore
+                    self.sp_el.find(tag).text = str(
+                        box_props["size"][i])  # type: ignore
         self.set_mouse(self.mouse[0]*rx+ox, self.mouse[1]*ry+oy)
         if self.hover is not None:
             if self.mouse_hover:
-                self.set_mouse_hover(self.mouse_hover[0]*rx*ox, self.mouse_hover[1]*ry*oy)
+                self.set_mouse_hover(
+                    self.mouse_hover[0]*rx*ox, self.mouse_hover[1]*ry*oy)
         if dt.DEBUG:
-            if self.verbose: print(f"SHIFTED: Step {self.idx}")
-
-
+            if self.verbose:
+                print(f"SHIFTED: Step {self.idx}")
 
     def set_guided(self, guided: bool):
         pass
 
     def get_delay(self) -> float:
         sd = self.boxes["StepDelay"]
-        return sd
+        return float(sd)  # type: ignore
         # # if self.root.find("StepDelay").attributes["xsi:nil"] == "true"
         # if self.root.find("StepDelay") is not None:
         #     return float(self.root.find("StepDelay").text)
         # else:
-            # return 1.0
+        # return 1.0
 
     def set_delay(self, length: float = 1.0, off: bool = False):
         if off:
@@ -246,14 +315,15 @@ class Step(QObject):
             shutil.copy(str(source), str(dest))
         index = self.root.index(self.root.find("StepFlavor"))+1
         self.root.insert(index, soundbite.get_root())
-        self.audio = SoundBite(self.root.find("SoundBite"), asset_path=str(self.assets))
+        self.audio = SoundBite(self.root.find(
+            "SoundBite"), asset_path=str(self.assets))
 
     def set_image(self, img_path: str):
         # BACK UP IMAGE TO ANOTHER FOLDER BEFORE SAVING
         if not self.assets.exists():
             self.assets.mkdir()
         if Path(self.img).exists():
-            backup = Path(self.img.parent, self.img.name+"_backup.png") #check this
+            backup = Path(self.img.parent, self.img.name+"_backup.png")
             shutil.copy(str(self.img), str(backup))
         shutil.copy(img_path, str(self.img))
 
@@ -263,10 +333,11 @@ class Step(QObject):
     def set_animated(self):
         self.set_box_dims('hotspot', (0, 0, dt.DEMO_RES[0], dt.DEMO_RES[1]))
         for dir_key, ddict in dt.DIRS.items():
-            hspot = self.props.find(f"Hotspots/Hotspot/{ddict[dir_key]['tag']}")
+            hspot = self.sp_el.find(
+                f"Hotspots/Hotspot/{ddict[dir_key]['tag']}")
             hspot.text = str(getattr(self, 'hotspot')[dir_key][0])
-        setattr(self, 'has_mouse', False)
         self.root.find(dt.STEP_PROPS['has_mouse']['tag']).text = 'false'
+        self.has_mouse = False
 
     def iter_box_props(self):
         for box, box_props in self.boxes.items():
@@ -284,16 +355,32 @@ class Step(QObject):
         i.resize((1920, 1080))
         return i
 
-
     def __eq__(self, other):
         return self.idx == other.idx
 
     def __str__(self):
         return str(self.tp)
 
-    def __call__(self, tp: str = None, ci: str = None, img: str = None):
-        pass
+    # def __call__(self, tp: str = None, ci: str = None, img: str = None):
+    #     pass
 
     def __getitem__(self, index: int):
         self.idx
 
+    def __setitem__(self, index: int, value):
+        pass
+
+
+@dataclass
+class StepBuilder(QObject):
+    is_animated: bool
+    is_guided: bool
+    has_mouse: bool
+
+
+class StepXml(object):
+    class Builder:
+        pass
+
+    def __init__(self):
+        pass

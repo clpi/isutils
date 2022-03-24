@@ -7,17 +7,18 @@ TODO: Figure out script/audio/demo association functionality
 """
 import sys
 import os
-import functools
-import typing
+# import functools
 from pathlib import Path
-from dataclasses import dataclass, field
+# from dataclasses import dataclass, field
+from isu.ui.ops.tab import OpUi
 from typing import List, Tuple, Dict, Optional, Type, Any
 from PyQt6.QtCore import ( 
     QPoint, QAbstractItemModel, QCoreApplication, pyqtEnum,
-    pyqtPickleProtocol,
+    pyqtPickleProtocol, pyqtSignal,
     QObject, pyqtSlot, QFileSelector, QSaveFile, QFileSelector, QTemporaryDir, 
-    QTemporaryFile, QAbstractItemModel, QAbstractListModel, pyqtSignal, QModelIndex,
-    QSignalMapper, QProcess, Qt, QDir, QFile, QFileInfo, QUrl, QUuid
+    QTemporaryFile, QAbstractItemModel, QAbstractListModel, QModelIndex,
+    QSignalMapper, 
+    # QProcess, Qt, QDir, QFile, QFileInfo, QUrl, QUuid
 )
 from PyQt6.QtGui import (QIcon,
     QDragEnterEvent, QDropEvent,
@@ -25,18 +26,17 @@ from PyQt6.QtGui import (QIcon,
     QActionEvent, QIconEngine,
     QImageWriter,QStandardItemModel, QStandardItem, QPalette, QColor, QColorConstants,
 )
-from PyQt6.QtMultimediaWidgets import QGraphicsVideoItem, QVideoWidget
+# from PyQt6.QtMultimediaWidgets import QGraphicsVideoItem, QVideoWidget
 from PyQt6 import uic
 from PyQt6.QtWidgets import ( QWidget,
-    QColorDialog,
+    # QColorDialog,
 
-    QMenuBar,QProgressDialog,
     QApplication, QMainWindow, QPushButton, QLineEdit, QSpinBox, QMessageBox, QFileDialog, QListWidgetItem,
+    # QMenuBar,QProgressDialog,
     QListWidget, QTreeWidget, QTableWidget, QLabel, QTabWidget, QComboBox, QTreeWidgetItem, QTableWidgetItem,
     QWizard, QWizardPage, QDialog, QUndoView, QProgressBar, QStyle, QStackedWidget, QGroupBox,
-    QInputDialog,
+    # QInputDialog,
 )
-from PIL import Image
 
 from isu.models.demo import Demo
 from isu.ui.comp.prog import Progress
@@ -55,7 +55,7 @@ class MainWindow(QMainWindow):
     def __init__(self, parent = None, *args, **kwargs) -> None:
         super().__init__()
         path = os.path.join(os.path.dirname(__file__), "window.ui")
-        uic.loadUi(path, self)
+        uic.loadUi(path, self) # type: ignore
         self.parentW = parent
         self.cx = Context()
         self.load_windows()
@@ -256,7 +256,7 @@ class MainWindow(QMainWindow):
     def run_ops(self):
         print("[Window.run_ops] BEGIN run_ops")
         out = ""
-        self.opprog = Progress(len(self.cx.ops))
+        self.opprog = Progress(parent=self, len=len(self.cx.ops))
         self.opprog.show()
         for i in range(self.stepsTreeWidget.topLevelItemCount()):
             self.step: TabOp = self.stepTabs.widget(i)
@@ -335,16 +335,18 @@ class MainWindow(QMainWindow):
 
     def changed_op(self):
         curr_step: QModelIndex = self.stepsTreeWidget.currentIndex()
+        wid=self.stepTabs.widget(curr_step.row())
         self.stepTabs.setCurrentIndex(curr_step.row())
         if len(self.cx.load.demo) > 0:
-            curr_demo: int = self.stepTabs.widget(curr_step.row()).demoTargetCombo.currentIndex()
+            curr_demo: int = wid.demoTargetCombo.currentIndex() # type: ignore
             self.set_demo_tree(curr_demo)
 
     def changed_step_tab(self):
         curr_tab: int = self.stepTabs.currentIndex()
+        wid = self.stepTabs.widget(curr_tab)
         self.stepsTreeWidget.setCurrentItem(self.stepsTreeWidget.topLevelItem(curr_tab))
         if len(self.cx.load.demo) > 0:
-            curr_demo: int = self.stepTabs.widget(curr_tab).demoTargetCombo.currentIndex()
+            curr_demo: int = wid.demoTargetCombo.currentIndex() # type: ignore
             self.set_demo_tree(curr_demo)
         #self.stepsTreeWidget.setCurrentIndex(curr_tab)
 
@@ -406,13 +408,13 @@ class MainWindow(QMainWindow):
         path = data.urls()[0].toLocalFile()
         self.load_demo(path)
 
-    def err(self, err):
-        exctype, value, traceback = err
-        self.update_progress(1)  # Reset the Pez bar.
-        dlg = QMessageBox(self)
-        dlg.setText(traceback)
-        dlg.setIcon(QMessageBox.Critical)
-        dlg.show() 
+    # def err(self, err):
+    #     exctype, value, traceback = err
+    #     self.prog.update_progress(1)  # Reset the Pez bar.
+    #     dlg = QMessageBox(self)
+    #     dlg.setText(traceback)
+    #     dlg.setIcon(QMessageBox.Critical)
+    #     dlg.show() 
         
 class AboutDialog(QDialog):
     def __init__(self, *args, **kwargs):

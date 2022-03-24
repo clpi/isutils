@@ -20,6 +20,6 @@ class Audio(Op):
     def run(self, demo: Demo): #TODO add sect discrim fxn
         super().run(demo)
         # self.demo.add_audio()
-        self.start()
-        self.finish()
+        # self.start()
+        # self.finish()
             

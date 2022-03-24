@@ -16,8 +16,9 @@ class Audio(QAbstractItemModel):
                  path: str = "",
                  verbose: bool = False):
         self.dir = path
-        self.verbose = verbose
-        self.mp3: List[MP3] = []
+        self.verbose = verbose # NOTE: deprecated
+        self.mp3: List[SoundBite] = []
+        self.path = path
         self.len = 0
         try:
             if self.verbose: print("LOADING AUDIO")
@@ -30,8 +31,8 @@ class Audio(QAbstractItemModel):
     def load_dir(self, path: str = ""):
         self.path = Path(path)
         for filepath in self.path.glob("*.mp3"):
-            print(filepath)
             soundbite = SoundBite(path=str(filepath)) #guaranteed to load
+            # print(filepath)
             self.mp3.append(soundbite)
             self.len += 1
         if self.verbose: print("Audio:  loaded {} soundbites.".format(self.len))
@@ -41,7 +42,7 @@ class Audio(QAbstractItemModel):
 
 
     def iter_paths(self):
-        return (p.resolve() for p in sorted(self.path.glob("*.mp3")))
+        return (p.resolve() for p in sorted(Path(self.path).glob("*.mp3")))
 
     def iter_durations(self):
         return (MP3(audio).info.length for audio in self.iter_paths())

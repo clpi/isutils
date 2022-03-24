@@ -26,9 +26,10 @@ class Shell(Op):
         print("SHELL STart")
 
     def run(self, demo: Demo): # type: ignore
-        self.start()
+        pass
+        # self.start()
             # d.shell_assets(to_sect=[], bg_path=self.img_path, asset_new_coord=self.fg_coord, asset_new_size=self.fg_dim)
-        self.finish()
+        # self.finish()
 
 
 

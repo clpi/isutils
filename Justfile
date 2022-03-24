@@ -1,12 +1,34 @@
+alias i:=install
 alias r:=run
+alias b:=build
+alias p:=publish
+alias gp:=gpush
+alias v:=venv
 
-default: nimc rustc-win
+BIN:="ISU"
+OUT:="./dist"
+RES:="./res"
+
+default: brun
 
 build:
-    poetry build
+    poetry build 
 
-run:
-    poetry shell && poetry run
+venv: 
+    poetry shell
+
+run: venv
+    poetry run
+
+brun:
+    poetry run
+
+
+
+
+buildext: nimc rustc-win
+    nim c --app:lib --out:mymodule.pyd --threads:on --tlsEmulation:off --passL:-static src/isu.nim
+    
    
 nimc:
     nim c --app:lib --out:mymodule.pyd --threads:on --tlsEmulation:off --passL:-static src/isu.nim
@@ -14,5 +36,13 @@ nimc:
 rustc-win:
     cd isulib && maturin develop
 
-rustc:
-    nim c --app:lib --out:mymodule.so --threads:on mymodule
+install:
+    poetry install
+
+publish:
+    echo ""
+
+gpush:
+    git add --a
+    git commit -m 'n'
+    git push gh main

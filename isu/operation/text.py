@@ -21,7 +21,7 @@ class Text(Op):
         return { "": "" }
 
     def run(self, demo: Demo): #TODO add sect discrim fxn
-        super().run(demo)
-        self.start()
-        self.finish()
+        super(Text, self).run(demo)
+        # self.start()
+        # self.finish()
         # section(demo, add_intro_outro=True)

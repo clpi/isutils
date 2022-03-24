@@ -30,8 +30,8 @@ class Op(QObject):
         def done(self) -> bool:
             return self in [Op.Status.Done, Op.Status.Failed, Op.Status.Canceled]
 
-    def __del__(self):
-        self.wait()
+    # def __del__(self):
+    #     self.wait()
 
     class Type(enum.Enum):
         Shell, Insert,  Crop, Audio, Section, Pace, Text , Render, Test = range(9)

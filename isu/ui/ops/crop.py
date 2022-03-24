@@ -1,6 +1,6 @@
 import os, sys
 from typing import Optional
-from tkinter import W
+# from tkinter import W
 from typing import List, Tuple
 from PIL import Image
 from PyQt6.QtCore import (QCoreApplication, QDate, QDateTime, QLocale,
@@ -43,7 +43,7 @@ class CropOp(OpUi):
         return Crop(
             # apply_to=apply_to, 
             # all_steps=all_steps,
-            demo=demo,
+            # demo=demo,
             x=self.cropSpinX.value(),
             y=self.cropSpinY.value(),
             width=self.cropSpinW.value(),

@@ -6,7 +6,7 @@ import sys, os
 from PyQt6 import QtGui, QtWidgets, QtCore
 from PyQt6.QtGui import QAction, QGuiApplication, QActionEvent, QEnterEvent, QColor, QPen, QFont
 from PyQt6.QtWidgets import QApplication, QWidget, QComboBox
-from PyQt6.QtCore import *
+from PyQt6.QtCore import pyqtSlot, pyqtEnum, pyqtSignal
 from isu.data import Context
 from isu.operation import Op
 from isu.models.demo import Demo
@@ -16,7 +16,7 @@ __dbg__ = True
 class MainApp(QApplication):
 
     def __init__(self, *args): 
-       super().__init__(*args)
+       super(MainApp, self).__init__(*args)
        self.ctx = Context()
        self.window = MainWindow(self, args)
        self.window.show()
@@ -35,12 +35,12 @@ class MainApp(QApplication):
 
     @pyqtSlot()
     def show_prefs(self):
-        prefs = Prefs(parent=self)
+        prefs = Prefs(parent=self.window)
         prefs.show()
 
     @pyqtSlot()
     def show_prog(self):
-        prog = Progress(parent=self)
+        prog = Progress(parent=self.window)
     # @pyqtSlot(QApplication, name="mainApp")
     # def main_app(self):
         

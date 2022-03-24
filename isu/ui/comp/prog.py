@@ -8,6 +8,7 @@ from PyQt6.QtGui import QTabletEvent
 from PyQt6.QtCore import *
 
 from PyQt6.QtWidgets import (
+    QWidget,
     QPushButton, QComboBox, QListWidget, QListWidgetItem, QTreeWidget, QTreeWidgetItem, QApplication, QLineEdit, QSpinBox, QStackedWidget, QFileDialog, QCheckBox,
     QVBoxLayout, QHBoxLayout, QProgressBar, QProgressDialog, QLabel, QButtonGroup, 
 )
@@ -24,8 +25,8 @@ class Progress(QtWidgets.QWidget):
     index: int
     len: int
 
-    def __init__(self, curr_op: Type[Op] = Shell, len: int = 1, ix = 0):
-        super().__init__()
+    def __init__(self, curr_op: Type[Op] = Shell, len: int = 1, ix = 0,parent: QWidget|None=None):
+        super().__init__(parent)
         self.index = ix
         self.lblh = self.toplabel()
         self.lblh = QLabel(self)
@@ -88,7 +89,8 @@ class Progress(QtWidgets.QWidget):
         self.pbar = QProgressBar(self)
         self.setWindowTitle("isutils: Executing op (1/1)...")
         self.resize(400, 250)
-        layout.addWidget(self.lbl)
+        layout.addWidget(self.lblh)
+        layout.addWidget(self.lblo)
         layout.addWidget(self.pbar)
         self.setLayout(layout)
 

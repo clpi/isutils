@@ -1,4 +1,4 @@
-﻿#/usr/bin/env python3
+﻿#! /usr/bin/env python3
 """
 @file main.py
 @author Chris P <clp@clp.is>
@@ -9,11 +9,13 @@ from isu.app import MainApp
 import os, sys
 from PyQt6.QtCore import QCoreApplication
 from PyQt6.QtWidgets import QApplication
+from PySide6 import QtUiLoader
 
 def run():
     app = MainApp([])
     app.window.show()
     sys.exit(app.exec())
+
     # app = QApplication()
 
 
