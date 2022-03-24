@@ -8,7 +8,13 @@ from enum import Enum, auto
 from typing import Literal, Tuple, Optional, List, Union, Type, Any, Dict, Sequence, MutableSequence, Iterable, overload
 from dataclasses import dataclass
 from isu.models.demo import Demo, section as sect
-from PyQt6.QtCore import *
+from PySide6.QtCore import QRunnable, QThread, QThreadPool,QEnum, QMetaEnum, Signal, Slot, QObject
+from PySide6.QtStateMachine import *
+from PySide6.QtUiTools import QUiLoader
+from PySide6.QtMultimedia import QAudio, QVideoFrame, QVideoFrameFormat, QVideoSink
+from PySide6.QtQml import QQmlEngine, QQmlFile, QQmlContext, QQmlComponent
+from PySide6.QtMultimediaWidgets import QVideoWidget
+from PySide6.QtConcurrent import QtConcurrent, QFutureVoid, QFutureQString
 from PyQt6.QtWidgets import *
 from isu import operation
 
@@ -18,37 +24,35 @@ from isu.models.section import Section
 SECTION_RULES: list = []
 AUDIO_RULES: list = []
 
+class Status(QMetaEnum):
+    Done = auto()
+    Failed = auto()
+    InProgress= auto()
+    Queued = auto()
+    Canceled = auto()
+
+    @property
+    def completed(self) -> bool:
+        match self:
+            case [Done, Failed, Canceled]: return True
+            case [InProgress, Queued]: return False
+        return False
+
+
 class Op(QObject):
 
-    class Status(enum.Enum):
-        Done = auto()
-        Failed = auto()
-        InProgress= auto()
-        Queued = auto()
-        Canceled = auto()
+    status = Signal(Status)
+    prog = Signal(int)
+    qmsg = Signal(str)
 
-        def done(self) -> bool:
-            return self in [Op.Status.Done, Op.Status.Failed, Op.Status.Canceled]
-
-    # def __del__(self):
-    #     self.wait()
-
-    class Type(enum.Enum):
-        Shell, Insert,  Crop, Audio, Section, Pace, Text , Render, Test = range(9)
-
-    status = pyqtSignal(Status)
-    prog = pyqtSignal(int)
-    qmsg = pyqtSignal(str)
-
-    def __init__(self, p: QWidget) -> None:    
-        super().__init__(p)
-        # self.kind = kind
+    def __init__(self, parent: Any) -> None:    
+        super(Op, self).__init__(parent=parent)
         self.qmsg.emit(f"Initializing {self}")
         self.progress: int = 0
 
     def started(self) -> None:
         # self.timer.singleShot(0, self.run)
-        self.status.emit(Op.Status.InProgress)
+        self.status.emit(Status.InProgress)
         print("[.operation.Op.run] RUNNING " + str(self))
 
     def updated(self, i: int) -> None:
@@ -59,14 +63,14 @@ class Op(QObject):
             self.finished()
             
     def canceled(self) -> None:
-        self.status.emit(Op.Status.Canceled)
+        self.status.emit(Status.Canceled)
         self.prog.emit(100)
 
     def finished(self) -> None:
-        self.status.emit(Op.Status.Done)
+        self.status.emit(Status.Done)
         self.prog.emit(100)
 
-    @pyqtSlot()
+    @Slot()
     def run(self, demo: Demo) -> None:
         self.started()
         print("    DEMO: " + str(demo.title))
@@ -87,7 +91,7 @@ class Op(QObject):
 #         for op, demo in self.ops:
 #             op()
 
-@pyqtSlot()
+@Slot()
 def run(self, demo: Demo):
     print("Op running:")
     # try:

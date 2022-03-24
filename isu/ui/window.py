@@ -12,28 +12,30 @@ from pathlib import Path
 # from dataclasses import dataclass, field
 from isu.ui.ops.tab import OpUi
 from typing import List, Tuple, Dict, Optional, Type, Any
-from PyQt6.QtCore import ( 
-    QPoint, QAbstractItemModel, QCoreApplication, pyqtEnum,
-    pyqtPickleProtocol, pyqtSignal,
-    QObject, pyqtSlot, QFileSelector, QSaveFile, QFileSelector, QTemporaryDir, 
+from PySide6.QtUiTools import QUiLoader
+from PySide6.QtCore import ( 
+    QPoint, QAbstractItemModel, QCoreApplication, QEnum, QFlag, Signal,
+    QObject, Slot, QFileSelector, QSaveFile, QFileSelector, QTemporaryDir, 
     QTemporaryFile, QAbstractItemModel, QAbstractListModel, QModelIndex,
-    QSignalMapper, 
+    QSignalMapper, QFile,
     # QProcess, Qt, QDir, QFile, QFileInfo, QUrl, QUuid
 )
-from PyQt6.QtGui import (QIcon,
+from isu.ui import UiLoad
+from PySide6.QtGui import (QIcon,
     QDragEnterEvent, QDropEvent,
     QImageIOHandler, QImage, QImageReader, QAction, QIcon, QAction, 
     QActionEvent, QIconEngine,
     QImageWriter,QStandardItemModel, QStandardItem, QPalette, QColor, QColorConstants,
 )
-# from PyQt6.QtMultimediaWidgets import QGraphicsVideoItem, QVideoWidget
-from PyQt6 import uic
-from PyQt6.QtWidgets import ( QWidget,
+# from PySide6.QtMultimediaWidgets import QGraphicsVideoItem, QVideoWidget
+from isu.models import Step, Demo
+from PySide6 import QtUiTools
+from PySide6.QtWidgets import ( QWidget,
+    QTabWidget, QTabBar,
     # QColorDialog,
-
     QApplication, QMainWindow, QPushButton, QLineEdit, QSpinBox, QMessageBox, QFileDialog, QListWidgetItem,
     # QMenuBar,QProgressDialog,
-    QListWidget, QTreeWidget, QTableWidget, QLabel, QTabWidget, QComboBox, QTreeWidgetItem, QTableWidgetItem,
+    QListWidget, QTreeWidget, QTableWidget, QLabel, QComboBox, QTreeWidgetItem, QTableWidgetItem,
     QWizard, QWizardPage, QDialog, QUndoView, QProgressBar, QStyle, QStackedWidget, QGroupBox,
     # QInputDialog,
 )
@@ -44,7 +46,7 @@ from ..operation import Op, Shell, Insert, Section, Audio, Crop, Pace, Text, Ren
 from isu.ui.ops.tab import TabOp
 from isu.ui.ops.tabs import OpTabs
 from isu.ui.comp.prefs import Prefs
-from isu.data import Context
+from isu.ui.data import Context
 
 # from PySide6.QtUiTools import QUiLoader
 
@@ -52,12 +54,11 @@ from isu.data import Context
 #     and attaches appropriate functions/functionality
 class MainWindow(QMainWindow):
 
-    def __init__(self, parent = None, *args, **kwargs) -> None:
-        super().__init__()
-        path = os.path.join(os.path.dirname(__file__), "window.ui")
-        uic.loadUi(path, self) # type: ignore
-        self.parentW = parent
-        self.cx = Context()
+    def __init__(self, parent = QApplication, *args, **kwargs) -> None:
+        super(MainWindow, self).__init__(parent=parent)
+        self.ui = UiLoad("window.ui", parent=parent)
+        self.parent = parent
+        self.ctx = Context()
         self.load_windows()
         self.load_btn()
         self.load_actions()
@@ -117,11 +118,11 @@ class MainWindow(QMainWindow):
 
         self.stepTabs: QTabWidget
 
-        self.stepsTreeWidget.currentItemChanged.connect( self.changed_op )
-        self.stepTabs.currentChanged.connect(self.changed_step_tab)
+        self.stepsTreeWidget.currentChanged.connect(self.changed_op)
+        # self.stepTabs.currentChanged.
 
     def load_windows(self):
-        self.preferences = Prefs(self)
+        self.preferences = Prefs(parent=self)
         self.browseDemoDialog: QFileDialog
         self.browseScriptDialog: QFileDialog
         self.browseAudioDialog: QFileDialog
@@ -135,9 +136,9 @@ class MainWindow(QMainWindow):
 
         self.actionNewStep.setShortcut("Ctrl+Shift+S")
         self.actionNewStep.setStatusTip("Add new step to operations")
-        self.actionNewStep.triggered.connect(self.add_step)
-        self.actionPreferences.triggered.connect(self.preferences.open)
-        self.actionAbout.triggered.connect(self.show_about)
+        self.actionNewStep.trigger.connect(self.add_step)
+        self.actionPreferences.trigger.connect(self.preferences.open)
+        self.actionAbout.trigger.connect(self.show_about)
 
     #TODO detach these from class
     def browse_demo(self):
@@ -300,7 +301,7 @@ class MainWindow(QMainWindow):
         sel_step: QModelIndex = self.stepsTreeWidget.currentIndex()
         self.stepTabs.removeTab(sel_step.row())
         self.stepsTreeWidget.takeTopLevelItem(sel_step.row())
-        self.cx.ops.pop(sel_step.row())
+        self.cx.ops.ops.remove()
         self.update_steps()
         for i in range(self.stepsTreeWidget.topLevelItemCount()):
             self.stepsTreeWidget.topLevelItem(i).setData(0,0,i+1)
@@ -309,25 +310,6 @@ class MainWindow(QMainWindow):
         #self.opsStack.setCurrentIndex(sel_step.row()-1)
         print("END remove_step")
 
-    def update_steps(self):
-        if self.stepsTreeWidget.topLevelItemCount() > 0:
-            for i in range(self.stepsTreeWidget.topLevelItemCount()):
-                step = self.stepTabs.widget(i)
-                op_type = str(step.op)
-                op_target = str(step.opCombo.currentText())
-                demo_target = str(step.demoTargetCombo.currentText())
-                self.stepsTreeWidget.topLevelItem(i).setData(0,0,i+1)
-                self.stepsTreeWidget.topLevelItem(i).setData(1,0,op_target)
-                if demo_target is not None:
-                    self.stepsTreeWidget.topLevelItem(i).setData(2,0,demo_target)
-                else:
-                    self.stepsTreeWidget.topLevelItem(i).setData(2,0,"No demo")
-                self.stepTabs.setTabText(i, "Step " + str(i+1))
-                self.stepTabs.setCurrentIndex(self.stepsTreeWidget.currentIndex().row())
-        if len(self.cx.load.demo) > 0:
-            if self.stepTabs.widget(0):
-                # self.set_demo_tree(self.stepTabs.widget(self.stepsTreeWidget.currentIndex().row()).demoTargetCombo.currentIndex())
-                pass
 
     def add_demo_row(self):
         # checkif sect or step
@@ -349,6 +331,10 @@ class MainWindow(QMainWindow):
             curr_demo: int = wid.demoTargetCombo.currentIndex() # type: ignore
             self.set_demo_tree(curr_demo)
         #self.stepsTreeWidget.setCurrentIndex(curr_tab)
+
+    @Slot(int)
+    def get_selected_demo(self):
+
 
     def update_step_op(self, op_idx: int, step_num: int):
         self.stepsTreeWidget.topLevelItem(step_num).setData(1, 0, str(OP_TYPES[op_idx]()))

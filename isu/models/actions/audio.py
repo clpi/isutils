@@ -1,6 +1,6 @@
 from dataclasses import dataclass
 from typing import List, Optional, Tuple
-from PyQt6.QtCore import QObject
+from PySide6.QtCore import QObject
 
 @dataclass
 class Textbox(QObject):

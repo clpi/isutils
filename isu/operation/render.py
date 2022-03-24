@@ -5,11 +5,9 @@ from cv2 import VideoWriter_fourcc
 from isu.utils import log
 from PIL import Image
 import numpy as np
-# from av import VideoFormat, VideoFrame, buffer 
 import cv2, pathlib, enum, os, ffmpeg, mutagen
 from pathlib import WindowsPath, Path
 from typing import Sequence, Optional, List, Dict, Any, Tuple
-# import moviepy.editor as mpy
 from isu.operation import Op
 from dataclasses import dataclass
 from isu.models.demo import Demo
@@ -19,11 +17,10 @@ from PyQt6.QtCore import (
 )
 from isu.models.step import Step
 from isu.models.audio import Audio
-from isu.models.actions.cursor import Cursor
+from isu.models.actions import Cursor, Jumpbox, Audio, Box, CursorMove, cursor
 RenderFmt = [
 ]
 
-@pyqtEnum
 class Format(enum.Enum):
     Mp4, Avi, Mkv, Mov, Mpv = range(4)
 
@@ -166,10 +163,10 @@ class Render(Op):
                     if step.audio:
                         au = str(step.audio)
                     if mouse:
-                        img = mouse.paste(simg)
+                        simg = mouse.paste(simg)
                     h, w, layers = simg.shape
                     for i in range(round(nframes)):
-                        imgs.append(img)
+                        imgs.append(simg)
                     
                 # if step.hover is not None:
                 #     pass

@@ -1,12 +1,12 @@
-import argparse
 from isu.ui.comp.prefs import Prefs
 from isu.ui.comp.prog import Progress
-from isu.ui.window import AboutDialog, MainWindow
-import sys, os
-from PyQt6 import QtGui, QtWidgets, QtCore
-from PyQt6.QtGui import QAction, QGuiApplication, QActionEvent, QEnterEvent, QColor, QPen, QFont
-from PyQt6.QtWidgets import QApplication, QWidget, QComboBox
-from PyQt6.QtCore import pyqtSlot, pyqtEnum, pyqtSignal
+from isu.ui.window import MainWindow
+import sys, os, argparse
+from PySide6 import QtGui, QtWidgets, QtCore, QtUiTools
+from PySide6.QtGui import QAction, QGuiApplication, QActionEvent, QEnterEvent, QColor, QPen, QFont
+from PySide6.QtWidgets import QApplication, QWidget, QComboBox
+from PySide6.QtCore import Slot, Signal, QEnum, QFlag, QObject, QMetaObject
+from enum import Enum, Flag, auto
 from isu.data import Context
 from isu.operation import Op
 from isu.models.demo import Demo
@@ -28,17 +28,17 @@ class MainApp(QApplication):
     def open(q: QWidget):
         q.show()
 
-    @pyqtSlot()
+    @Slot()
     def run_ops(self):
         self.window.show()
         sys.exit(self.exec())
 
-    @pyqtSlot()
+    @Slot()
     def show_prefs(self):
         prefs = Prefs(parent=self.window)
         prefs.show()
 
-    @pyqtSlot()
+    @Slot()
     def show_prog(self):
         prog = Progress(parent=self.window)
     # @pyqtSlot(QApplication, name="mainApp")

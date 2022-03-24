@@ -7,9 +7,10 @@ from typing import NoReturn
 from isu.ui.window import MainWindow
 from isu.app import MainApp
 import os, sys
-from PyQt6.QtCore import QCoreApplication
-from PyQt6.QtWidgets import QApplication
-from PySide6 import QtUiLoader
+from PySide6.QtCore import QCoreApplication
+from PySide6.QtWidgets import QApplication
+from PySide6 import QtUiTools
+# from PySide6 import QUiLoader
 
 def run():
     app = MainApp([])

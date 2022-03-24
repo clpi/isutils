@@ -1,19 +1,21 @@
-QT += widgets core gui concurrent designer
-# TEMPLATE = templ
+QT += widgets core gui concurrent designer uitools
+CONFIG += plugin
+TEMPLATE = lib/tmp
+QMAKE_CXXFLAGS = -std=++11
 
 greaterThan(QT_MAJOR_VERSION, 5): QT += widgets
 
 requires(qtConfig(combobox))
-INSTALLS =
+
+target.path = $$[QT_INSTALL_PLUGINS]/designer
+INSTALLS += target
 TARGET = Vfp
 TEMPLATE = app
-
-QMAKE_CXXFLAGS = -std=++11
-
-
+INCLUDEPATH += $$PWD
 
 HEADERS    += view/demo.h \
               view/main.cpp
+
 SOURCES    += isu/main.py \
               isu/main.cpp \
               isu/ui/main.ui \

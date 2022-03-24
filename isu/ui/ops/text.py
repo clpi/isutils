@@ -1,20 +1,22 @@
 import os, sys
 from typing import Optional
 from PIL import Image
-from PyQt6.QtCore import (QCoreApplication, QDate, QDateTime, QLocale,
+from PySide6.QtCore import (
+    Signal, Slot, QEnum,
+    QCoreApplication, QDate, QDateTime, QLocale,
     QMetaObject, QObject, QPoint, QRect,
     QSize, QTime, QUrl, Qt)
-from PyQt6.QtGui import (QBrush, QColor, QConicalGradient, QCursor,
+from PySide6.QtGui import (
+    QBrush, QColor, QConicalGradient, QCursor,
     QFont, QFontDatabase, QGradient, QIcon,
     QImage, QKeySequence, QLinearGradient, QPainter,
     QPalette, QPixmap, QRadialGradient, QTransform)
-from PyQt6.QtWidgets import (
+from PySide6.QtWidgets import (
     QApplication, QSizePolicy, QWidget, QLabel, QFormLayout, QHBoxLayout,
     QVBoxLayout, QLineEdit, QLayout, QPushButton, QCheckBox, QComboBox, 
     QSpinBox, QStackedLayout, QStackedWidget, QFileDialog
     )
-from PyQt6 import uic
-
+from PySide6 import QtUiTools
 from isu.ui.ops import OpUi
 from isu.models.demo import Demo
 from isu.operation.text import Text

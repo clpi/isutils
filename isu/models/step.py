@@ -1,6 +1,6 @@
 from dataclasses import dataclass
 from PIL import Image
-import lxml.etree as ET
+import lxml.etree as et
 import numpy as np
 # from uuid import uuid4
 from typing import List, Tuple, Dict, Optional, Any, Iterable, Union
@@ -11,6 +11,7 @@ from isu.models.script import TextBox
 import shutil
 import re
 from copy import deepcopy
+from PySide6 import QtUiTools
 from PySide6.QtCore import QObject, QEasingCurve, Signal, Property, Slot, QPointF, QPoint
 
 
@@ -49,8 +50,8 @@ class Step(QObject):
 
     def __init__(
             self,
+            root: et.ElementBase,
             idx: int = 0,
-            root: ET.ElementTree | None = None,
             copy_root: bool = False,
             demo_dir: str = "",
             verbose: bool = False,
@@ -59,12 +60,12 @@ class Step(QObject):
             talking_pt: str = "",
             last_of_sect: bool = False,
             delay: float = 1.0):
-        self.root: ET.ElementTree | None
+        self.root: et.ElementBase | None
         match copy_root:
             case True: self.root = deepcopy(root)
             case False: self.root = root
-        self.sp_el: ET.Element = self.root.find("StartPicture")
-        self.mp_el: ET.Element = self.root.find("MouseEnterPicture")
+        self.sp_el: et.ElementBase | None = self.root.find("StartPicture")
+        self.mp_el: et.ElementBase | None = self.root.find("MouseEnterPicture")
         self.demo_dir: str = demo_dir
         self.last_of_sect: bool = last_of_sect
         match demo_dir:

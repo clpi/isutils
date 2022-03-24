@@ -1,23 +1,23 @@
 import os, sys
-from typing import List, Optional, Tuple
+from typing import List, Optional, Tuple, Any
 from isu.ui.ops.ops import OpUi
 from isu.models.demo import Demo
 from isu.operation import Insert, Op
 from PIL import Image
-from PyQt6.QtCore import (QCoreApplication, QDate, QDateTime, QLocale,
+from PySide6.QtCore import (QCoreApplication, QDate, QDateTime, QLocale,
     QMetaObject, QObject, QPoint, QRect,
     QSize, QTime, QUrl, Qt)
-from PyQt6.QtGui import (QBrush, QColor, QConicalGradient, QCursor,
+from PySide6.QtGui import (QBrush, QColor, QConicalGradient, QCursor,
     QFont, QFontDatabase, QGradient, QIcon,
     QImage, QKeySequence, QLinearGradient, QPainter,
     QPalette, QPixmap, QRadialGradient, QTransform)
-from PyQt6.QtWidgets import (
+from PySide6.QtWidgets import (
     QFileDialog, 
     QApplication, QSizePolicy, QWidget, QLabel, QFormLayout, QHBoxLayout,
     QVBoxLayout, QLineEdit, QLayout, QPushButton, QCheckBox, QComboBox, 
     QSpinBox, QStackedLayout, QStackedWidget
     )
-from PyQt6 import uic
+from isu.ui import UiLoad
 
 class InsertOp(OpUi):
 
@@ -25,14 +25,13 @@ class InsertOp(OpUi):
     def cbidx() -> int:
         return 1
 
-    def __init__(self, index: int = 1, parent: Optional[QWidget] = None):
+    def __init__(self, index: int = 1, parent: Any = QCoreApplication.instance()):
         super().__init__(parent)
         self.index = index
-        path = os.path.join(os.path.dirname(__file__), "insert.ui")
-        uic.loadUi(path, self)
-        self.loadUi()
+        self.ui = UiLoad("shell.ui", parent)
+        self.load_ui()
 
-    def loadUi(self):
+    def load_ui(self):
         self.setObjectName(u"insertTab")
         self.setAutoFillBackground(False)
 

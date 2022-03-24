@@ -3,22 +3,20 @@ import time
 import enum
 import sys
 from typing import Callable, Type
-from PyQt6 import QtWidgets, QtCore, QtGui
-from PyQt6.QtGui import QTabletEvent
-from PyQt6.QtCore import *
+from PySide6 import QtWidgets, QtCore, QtGui
+from PySide6.QtGui import QTabletEvent
+from PySide6.QtCore import *
 
-from PyQt6.QtWidgets import (
+from PySide6.QtWidgets import (
     QWidget,
     QPushButton, QComboBox, QListWidget, QListWidgetItem, QTreeWidget, QTreeWidgetItem, QApplication, QLineEdit, QSpinBox, QStackedWidget, QFileDialog, QCheckBox,
     QVBoxLayout, QHBoxLayout, QProgressBar, QProgressDialog, QLabel, QButtonGroup, 
 )
 
-from isu.operation.operation import Op
-from isu.data import OpQueue
+from isu.operation.operation import Op, Status
+from isu.ui.data import OpQueue
 from isu.operation.shell import Shell
 
-    
-    
 
 class Progress(QtWidgets.QWidget):
     pbar: QProgressBar
@@ -47,7 +45,7 @@ class Progress(QtWidgets.QWidget):
             self.lblh.setText(f"All {self.len} operations completed successfully.")
             self.close()
 
-    @pyqtSlot(str)
+    @Slot(str)
     def set_opmsg(self, msg: str) -> None:
         self.opmsg.setText(msg)
 
@@ -60,28 +58,26 @@ class Progress(QtWidgets.QWidget):
     def set_optype(self, ot: Type[Op]):
         self.curr_op = ot
 
-    @pyqtSlot(int)
+    @Slot(int)
     def progress(self, val: int):
         self.pbar.setValue(val)
         self.lblh = self.toplabel()
         self.lblo = self.oplabel()
 
-    @pyqtSlot(Op.Status)
-    def handle_status(self, st: Op.Status, ): 
-        if st == Op.Status.Canceled:
+    @Slot(Status)
+    def handle_status(self, st: Status, ): 
+        if st == Status.Canceled:
             self.lblh.setText("Canceled")
             self.lblo.setText(f"{self.curr_op} was canceled by the user.")
-        elif st == Op.Status.Done:
+        elif st == Status.Done:
             self.lblh.setText("Finished")
             self.lblo.setText(f"{self.curr_op} is complete.")
-        elif st == Op.Status.Failed:
+        elif st == Status.Failed:
             self.lblh.setText("Failed")
             self.lblo.setText(f"{self.curr_op} failed.")
-        elif st == Op.Status.InProgress:
+        elif st == Status.InProgress:
             self.lblh = self.toplabel()
             self.lblo = self.oplabel()
-
-
 
     def setupUi(self):
         layout = QVBoxLayout()
@@ -94,7 +90,6 @@ class Progress(QtWidgets.QWidget):
         layout.addWidget(self.pbar)
         self.setLayout(layout)
 
-
     def timerEvent(self, e: QTimerEvent):
         if self.timer.isActive() or self.pbar.value() >= 100:
             self.timer.stop()
@@ -103,11 +98,11 @@ class Progress(QtWidgets.QWidget):
         self.index += 1
         self.set(self.index)
 
-    @pyqtSlot()
+    @Slot()
     def start(self):
         self.timer.start(100, self)
 
-    @pyqtSlot()
+    @Slot()
     def finish(self):
         self.lblh.setText("Finished")
         self.lblo.setText(f"{self.curr_op} is complete.")

@@ -1,4 +1,4 @@
-# Form implementation generated from reading ui file 'c:\Users\chris\is\isutils\isu\ui\views\demo.ui'
+# Form implementation generated from reading ui file 'c:\Users\chris\is\isutils\isu\data\demo.ui'
 #
 # Created by: PyQt6 UI code generator 6.2.3
 #
@@ -9,12 +9,14 @@
 from PyQt6 import QtCore, QtGui, QtWidgets
 
 
-class Ui_ScrollArea(object):
-    def setupUi(self, ScrollArea):
-        ScrollArea.setObjectName("ScrollArea")
-        ScrollArea.resize(400, 300)
+class Ui_StackedWidget(object):
+    def setupUi(self, StackedWidget):
+        StackedWidget.setObjectName("StackedWidget")
+        StackedWidget.resize(400, 300)
 
-        self.retranslateUi(ScrollArea)
+        self.retranslateUi(StackedWidget)
+        QtCore.QMetaObject.connectSlotsByName(StackedWidget)
 
-    def retranslateUi(self, ScrollArea):
-        pass
+    def retranslateUi(self, StackedWidget):
+        _translate = QtCore.QCoreApplication.translate
+        StackedWidget.setWindowTitle(_translate("StackedWidget", "StackedWidget"))

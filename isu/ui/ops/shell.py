@@ -3,36 +3,32 @@ from isu.operation import Shell
 from isu.models import Demo
 from typing import Tuple
 from PIL import Image
-from PyQt6.QtCore import (QCoreApplication, QDate, QDateTime, QLocale,
+from PySide6.QtCore import (QCoreApplication, QDate, QDateTime, QLocale,
     QMetaObject, QObject, QPoint, QRect,
     QSize, QTime, QUrl, Qt)
-from PyQt6.QtGui import (QBrush, QColor, QConicalGradient, QCursor,
+from PySide6.QtGui import (QBrush, QColor, QConicalGradient, QCursor,
     QFont, QFontDatabase, QGradient, QIcon,
     QImage, QKeySequence, QLinearGradient, QPainter,
     QPalette, QPixmap, QRadialGradient, QTransform)
-from PyQt6.QtWidgets import (
+from PySide6.QtWidgets import (
     QApplication, QSizePolicy, QWidget, QLabel, QFormLayout, QHBoxLayout,
     QVBoxLayout, QLineEdit, QLayout, QPushButton, QCheckBox, QComboBox, 
     QSpinBox, QStackedLayout, QStackedWidget, QFileDialog
     )
+from isu.ui import UiLoad
 from isu.ui.ops.ops import OpUi
 from typing import Optional, Sequence, Dict
-from PyQt6 import uic
+from PySide6.QtUiTools import QUiLoader
 
 class ShellOp(OpUi):
 
-    def __init__(self, parent: Optional[QWidget] = None, index:int = 0):
-        super().__init__(parent)
+    def __init__(self, parent: QWidget, index:int = 0):
+        super(ShellOp, self).__init__(parent=parent)
         self.index = index
-        path = os.path.join(os.path.dirname(__file__), "shell.ui")
-        uic.loadUi(path, self)
-        self.loadUi()
+        self.ui = UiLoad("shell.ui", parent)
+        self.load_ui(parent)
 
-    @staticmethod
-    def cbidx() -> int:
-        return 0
-
-    def loadUi(self):
+    def load_ui(self, parent: Any):
         self.setObjectName(u"shellTab")
         self.setAutoFillBackground(False)
 
@@ -47,7 +43,7 @@ class ShellOp(OpUi):
 
         # self.opsParamsStack.addWidget(self)
 
-        self.shellBrowseImgBtn.clicked.connect(self.browse_shell)
+        self.shellBrowseImgBtn.toggle.connect(self.browse_shell)
 
     def browse_shell(self):
         try:
@@ -55,9 +51,9 @@ class ShellOp(OpUi):
             self.shellImgPath.setText(fileName)
             img_tmp = Image.open(fileName)
             iwidth, iheight = img_tmp.size
-            if self.demo is not None:
-                if iwidth > self.demo.res[0] or iheight > self.demo.res[1]:
-                    pass
+            # if self.demo is not None:
+            #     if iwidth > self.demo.res[0] or iheight > self.demo.res[1]:
+            #         pass
             #set op img path, def dims
         except: pass
 

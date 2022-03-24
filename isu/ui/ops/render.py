@@ -1,14 +1,14 @@
 import os, sys, pathlib
 from typing import Optional, Sequence, Dict
 from PIL import Image
-from PyQt6.QtCore import *
-from PyQt6.QtGui import (QBrush, QColor, QConicalGradient, QCursor,
+from PySide6.QtCore import *
+from PySide6.QtGui import (QBrush, QColor, QConicalGradient, QCursor,
     QFont, QFontDatabase, QGradient, QIcon,
     QImage, QKeySequence, QLinearGradient, QPainter,
     QPalette, QPixmap, QRadialGradient, QTransform)
-from PyQt6.QtGui import QAction
-from PyQt6.QtWidgets import *
-from PyQt6 import uic
+from PySide6.QtGui import QAction
+from PySide6.QtWidgets import *
+from PySide6 import QtUiTools
 from isu.models.demo import Demo
 from isu.ui.ops.ops import OpUi
 from isu.operation.render import Format, Render

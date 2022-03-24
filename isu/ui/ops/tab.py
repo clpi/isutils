@@ -5,16 +5,17 @@ import sys, os, pathlib
 from typing import Optional, List, Dict, Any, Type, Tuple
 from PIL import Image
 from pathlib import Path
-from PyQt6 import uic
-from PyQt6.QtCore import (Qt, QObject, pyqtSlot, pyqtSignal)
-from PyQt6.QtWidgets import (QWidget, QDialog, QListWidget, QPushButton,
+from PySide6.QtUiTools import QUiLoader
+from PySide6.QtCore import (Qt, QObject, Slot, Signal, QFile)
+from PySide6.QtWidgets import (QWidget, QDialog, QListWidget, QPushButton,
     QComboBox, QListWidgetItem, QTreeWidget, QTreeWidgetItem, 
     QApplication, QLineEdit, QSpinBox, QStackedWidget, QFileDialog, QCheckBox)
 from isu.operation import OP_TYPES, Shell, Insert, Section, Audio, Crop, Render , Pace, Text
 from isu.operation.operation import Op
 from isu.models.demo import Demo
-from isu.ui.ops import OP_UI_TYPES, ops, shell, section, insert, crop, audio, render, pace, text #  ShellOp, SectionOp, InsertOp, CropOp, AudioOp, RenderOp, PaceOp, TextOp, OP_UI_TYPES
-from isu.ui.ops.ops import OpUi
+from isu.ui import UiLoad
+from isu.ui.ops import OpType, ops, shell, section, insert, crop, audio, render, pace, text #  ShellOp, SectionOp, InsertOp, CropOp, AudioOp, RenderOp, PaceOp, TextOp, OP_UI_TYPES
+from isu.ui.ops.ops import OpUi, to_op_type, to_ui_type
 
 class TabOp(QWidget):
     """_summary_
@@ -24,24 +25,31 @@ class TabOp(QWidget):
         QWidget (_type_): _description_
     """
 
-    def __init__(self, parent: Optional[QWidget] = None, index:int = 0, op_idx: int = 0):
-        super().__init__(parent)
-        self.index = index
-        self.demo_idx: int = 0
+    demo_index = Signal(int)
+    op_index = Signal(int)
+
+    def __init__(self, parent: Optional[QWidget] = None, index: int = 0):
+        super(QWidget, self).__init__(parent)
+        self.index: int = index # NOTE: index of the currently selected step
+        self.demo_idx: int = 0 # NOTE: index of currently selected demo
         self.apply_to_demo: Optional[Demo] = None #Stores in memory the demo which the operation will be performed on
         self.apply_to_mask: Optional[List[List[bool]]] = None #Maps every step in every section to True/false value to apply op to
-        super().__init__(parent)
-        path = os.path.join(os.path.dirname(__file__), "tab.ui")
-        uic.loadUi(path, self)
-        self.load_btn()
-        self.load_stack_data()
+        self.ui = UiLoad(name="tab.ui", parent=parent)
+        self.load_btn(parent=parent)
+        self.load_stack_data(parent=parent)
+        self.load_data(parent=parent)
 
+    def broadcast_demo_idx(self):
+        self.demo_index.emit(self.demoTargetCombo.currentIndex())
+
+    def broadcast_op_idx(self):
+        self.op_index.emit(self.opCombo.currentIndex())
 
     def curr_optype(self) -> Type[Op]:
-        return OP_TYPES[self.opCombo.currentIndex()]
+        return to_op_type(self.opCombo.currentIndex())
 
     def curr_opuitype(self) -> Type[OpUi]:
-        return OP_UI_TYPES[self.opCombo.currentIndex()]
+        return to_ui_type(self.opCombo.currentIndex())
 
     def curr_opui(self) -> OpUi:
         return self.ops[self.opCombo.currentIndex()]
@@ -49,7 +57,15 @@ class TabOp(QWidget):
     def curr_op(self) -> Op:
         return self.curr_opui().op()
 
-    def load_stack_data(self):
+    @Slot()
+    def on_step_update(self) -> None:
+        pass
+
+    @Slot()
+    def on_op_update(self) -> None:
+        pass
+
+    def load_stack_data(self, parent: Any):
         self.ops = [
             shell.ShellOp(parent=self, index=self.index),
             insert.InsertOp(parent=self, index=self.index),
@@ -75,22 +91,23 @@ class TabOp(QWidget):
         self.opCombo.setCurrentIndex(0)
         self.op=self.curr_opui()
 
-    def load_btn(self): 
+    def load_btn(self, parent: None | QWidget = None):
         self.resetStepParamsBtn: QPushButton
         self.saveStepParamsBtn: QPushButton
 
-        self.resetStepParamsBtn.clicked.connect(self.reset_step_params)
-        self.saveStepParamsBtn.clicked.connect(self.save_step_params)
+        self.resetStepParamsBtn.toggle.connect(self.reset_step_params)
+        self.saveStepParamsBtn.toggle.connect(self.save_step_params)
 
-    def load_data(self):
+    def load_data(self, parent: None | QWidget = None):
         self.opsParamsStack: QStackedWidget
-        self.demoTargetCombo: QComboBox
         self.opCombo: QComboBox
+        self.demoTargetCombo: QComboBox
         self.allStepsCheck: QCheckBox
         self.matchSubstringCheck: QCheckBox
 
         # self.applyToTreeWidget: QTreeWidget
 
+        self.demoTargetCombo.connect()
         self.demoTargetCombo.currentIndexChanged.connect(self.demo_changed)
         self.opCombo.currentIndexChanged.connect(self.op_changed)
 
@@ -175,7 +192,7 @@ class TabOp(QWidget):
         pass
 
     def get_apply_to(self) -> List[List[bool]]:
-        pass
+        return [[]]
 
     def browse_insert(self):
         try:

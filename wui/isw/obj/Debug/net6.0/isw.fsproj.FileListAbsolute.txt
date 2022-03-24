@@ -1,0 +1,3 @@
+c:\Users\chris\is\isutils\wui\isw\obj\Debug\net6.0\isw.AssemblyInfoInputs.cache
+c:\Users\chris\is\isutils\wui\isw\obj\Debug\net6.0\isw.AssemblyInfo.fs
+c:\Users\chris\is\isutils\wui\isw\obj\Debug\net6.0\isw.fsproj.CoreCompileInputs.cache

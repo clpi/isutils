@@ -1,24 +1,23 @@
 import os, sys
-from typing import Optional
-# from tkinter import W
-from typing import List, Tuple
+from typing import Optional, Any, Tuple, List
 from PIL import Image
-from PyQt6.QtCore import (QCoreApplication, QDate, QDateTime, QLocale,
+from PySide6.QtCore import (QCoreApplication, QDate, QDateTime, QLocale,
     QMetaObject, QObject, QPoint, QRect,
+    QDir, QFile,
     QSize, QTime, QUrl, Qt)
-from PyQt6.QtGui import (QBrush, QColor, QConicalGradient, QCursor,
+from PySide6.QtGui import (QBrush, QColor, QConicalGradient, QCursor,
     QFont, QFontDatabase, QGradient, QIcon,
     QImage, QKeySequence, QLinearGradient, QPainter,
     QPalette, QPixmap, QRadialGradient, QTransform)
-from PyQt6.QtWidgets import (
+from PySide6.QtWidgets import (
     QApplication, QSizePolicy, QWidget, QLabel, QFormLayout, QHBoxLayout,
     QVBoxLayout, QLineEdit, QLayout, QPushButton, QCheckBox, QComboBox, 
     QSpinBox, QStackedLayout, QStackedWidget, QFileDialog
     )
-from PyQt6 import uic
 from isu.models.demo import Demo
 from isu.operation import Crop, Op
 from isu.ui.ops.ops import OpUi
+from isu.ui import UiLoad
 
 class CropOp(OpUi):
 
@@ -26,11 +25,11 @@ class CropOp(OpUi):
     def cbidx() -> int:
         return 2
 
-    def __init__(self, index: int, parent: Optional[QWidget] = None):
-        super().__init__(parent)
+    def __init__(self, index: int, parent: Any):
+        super(CropOp, self).__init__(parent)
         self.index = index
-        path = os.path.join(os.path.dirname(__file__), "crop.ui")
-        uic.loadUi(path, self)
+        dir = QDir(os.path.dirname(__file__) / Path("crop.ui"))
+        self.ui = UiLoad(name="crop.ui", dir=dir, parent=parent)
         self.loadUi()
 
     def loadUi(self):

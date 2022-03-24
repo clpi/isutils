@@ -6,7 +6,7 @@ import cv2
 import numpy as np
 from enum import Enum
 from typing import List, Optional, Tuple
-from PyQt6.QtCore import QObject, pyqtSignal, pyqtSlot, pyqtEnum
+from PySide6.QtCore import QObject, Signal, Slot, QEnum
 
 
 @pyqtEnum
