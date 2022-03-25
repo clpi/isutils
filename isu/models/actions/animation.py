@@ -10,30 +10,31 @@ import numpy as np
 from enum import Enum
 from typing import List, Optional, Tuple, Dict
 from PySide6.QtCore import (
-    QObject, pyqtSignal, pyqtSlot, pyqtEnum,
+    QItemSelection, QItemSelectionModel, QItemSelectionRange,
+    QObject, Signal, Slot, QEnum,
     QRect, QRectF, QSize, QSizeF, QPoint, QPointF, QLine, QLineF,
     QSaveFile, QThread, QBuffer, QUuid, QUrl, QDir, QEnum, QEasingCurve,
-    QTime, QTimeLine, QTimer, QTimerEvent,
+    QTime, QTimeLine, QTimer, QTimerEvent,QElapsedTimer,
     QSequentialAnimationGroup, QAnimationGroup, QParallelAnimationGroup,
-
 )
-
 
 @dataclass
 class Time(object):
     """
     Enum for the time of the animation.
     """
-    t: float = 0.0
+    # elapsed = QElapsedTimer()
+    t: float
     end: bool = False
 
     def __init__(self, t: float = 0.0, end: bool = False):
         self.t = t
+        self.elapsed = QElapsedTimer().
         self.end = end
 
 
-@pyqtEnum
-class EasingFn(Enum):
+@QEnum
+class EasingFn(Enum, QItemSelection):
     """
     An easing function.
     """

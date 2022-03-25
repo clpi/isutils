@@ -5,7 +5,8 @@ from PySide6.QtWidgets import QWidget
 from PySide6.QtCore import Slot, Signal, QEnum
 from isu.models import Demo
 from isu.operation import Op
-from isu.ui import UiLoad, UiState
+from isu.ui import UiLoad
+from isu.context import Context, OpSeq, OpData
 from isu.ui.ops import OpType, OpUi, to_op_type, to_ui_type
 
 @dataclass
@@ -59,7 +60,7 @@ class OpUi(QWidget):
         pass
 
     def op(self, index: int) -> Op:
-        return to_op_type(index, parent=self.parent)()
+        return to_op_type(index)(parent=self.parent)
 
     def run(self, demo: Demo):
         pass

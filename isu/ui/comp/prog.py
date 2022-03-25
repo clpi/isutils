@@ -1,11 +1,10 @@
 from asyncio.base_futures import _FINISHED
-import time
-import enum
-import sys
+import time, sys
 from typing import Callable, Type
 from PySide6 import QtWidgets, QtCore, QtGui
 from PySide6.QtGui import QTabletEvent
 from PySide6.QtCore import *
+from typing import Any
 
 from PySide6.QtWidgets import (
     QWidget,
@@ -14,7 +13,7 @@ from PySide6.QtWidgets import (
 )
 
 from isu.operation.operation import Op, Status
-from isu.ui.data import OpQueue
+from isu.context import OpSeq, Context, OpData
 from isu.operation.shell import Shell
 
 
@@ -23,7 +22,7 @@ class Progress(QtWidgets.QWidget):
     index: int
     len: int
 
-    def __init__(self, curr_op: Type[Op] = Shell, len: int = 1, ix = 0,parent: QWidget|None=None):
+    def __init__(self, curr_op: Type[Op] = Shell, len: int = 1, ix = 0,parent: Any|None = None):
         super().__init__(parent)
         self.index = ix
         self.lblh = self.toplabel()

@@ -3,7 +3,7 @@ from pathlib import Path, PurePath
 from itertools import islice
 from typing import List, Tuple
 import sys
-from isu.common.utils import validate_path, logger
+# from isu.common.utils import validate_path, logger
 import re
 
 class Script:
@@ -19,9 +19,7 @@ class Script:
             self.loaded = self.load(path)
         except BaseException as exc:
             self.loaded = False
-            logger.error("Script failed to import. %s", str(exc))
 
-    @validate_path
     def load(self, path: str = "") -> bool:
         if path != "":
             try:

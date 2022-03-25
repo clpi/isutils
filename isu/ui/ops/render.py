@@ -1,5 +1,6 @@
+from operator import getitem
 import os, sys, pathlib
-from typing import Optional, Sequence, Dict
+from typing import Optional, Sequence, Dict, Any
 from PIL import Image
 from PySide6.QtCore import *
 from PySide6.QtGui import (QBrush, QColor, QConicalGradient, QCursor,
@@ -10,28 +11,33 @@ from PySide6.QtGui import QAction
 from PySide6.QtWidgets import *
 from PySide6 import QtUiTools
 from isu.models.demo import Demo
+from isu.ui import UiLoad
 from isu.ui.ops.ops import OpUi
 from isu.operation.render import Format, Render
 
 AudioFmt = ["mp3", "wav", "flac", "ogg"]
 
-class RenderOp(OpUi):
+class RenderOp(OpUi, QWidget):
 
-    @staticmethod
-    def cbidx() -> int:
-        return 7
+    started = Signal(Render)
 
-    def __init__(self, parent: Optional[QWidget] = None, index:int = 0):
-        super().__init__(parent)
-        self.index = index
-        path = os.path.join(os.path.dirname(__file__), "render.ui")
-        uic.loadUi(path, self)
-        self.dir = pathlib.Path(QDir.homePath()) / "Videos"
+    def __init__(self, parent: Any, index:int):
+        super(OpUi, self).__init__(parent)
         self.title = "Demo" # TODO get from global curr sel demo
         self.fps = 24.0
-        self.loadUi()
+        self.index = index
+        self.parent = parent
+        self.load_ui()
+        self.load_tabs()
 
-    def loadUi(self):
+    def load_tabs(self):
+        self.load_data_tab()
+
+    def load_ui(self):
+        self.dir = QDir(pathlib.Path(QDir.homePath()) / "Videos")
+        ldr = UiLoad(name="render.ui", dir=self.dir, parent=self.parent)
+
+    def load_data_tab(self):
         self.renderTabTabs: QTabWidget
         self.renderOutputTitle: QLineEdit
         self.renderOutputFormat: QComboBox
@@ -46,9 +52,10 @@ class RenderOp(OpUi):
         self.renderBrowseDirBtn: QPushButton
         self.renderOutputDir: QLineEdit
 
-        self.renderBrowseDirBtn.clicked.connect(self.browse_dir)
+        self.renderBrowseDirBtn.toggle.connect(self.browse_dir)
 
-    @pyqtSlot(str, name="renderSetDir")
+
+    @Slot(str, name="renderSetDir")
     def set_dir(self, dir: str):
         self.renderOutputDir.setText(dir)
 
@@ -63,7 +70,7 @@ class RenderOp(OpUi):
         
     def fmt(self) -> Format:
         sel = self.renderOutputFormat.currentIndex()
-        return RenderFmt[sel]
+        return Format(sel)
 
     def outputPath(self) -> pathlib.Path:
         dir = self.renderOutputDir.text()
@@ -85,16 +92,12 @@ class RenderOp(OpUi):
             # with_text=self.withTextCb.isChecked(),
         )
 
-    def run(self):
-            print("DIR: " + self.renderOutputDir.text() + ", TITLE: " + self.renderOutputTitle.text())
-    #         out_title = self.renderOutputTitle.text()
-    #         out_dir = Path(self.renderOutputDir.text())
-    #         out_format = "avi"
-    #         if out_dir.is_dir():
-    #             out_path = os.path.join(out_dir, out_title + "." + out_format)
-    #             print("OUTPATH: " + out_path)
-    #             # out_path: str = self.renderOutputDir.text() + "\\" + self.renderOutputTitle.text()
-    #             if (d := self.demo) is not None:
-    #                 return Render(out_path=pathlib.Path(out_path)).run(demo)
-    #         else:
-    #             print("NOT VALID DIR")
+    Slot()
+    def on_beginning_op(self):
+        self.started.emit()
+
+
+    @staticmethod
+    def cbidx() -> int:
+        return 7
+

@@ -4,7 +4,6 @@ import lxml.etree  as ET
 from isu.models.step import Step
 from isu.models.audio import SoundBite
 from isu.models.script import Script
-from isu.common.utils import timefunc
 from pathlib import Path, PurePath
 from copy import deepcopy
 import shutil
@@ -17,7 +16,7 @@ from PyQt6.QtCore import QObject
 class Section(QObject):
 
     def __init__(self,
-                 elem = None,
+                 section_base: ET.ElementBase,
                  copy: bool = False,
                  demo_dir: None|str = None,
                  idx: int = -1, 
@@ -30,29 +29,25 @@ class Section(QObject):
         Object to hold section data. If initializing from elem in etree, must provide
         elem, overall index in demo (idx), and section index (sect_i).
         """
-        self.root: ET.ElementTree
-        if not copy:
-            self.root = elem
-            self.ch = self.root.find("Steps") # type: ignore
-        else:
-            self.root = deepcopy(elem)
-            self.ch = self.root.find("Steps") # type: ignore
+        self.root: ET.ElementBase
+        match copy:
+            case True: self.root = section_base
+            case False: self.root = deepcopy(section_base)
+        self.ch = self.root.find("Steps") # type: ignore
         self.idx = idx
         self.demo_idx = demo_idx
         self.length = 0
         if demo_dir: self.demo_dir=demo_dir 
         else: self.demo_dir=""
-        if elem is None:
-            self.demo_idx = demo_idx
-            self.idx = idx
-            self.title = title if title != "" else "Section %s" % str(idx)
         self.is_special = is_special
         self.steps: List[Step] = []
         self.load()
+
+
         
     def load(self):
-        self.id: str  = self.root.find("ID").text
-        self.title: str = self.root.find('XmlName').find('Name').text
+        self.id: str  = self.root.find("id", namespaces=None).text
+        self.title: str = self.root.find('XmlName', namespaces=None).find('Name').text
         self.assets = Path(self.demo_dir + "_Assets", self.id)
         if self.demo_dir != "":
             if (soundbite := self.root.find("SoundBite")) is not None: #  type: ignore
@@ -178,3 +173,10 @@ class SectionIterator:
             raise StopIteration
         self.idx += 1
         return item
+
+    def __new__(cls, xml: ET.ElementBase | None, *args, **kwargs):
+        # if xml is None:
+        #     self.demo_idx = demo_idx
+        #     self.idx = idx
+        #     self.title = title if title != "" else "Section %s" % str(idx)
+        pass

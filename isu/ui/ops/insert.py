@@ -1,37 +1,48 @@
-import os, sys
-from typing import List, Optional, Tuple, Any
-from isu.ui.ops.ops import OpUi
+import os
+import sys
+from typing import Any, List, Optional, Tuple
+
 from isu.models.demo import Demo
 from isu.operation import Insert, Op
-from PIL import Image
-from PySide6.QtCore import (QCoreApplication, QDate, QDateTime, QLocale,
-    QMetaObject, QObject, QPoint, QRect,
-    QSize, QTime, QUrl, Qt)
-from PySide6.QtGui import (QBrush, QColor, QConicalGradient, QCursor,
-    QFont, QFontDatabase, QGradient, QIcon,
-    QImage, QKeySequence, QLinearGradient, QPainter,
-    QPalette, QPixmap, QRadialGradient, QTransform)
-from PySide6.QtWidgets import (
-    QFileDialog, 
-    QApplication, QSizePolicy, QWidget, QLabel, QFormLayout, QHBoxLayout,
-    QVBoxLayout, QLineEdit, QLayout, QPushButton, QCheckBox, QComboBox, 
-    QSpinBox, QStackedLayout, QStackedWidget
-    )
 from isu.ui import UiLoad
+from isu.ui.ops.ops import OpUi
+from PIL import Image
+from PySide6.QtCore import (QCoreApplication, QDate, QDateTime, QLocale, QDir,
+                            QMetaObject, QObject, QPoint, QRect, QSize, Qt, QFile,
+                            QTime, QUrl)
+from PySide6.QtGui import (QBrush, QColor, QConicalGradient, QCursor, QFont,
+                           QFontDatabase, QGradient, QIcon, QImage,
+                           QKeySequence, QLinearGradient, QPainter, QPalette,
+                           QPixmap, QRadialGradient, QTransform)
+from PySide6.QtWidgets import (QApplication, QCheckBox, QComboBox, QFileDialog,
+                               QFormLayout, QHBoxLayout, QLabel, QLayout,
+                               QLineEdit, QPushButton, QSizePolicy, QSpinBox,
+                               QStackedLayout, QStackedWidget, QVBoxLayout,
+                               QWidget)
+
 
 class InsertOp(OpUi):
-
-    @staticmethod
-    def cbidx() -> int:
-        return 1
+    parent: Any
+    index: int
+    ui: QWidget
 
     def __init__(self, index: int = 1, parent: Any = QCoreApplication.instance()):
-        super().__init__(parent)
+        super(OpUi, self).__init__(parent)
+        self.parent = parent
         self.index = index
-        self.ui = UiLoad("shell.ui", parent)
         self.load_ui()
+        self.load_widgets()
+        
 
     def load_ui(self):
+        dir = QDir(os.path.join(os.path.dirname(__file__), "insert.ui"))
+        loader: UiLoad = UiLoad(name="insert.ui", dir=dir, parent=self)
+        self.ui: QWidget = loader.load_ui()
+        
+    def load_widgets(self):
+        pass
+
+    def load_data(self):
         self.setObjectName(u"insertTab")
         self.setAutoFillBackground(False)
 
@@ -43,7 +54,7 @@ class InsertOp(OpUi):
         self.insertFgW: QSpinBox
         self.insertFgH: QSpinBox
 
-        self.insertBrowseImgBtn.clicked.connect(self.browse_insert)
+        self.insertBrowseImgBtn.toggle.connect(self.browse_insert)
 
     def op(self) -> Insert:
         return Insert(
@@ -62,8 +73,8 @@ class InsertOp(OpUi):
             self.insertImgPath.setText(fileName)
             img_tmp = Image.open(fileName)
             iwidth, iheight = img_tmp.size
-            if self.demo is not None:
-                if iwidth > self.demo.res[0] or iheight > self.demo.res[1]:
-                    pass
+            # if self.demo is not None:
+            #     if iwidth > self.demo.res[0] or iheight > self.demo.res[1]:
+            #         pass
             #set op img path, def dims
         except: pass

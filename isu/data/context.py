@@ -1,35 +1,54 @@
+
 """Get the main loaded data"""
 
 from pathlib import Path
 from abc import abstractmethod, abstractproperty, ABC, ABCMeta
-from this import d
 import traceback, sys, enum
-from enum import Enum, auto
-from typing import Literal, Tuple, Optional, List, Union, Type, Any, Dict, Sequence, MutableSequence, Iterable, overload
+from isu.ui import UiLoad 
+from enum import Enum, auto, unique, Flag
+from typing import Literal, Tuple, Optional, List, TypeAlias, Union, Type, Any, Dict, Iterable, overload
+from collections.abc import MutableSequence, Sequence, MutableMapping
 from dataclasses import dataclass,  field
 from isu.models.demo import Demo, section as sect
-from PySide6.QtCore import *
+from PySide6.QtCore import QAbstractItemModel, QObject, QMetaObject, QMetaMethod, Signal, Slot, QEnum, QAbstractTableModel
 from PySide6.QtWidgets import *
 from isu import operation
-import enum
-import pathlib
 from isu.models import Demo, Audio, Script
 from isu.operation import Op
-from PySide6.QtCore import *
+from PySide6.QtCore import QAbstractListModel, QAbstractItemModel, QModelIndex, QItemSelection, QItemSelectionModel, QRunnable
 from dataclasses import dataclass
 
 class OpList(QAbstractListModel):
     pass
 
-@dataclass()
-class OpQueue(MutableSequence, QRunnable):
+OpSeq: TypeAlias = MutableSequence[Type[Op]]
+
+# @dataclass
+class OpData(OpSeq, QRunnable):
+
+    idx: int = 0
     ops: MutableSequence[Type[Op]] = field(default_factory=list)
-    # TODO: these should all be on a step by step basis
-    # apply_to: Optional[List[int]] = None
-    # all_steps: bool = False
-    # steps_with: bool = False
-    # step_substr: Optional[str] = None
-    # demo: Optional[Demo] = None
+    ui: QWidget | None = None
+
+    def __init__(self, idx: Optional[int] = None, ops_rem: OpSeq = [], parent: Any = None) -> None:
+        super(OpSeq, self).__init__()
+        self.ops: OpSeq = ops_rem
+        match idx: 
+            case None: self.idx = 0
+            case i: self.idx = i
+        self.load_ui()
+
+    def load_ui(self) -> None:
+        pass
+        # loader: UiLoad = UiLoad(name="parent=parent)
+        # self.ui = UiLoad.load_ui(parent=self)
+
+    @property
+    def operations(self) -> OpSeq:
+        return self.ops
+
+    def curr_op(self) -> Type[Op]:
+        return self.ops[self.idx]
 
     def __len__(self):
         return len(self.ops)
@@ -43,7 +62,7 @@ class OpQueue(MutableSequence, QRunnable):
     def __setitem__(self, idx: int, op: Type[Op]) -> None:
         self.ops[idx] = op
 
-    def pop(self) -> Type[Op]:
+    def __popitem__(self) -> Type[Op]:
         return self.ops.pop()
 
     def get_op(self, idx: int) -> Type[Op]: # type: ignore[override]
@@ -97,26 +116,6 @@ class OpQueue(MutableSequence, QRunnable):
             d.add_audio()
         print("Finished ops:")
 
-@dataclass
-class Context(QObject):
-    executing: bool = False
-
-    class Ops(QRunnable):
-        """
-        Class containing globally necessary data to perfrom the core functionality of the app,
-        the various available operations, on demos loaded into memory.
-        Args:
-            QRunnable (_type_): _description_
-        """
-        
-    #     class Asset(QObject, enum.Enum):
-    #         DemoPath: pathlib.Path 
-    #         ScriptPath: pathlib.Path
-    #         AudioPath: pathlib.Path
-
-    # # op: Ops.Assets.DemoPath | Ops.Assets.ScriptPath| Ops.Assets.AudioPath
-    # LoadType = Demo | Script | Audio
-
     @dataclass()
     class Load(QObject):
         script: List[Script] =field(default_factory=list)
@@ -130,16 +129,16 @@ class Context(QObject):
             return out
 
     load: Load = Load()
-    ops: OpQueue = OpQueue()
+    # ops: OpData = OpData()
 
     def pop_left(self) -> Type[Op]:
-        return self.ops.ops.pop(0)
+        return self.ops.pop(0)
 
     def pop(self) -> Type[Op]:
-        return self.ops.ops.pop()
+        return self.ops.pop()
 
     def rm_idx(self, index: int = 0):
-        self.ops.ops.__delitem__(index)
+        self.ops.__delitem__(index)
 
     def demo_list_titles(self) -> List[str]:
         return [title.title for title in self.load.demo]
@@ -168,77 +167,51 @@ class DataTable(QAbstractTableModel):
     #             return self.datae[section][0]
     #     return None
     
-class DemoList(list, QAbstractListModel):
-    def __init__(self, data, parent=None):
+class DemoList(List, QAbstractListModel):
+
+    def __init__(self,  demos: List[Demo] = [], index = 0, parent=None):
         super(DemoList, self).__init__(parent)
-        self.datae = data
+        self.index: int = index
+        self.demos: List[Demo] = demos
 
-    def rowCount(self, parent=QModelIndex()):
-        return len(self.datae)
+    def __len__(self):
+        return len(self.demos)
 
-    # def data(self, index, role=Qt.DisplayRole):
-    #     if index.isValid() and role == Qt.DisplayRole:
-    #         return self.datae[index.row()]
-    #     return None
+class ScriptList(List, QAbstractListModel):
 
-    # def headerData(self, section, orientation, role=Qt.DisplayRole):
-    #     if role == Qt.DisplayRole:
-    #         if orientation == Qt.Horizontal:
-    #             return self.datae[0][section]
-    #         else:
-    #             return self.datae[section][0]
-    #     return None
-
-class ScriptList(list, QAbstractListModel):
-    def __init__(self, data, parent=None):
+    def __init__(self, scripts: List[Script] = [], index = 0, parent=None):
         super(ScriptList, self).__init__(parent)
-        self.datae = data
+        self.scripts: List[Script] = []
+        self.index: int = index
 
-    def rowCount(self, parent=QModelIndex()):
-        return len(self.datae)
-
-    # def data(self, index, role=Qt.DisplayRole):
-    #     if index.isValid() and role == Qt.DisplayRole:
-    #         return self.datae[index.row()]
-    #     return None
-
-    # def headerData(self, section, orientation, role=Qt.DisplayRole):
-    #     if role == Qt.DisplayRole:
-    #         if orientation == Qt.Horizontal:
-    #             return self.datae[0][section]
-    #         else:
-    #             return self.datae[section][0]
-    #     return None
+    def __len__(self):
+        return len(self.scripts)
     
 
     
 
-class OpData:
 
-    def __init__(self):
-        self.apply_to: Optional[List[int]] = None
-        self.all_steps: Optional[bool] = None
-        self.steps_with: Optional[bool] = None
-        self.step_substr: Optional[str] = None
 
-class Ops(Sequence[Op]):
-    ops: Sequence[Op] = []
+class OpsSeq(MutableSequence[Op]):
+    ops: MutableSequence[Op] = []
     idx: int = 0
 
-    def __init__(self, idx: Optional[int] = None, ops: Sequence[Op] = []) -> None:
-        super().__init__()
-        self.ops = ops
-        if idx: self.idx = idx 
-        else: self.idx = 0
+@dataclass
+class Context(QObject):
+    executing: bool = False
 
+    class Ops(QRunnable):
+        """
+        Class containing globally necessary data to perfrom the core functionality of the app,
+        the various available operations, on demos loaded into memory.
+        Args:
+            QRunnable (_type_): _description_
+        """
+        
+    #     class Asset(QObject, enum.Enum):
+    #         DemoPath: pathlib.Path 
+    #         ScriptPath: pathlib.Path
+    #         AudioPath: pathlib.Path
 
-
-    @property
-    def operations(self) -> Sequence[Op]:
-        return self.ops
-
-    def currrent(self) -> Op:
-        return self.ops[self.idx]
-
-    def __len__(self) -> int:
-        return len(self.ops)
+    # # op: Ops.Assets.DemoPath | Ops.Assets.ScriptPath| Ops.Assets.AudioPath
+    # LoadType = Demo | Script | Audio

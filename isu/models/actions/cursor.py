@@ -1,96 +1,16 @@
+from collections import UserDict
+from typing import Any
 from dataclasses import dataclass
 from operator import setitem
 from pathlib import Path
 from PIL import Image
 import cv2
 import numpy as np
-from enum import Enum
-from typing import List, Optional, Tuple
-from PySide6.QtCore import QObject, Signal, Slot, QEnum
-
-
-@pyqtEnum
-class EasingFn(Enum):
-    """
-    An easing function.
-    """
-    LINEAR = 0
-    EASE_IN = 1
-    EASE_OUT = 2
-    EASE_IN_OUT = 3
-    QUADRATIC = 4
-    CUBIC = 5
-    QUARTIC = 6
-
-@dataclass
-class Easing(QObject):
-    easing_fn: EasingFn
-    curr_t: float = 0.0
-    curr_pos: Tuple[float, float] = (0.0, 0.0)
-    lim_t: Optional[float] = None
-    lim_pos: Optional[Tuple[float, float]] = None
-
-    def t_at_pos(self, pos: Tuple[float, float] = (0.0, 0.0)) -> float:
-        """
-        Get the time of the easing function at position pos.
-        """
-        t = 0.0
-        cpos = self.curr_pos
-
-        match self.easing_fn:
-            case EasingFn.LINEAR: t = pos
-            case EasingFn.EASE_IN: t = pos * pos
-            case EasingFn.EASE_OUT:
-                t = self.curr_t * (2.0 - self.curr_t)
-            case EasingFn.EASE_IN_OUT:
-                t = self.curr_t * self.curr_t * (2.0 - self.curr_t)
-            case EasingFn.QUADRATIC:
-                pass
-            case EasingFn.CUBIC:
-                pass
-            case EasingFn.QUARTIC:
-                pass
-        return t
-
-    def pos_at_t(self, t: float = 0.0) -> float:
-        """
-        Get the position of the easing function at time t.
-        """
-        x, y = 0.0, 0.0
-        match self.easing_fn:
-            case EasingFn.LINEAR: pos = t
-            case EasingFn.EASE_IN: pos = t * t
-            case EasingFn.EASE_OUT: pos = t * (2 - t)
-            case EasingFn.EASE_IN_OUT:
-                if t < 0.5:
-                    pos = 2 * t * t
-                else:
-                    pos = -2 * t * t + 4 * t - 1
-            case EasingFn.QUADRATIC: pos = t * t
-            case EasingFn.CUBIC: pos = t * t * t
-            case EasingFn.QUARTIC: pos = t * t * t * t
-
-
-@dataclass
-class Cursor(QObject):
-    large: bool = False
-    pos: Tuple[int, int]
-
-
-
-@dataclass
-class CursorMove(QObject):
-    orig: Optional[Cursor] = None
-    dest: Optional[Cursor] = None
-    easing_fn: Optional[str] = None
-    animation: any = []
-
-    @property
-    def dist(self):
-        return np.linalg.norm(self.orig.pos - self.dest.pos)
-
-    def set_easing(self, easing_fn: EasingFn):
-        pass
+from enum import Enum, auto, unique 
+from PySide6.QtWidgets import QWidget
+from PySide6.QtGui import QGuiApplication
+from typing import List, NamedTuple, Optional, Tuple
+from PySide6.QtCore import QObject, Signal, Slot, QEnum, QMetaEnum, QEasingCurve, QElapsedTimer
 
 
 CURSOR_LG: Path = Path(__file__).parent.parent.parent / "res" / "icons8-cursor-48.png"
@@ -117,11 +37,11 @@ class Cursor(QObject):
     def set_orig(self, orig: Tuple[int, int]):
         self.pos = orig
 
-    def __iter__(self):
-        return self
+    # def __iter__(self):
+    #     return self
 
-    def __next__(self):
-        return self.next()
+    # def __next__(self):
+    #     return self.next()
 
     def get_pos(self) -> Tuple[int, int]:
         return self.pos
@@ -181,3 +101,107 @@ class Cursor(QObject):
         # return self.overlay_image_alpha(img)
         return img
         # return limg
+
+@dataclass
+class CursorMove(QObject):
+    orig: Optional[Cursor] = None
+    dest: Optional[Cursor] = None
+    easing_fn: Optional[str] = None
+    animation: Any = []
+
+    @property
+    def dist(self):
+        # return np.linalg.norm(self.orig.pos - self.dest.pos)
+        pass
+
+    # def set_easing(self, easing_fn: EasingFn):
+    #     pass
+
+# @QEnum
+# class EasingFn(Enum):
+#     """
+#     An easing function.
+#     """
+
+
+#     class Quality(Enum):
+#         In, Out, InOut, Oscillation = range(3)
+
+#     # Elastic = UserDict("Elastic", )
+
+    
+
+        
+
+#     Linear = QEasingCurve.Linear
+#     # Elastic = Elastic
+
+
+
+
+
+#     class Tail
+
+
+#     Linear = QEasingCurve.Linear
+#     EaseIn = QEasingCurve.InElastic
+#     EaseOut = QEasingCurve.OutElastic
+#     EaseInOut = QEasingCurve.InOutElastic
+#     BounceIn = QEasingCurve.InBounce
+#     BounceOut = QEasingCurve.OutBounce
+#     BounceInOut = QEasingCurve.InOutBounce
+#     f == QEasingCurve..
+
+
+#     QUADRATIC = 4
+#     CUBIC = 5
+#     QUARTIC = 6
+
+# @dataclass
+# class Easing(QObject):
+#     easing_fn: EasingFn = EasingFn.Linear,
+#     elapser: float = 0.0
+#     curr_pos: Tuple[float, float] = (0.0, 0.0)
+#     lim_t: Optional[float] = None
+#     lim_pos: Optional[Tuple[float, float]] = None
+
+#     def t_at_pos(self, pos: QPointF = (0.0, 0.0)) -> float:
+#         """
+#         Get the time of the easing function at position pos.
+#         """
+#         t = 0.0
+#         pos = self.curr_pos
+
+#         match self.easing_fn:
+#             case EasingFn.LINEAR: t = pos
+#             case EasingFn.EASE_IN: t = np.mat(pos) * np.mat(pos)
+#             case EasingFn.EASE_OUT:
+#                 t = self.curr_t * (2.0 - self.curr_t)
+#             case EasingFn.EASE_IN_OUT:
+#                 t = self.curr_t * self.curr_t * (2.0 - self.curr_t)
+#             case EasingFn.QUADRATIC:
+#                 pass
+#             case EasingFn.CUBIC:
+#                 pass
+#             case EasingFn.QUARTIC:
+#                 pass
+#         return t
+
+#     def pos_at_t(self, t: float = 0.0) -> float:
+#         """
+#         Get the position of the easing function at time t.
+#         """
+#         x, y = 0.0, 0.0
+#         match self.easing_fn:
+#             case EasingFn.LINEAR: pos = t
+#             case EasingFn.EASE_IN: pos = t * t
+#             case EasingFn.EASE_OUT: pos = t * (2 - t)
+#             case EasingFn.EASE_IN_OUT:
+#                 if t < 0.5:
+#                     pos = 2 * t * t
+#                 else:
+#                     pos = -2 * t * t + 4 * t - 1
+#             case EasingFn.QUADRATIC: pos = t * t
+#             case EasingFn.CUBIC: pos = t * t * t
+#             case EasingFn.QUARTIC: pos = t * t * t * t
+

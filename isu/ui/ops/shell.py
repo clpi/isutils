@@ -1,7 +1,7 @@
 import os, sys
 from isu.operation import Shell
 from isu.models import Demo
-from typing import Tuple
+from typing import Tuple, Any
 from PIL import Image
 from PySide6.QtCore import (QCoreApplication, QDate, QDateTime, QLocale,
     QMetaObject, QObject, QPoint, QRect,
@@ -22,10 +22,10 @@ from PySide6.QtUiTools import QUiLoader
 
 class ShellOp(OpUi):
 
-    def __init__(self, parent: QWidget, index:int = 0):
+    def __init__(self, index:int = 0, parent: Any = QCoreApplication.instance() ):
         super(ShellOp, self).__init__(parent=parent)
         self.index = index
-        self.ui = UiLoad("shell.ui", parent)
+        self.ui = UiLoad("shell.ui", parent=parent)
         self.load_ui(parent)
 
     def load_ui(self, parent: Any):

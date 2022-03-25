@@ -1,6 +1,8 @@
 from dataclasses import dataclass
+from lxml.etree import find, CDATA, Element, cleanup_namespaces, Entity, open, parse
+from lxml.objectify import parse, ObjectifiedElement, E, dump, IntElement, StringElement, FloatElement, XML
 from PIL import Image
-import lxml.etree as et
+import lxml.etree as ET
 import numpy as np
 # from uuid import uuid4
 from typing import List, Tuple, Dict, Optional, Any, Iterable, Union
@@ -15,6 +17,7 @@ from PySide6 import QtUiTools
 from PySide6.QtCore import QObject, QEasingCurve, Signal, Property, Slot, QPointF, QPoint
 
 
+# class StepXml(ET.)
 class Step(QObject):
 
     @dataclass
@@ -50,7 +53,7 @@ class Step(QObject):
 
     def __init__(
             self,
-            root: et.ElementBase,
+            root: ET.ElementBase,
             idx: int = 0,
             copy_root: bool = False,
             demo_dir: str = "",
@@ -60,38 +63,39 @@ class Step(QObject):
             talking_pt: str = "",
             last_of_sect: bool = False,
             delay: float = 1.0):
-        self.root: et.ElementBase | None
+        self.root: ET.ElementBase
         match copy_root:
             case True: self.root = deepcopy(root)
             case False: self.root = root
-        self.sp_el: et.ElementBase | None = self.root.find("StartPicture")
-        self.mp_el: et.ElementBase | None = self.root.find("MouseEnterPicture")
+            # ET.ElementTre
+        self.sp_el: ET.ElementBase = self.root.find("StartPicture",namespaces=None)
+        self.mp_el: ET.ElementBase = self.root.find("MouseEnterPicture",namespaces=None)
         self.demo_dir: str = demo_dir
         self.last_of_sect: bool = last_of_sect
         match demo_dir:
             case None: self.demo_dir = ""
             case dd: self.demo_dir = dd
-        self.is_guided: bool = is_guided
-        self.has_mouse: bool = has_mouse
-        self.is_animated: bool = is_animated
-        self.hover: HoverImg = Hover(hover_img_path)
+        # self.is_guided: bool = is_guided
+        # self.has_mouse: bool = has_mouse
+        # self.is_animated: bool = is_animated
+        # self.hover: HoverImg = Hover(hover_img_path)
         self.has_audio: bool
         self.idx: int = idx
         self.verbose: bool = verbose
         self.tp, self.ci = TextBox(talking_pt), TextBox(click_instr)
         self.load()
 
-    def find_root(self, prop: str) -> ET.Element:
+    def find_root(self, prop: str, namespaces: None | str = None) -> ET.ElementBase | None:
         " Search under the root XML element"
-        return self.root.find(prop)
+        return self.root.find(prop, namespaces=namespaces)
 
-    def find_sp(self, prop: str) -> ET.Element:
+    def find_sp(self, prop: str, ns: None | str = None) -> ET.ElementBase:
         " Search under the 'StartPicture' XML element"
-        return self.sp_el.find(prop)
+        return self.sp_el.find(prop, namespaces=ns)
 
-    def find_mp(self, prop: str) -> ET.Element:
+    def find_mp(self, prop: str, ns: None | str = None) -> ET.ElementBase:
         " Search under the 'MouseEnterPicture' XML element"
-        return self.mp_el.find(prop)
+        return self.mp_el.find(prop, namespaces=ns)
 
     @classmethod
     def load(self):
@@ -100,7 +104,7 @@ class Step(QObject):
             self.boxes[k] = dict.fromkeys({*v["props"], *dt.DIRS}, None)
         # asset_rel = Path(self.sp_el.find("AssetsDirectory").text)
         # image_rel = Path(self.sp_el.find("PictureFile").text)
-        ast_rel = Path(self.find_sp("PictureFile").text)
+        ast_rel = Path(self.find_sp(prop="PictureFile").text)
         img_rel = Path(self.find_sp("PictureFile").text)
         self.assets = Path(self.demo_dir / ast_rel)
         self.img = Path(self.assets / img_rel)

@@ -1,5 +1,6 @@
 import os, sys
 from typing import Optional, Any, Tuple, List
+from pathlib import Path
 from PIL import Image
 from PySide6.QtCore import (QCoreApplication, QDate, QDateTime, QLocale,
     QMetaObject, QObject, QPoint, QRect,
@@ -19,20 +20,23 @@ from isu.operation import Crop, Op
 from isu.ui.ops.ops import OpUi
 from isu.ui import UiLoad
 
-class CropOp(OpUi):
+class CropOp(OpUi, QWidget):
 
-    @staticmethod
-    def cbidx() -> int:
-        return 2
+    ui: QWidget
 
     def __init__(self, index: int, parent: Any):
-        super(CropOp, self).__init__(parent)
+        super(OpUi, self).__init__(parent)
         self.index = index
-        dir = QDir(os.path.dirname(__file__) / Path("crop.ui"))
-        self.ui = UiLoad(name="crop.ui", dir=dir, parent=parent)
-        self.loadUi()
+        self.parent = parent
+        self.load_ui()
+        self.load_widgets()
 
-    def loadUi(self):
+    def load_ui(self):
+        dir = QDir(os.path.dirname(__file__))
+        ldr = UiLoad(name="crop.ui", dir=dir, parent=self.parent)
+        self.ui: QWidget = ldr.load_ui()
+
+    def load_widgets(self):
         self.cropSpinX: QSpinBox
         self.cropSpinY: QSpinBox
         self.cropSpinW: QSpinBox

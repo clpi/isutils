@@ -9,18 +9,22 @@ BIN:="ISU"
 OUT:="./dist"
 RES:="./res"
 
-default: brun
+default: shell install brun
 
 build:
     poetry build 
 
-venv: 
+shell: 
     poetry shell
 
-run: venv
+install:
+    poetry install
+
+run: install
     poetry run
 
-brun:
+brun: install
+    @echo "Running isutils!"
     poetry run
 
 

@@ -11,6 +11,8 @@ target.path = $$[QT_INSTALL_PLUGINS]/designer
 INSTALLS += target
 TARGET = Vfp
 TEMPLATE = app
+FORMS      += isu/ui/window.ui \
+              isu/ui/
 INCLUDEPATH += $$PWD
 
 HEADERS    += view/demo.h \

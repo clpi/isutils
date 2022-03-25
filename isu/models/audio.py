@@ -2,7 +2,7 @@ from pathlib import Path, PurePath
 from mutagen.mp3 import MP3
 from itertools import islice
 from typing import List, Tuple
-from isu.common.utils import validate_path, logger
+# from isu.common.utils import validate_path, logger
 import lxml.etree as ET
 from PyQt6.QtCore import (
     QObject, QMetaObject, QAbstractItemModel, QAbstractListModel,

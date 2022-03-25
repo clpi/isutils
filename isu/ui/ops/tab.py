@@ -40,7 +40,7 @@ class TabOp(QWidget):
         self.load_data(parent=parent)
 
     def broadcast_demo_idx(self):
-        self.demo_index.emit(self.demoTargetCombo.currentIndex())
+        self.demo_index.emit(self.demoCombo.currentIndex())
 
     def broadcast_op_idx(self):
         self.op_index.emit(self.opCombo.currentIndex())
@@ -52,10 +52,10 @@ class TabOp(QWidget):
         return to_ui_type(self.opCombo.currentIndex())
 
     def curr_opui(self) -> OpUi:
-        return self.ops[self.opCombo.currentIndex()]
+        return self.ops[self.index]
         
     def curr_op(self) -> Op:
-        return self.curr_opui().op()
+        return self.curr_opui().op(self.index)
 
     @Slot()
     def on_step_update(self) -> None:
@@ -101,89 +101,37 @@ class TabOp(QWidget):
     def load_data(self, parent: None | QWidget = None):
         self.opsParamsStack: QStackedWidget
         self.opCombo: QComboBox
-        self.demoTargetCombo: QComboBox
+        self.demoCombo: QComboBox
         self.allStepsCheck: QCheckBox
         self.matchSubstringCheck: QCheckBox
 
         # self.applyToTreeWidget: QTreeWidget
 
-        self.demoTargetCombo.connect()
-        self.demoTargetCombo.currentIndexChanged.connect(self.demo_changed)
+        self.demoCombo.connect()
+        self.demoCombo.currentIndexChanged.connect(self.demo_changed)
         self.opCombo.currentIndexChanged.connect(self.op_changed)
 
     @pyqtSlot(int)
     def demo_changed(self, d_idx: int):
         self.demo_idx = d_idx
-        # self.demoTargetCombo.set
+        # self.demoCombo.set
 
-    @pyqtSlot(int)
-    def op_changed(self, op_idx: int) -> None:
-        self.index=op_idx
-        self.opsParamsStack.setCurrentIndex(op_idx)
-        self.op = self.ops[op_idx]
-        #self.op_idx = self.opCombo.currentIndex()
-        #idx = self.parentWidget().parentWidget().parentWidget().stepsTreeWidget.indexFromItem(self)
+    @Slot()
+    def op_combo_changed(self) -> None:
+        self.index =self.opCombo.currentIndex() 
+        self.op_combo_idx_changed(self.index)
+
+    @Slot(int)
+    def op_combo_idx_changed(self, idx: int ) -> None:
+        self.index=idx
+        self.opsParamsStack.setCurrentIndex(self.index)
+        self.op = self.curr_op()
+        # TODO: Set stepsreeWidget to match up!!
         #self.parentWidget().parentWidget().parentWidget().stepsTreeWidget.topLevelItem(idx.row()).setData(1,0,get_op(op_idx))
 
-
-    def get_params(self) -> Dict[str, Any]:
-        demo_idx: int = self.demoTargetCombo.currentIndex() #get corr. demo
-        params: Dict[str, Any] = self.curr_op().get_params()
-        return params
-
-    @pyqtSlot()
+    @Slot()
     def run_op(self, demo: Demo) -> None:
         self.curr_op().run(demo)
-        # params = self.get_params()
-        # op_idx = self.opCombo.currentIndex()
-        # print(f"OP IDX: {op_idx}")
-        # op_type = OP_TYPES[op_idx]
-        # # op.op().run(demo)
-            
-        # if op_idx == OpKind.Shell:
-        #     print("RUNNING INSERT OPERATION")
-            
-        # elif op_idx == OpKind.Insert: #insert #TODO fix insert algo in demo model
-        #     print("RUNNING INSERT OPERATION")
-        #     self.op.op().run()
-        #     Insert(self.demo()).run()
-
-        # elif op_idx == OpKind.Section: #section
-        #     print("RUNNING SECTION OPERATION")
-        #     Section().run(demo)
-
-        # elif op_idx == OpKind.Audio: #audio
-        #     print("RUNNING AUDIO OPERATION")
-        #     Audio().run(demo)
-
-        # elif op_idx == OpKind.Crop: #crop
-        #     Crop().run(demo)
-
-        # elif op_idx == OpKind.Pace:
-        #     Pace().run(demo)
-
-        # elif op_idx == OpKind.Text:
-        #     Text().run(demo)
-        
-        # elif op_idx == OpKind.Render:
-        #     print("RUNNING RENDER OPERATION")
-        #     print("DIR: " + self.renderOutputDir.text() + ", TITLE: " + self.renderOutputTitle.text())
-        #     out_title = self.renderOutputTitle.text()
-        #     out_dir = Path(self.renderOutputDir.text())
-        #     out_format = "avi"
-        #     if out_dir.is_dir():
-        #         out_path = os.path.join(out_dir, out_title + "." + out_format)
-        #         print("OUTPATH: " + out_path)
-        #         # out_path: str = self.renderOutputDir.text() + "\\" + self.renderOutputTitle.text()
-        #         RenderOp(out_path=pathlib.Path(out_path)).run(demo)
-        #     else:
-        #         print("NOT VALID DIR")
-
-        # else:
-        #     pass
-            
-
-        # op_type = self.opCombo.currentIndex()
 
     def add_step(self) -> None:
         pass

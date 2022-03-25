@@ -53,8 +53,8 @@ class OpTabs(QTabWidget):
     def stack_push(self, q: QWidget):
         self.ops_stack.addWidget(q)
 
-    def __len__(self):
-        return len(self.stepTabs.children())
+    def __finalitem__(self) -> QWidget:
+        return self.stepTabs.widget(len(self)-1)
 
     def __setitem__(self, i: int, wid: QWidget):
         self.stepTabs.insertTab(i, wid, wid.objectName())
@@ -63,7 +63,9 @@ class OpTabs(QTabWidget):
         return self.stepTabs.count()
 
     def __popitem__(self) -> QWidget:
-        return self.stepTabs.(i)
+        w = self.stepTabs.widget(int(len(self) - 1))
+        self.stepTabs.removeTab(len(self) - 1)
+        return w
 
     def __delitem__(self, i: int):
         self.stepTabs.removeTab(i)

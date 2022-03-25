@@ -2,9 +2,7 @@ import sys, os
 import lxml.etree as ET
 import uuid
 import copy
-import cv2,re
-import moviepy.editor as mpy
-import ffmpeg,  cv2
+import cv2,re,ffmpeg
 from typing import List, Tuple, Dict, Union, Optional, Iterable, Any
 from pathlib import Path, PurePath
 from itertools import islice
@@ -14,23 +12,20 @@ from isu.models.step import Step
 from isu.models.script import Script, TextBox
 from isu.models.audio import Audio,SoundBite
 import isu.models.demo_tags as dt
-from isu.common.utils import validate_path, timefunc, logger
 from collections import deque, namedtuple
 from PIL import Image
 import shutil
 import ffmpeg as ff
-import moviepy.editor as mp
-from PyQt6.QtWidgets import QApplication
-
-from PyQt6.QtCore import pyqtSignal ,pyqtSlot,QCoreApplication,QObject,QAbstractEventDispatcher,QAbstractItemModel
+from PySide6.QtWidgets import QApplication
+from PySide6.QtCore import Signal ,Slot,QCoreApplication,QObject,QAbstractEventDispatcher,QAbstractItemModel
 #----------------------------DEMO------------------------------------#
 
 class Demo(QAbstractItemModel):
 
-    added_step = pyqtSignal(Step)
-    added_sect = pyqtSignal(Section)
-    added_audio = pyqtSignal(Audio)
-    added_script = pyqtSignal(Script)
+    added_step = Signal(Step)
+    added_sect = Signal(Section)
+    added_audio = Signal(Audio)
+    added_script = Signal(Script)
 
     def __init__(self,
                 path: str = "",
@@ -39,7 +34,7 @@ class Demo(QAbstractItemModel):
                 verbose: bool = False,
                 is_sectioned: bool = False,
                 audio_attached: bool = False,
-                parent: QCoreApplication = QApplication.instance()):
+                parent: Any = QCoreApplication.instance()):
         super().__init__(parent)
         self.file: str = path
         self.verbose = verbose
@@ -58,10 +53,9 @@ class Demo(QAbstractItemModel):
         try:
             self.loaded = self.load(path)
         except BaseException as exc:
-            logger.error("Demo failed to import. %s", str(exc))
+            # logger.error("Demo failed to import. %s", str(exc))
             self.loaded = False
 
-    @validate_path #~329ms
     def load(self, path: str = "", root = None): #w/o dq: 584ms, dq:
         """
         Takes a directory path pointing to a DemoMate script .doc file as input
@@ -95,7 +89,7 @@ class Demo(QAbstractItemModel):
                     if self.verbose: print(f"SECTION {i+1} STEP {j+1}: Processing...")
                     self.lstep[i].append(step)
                     self.lstepprops[i].append(step.find("StartPicture"))
-                section = Section(elem=sect, demo_dir=self.file, idx=i, demo_idx=self.len)
+                section = Section(section_base=sect, demo_dir=self.file, idx=i, demo_idx=self.len)
                 self.len += len(section)
                 self.sections.append(section)
             self.steps =[step for sect in self for step in sect]
@@ -144,7 +138,7 @@ class Demo(QAbstractItemModel):
         if self.verbose: print("Script length, demo length: " + str(len(script)) + ", " + str(self.len))
         return True
 
-    def load_from_root(self, tree: ET.ElementTree):
+    def load_from_root(self, tree: ET.ElementBase):
         pass
 
     def matches_audio(self, audio: Optional[Audio] = None, by_tp: bool = True):
@@ -616,7 +610,10 @@ class Demo(QAbstractItemModel):
         pass
 
     def xml(self):
-        xml = ET.tostring(self.tree, pretty_print=True, xml_declaration=True, encoding='utf-8')
+        xml = ET.tostring(self.tree)
+                        #   pretty_print=True, 
+                        #   xml_declaration=True, 
+                        #   encoding='utf-8')
         return str(xml)
 
 #----------------------SECTIONING (ORGANIZE LATER) ---------------------------------#
@@ -639,18 +636,18 @@ def clear_sects(root):
 
 def insert_sect(root):
     chapters = root.find("Chapters")
-    num_chapters = len(chapters.findall("Chapter"))
-    chapter = ET.SubElement(chapters, "Chapter")
-    id_el = ET.SubElement(chapter, "ID")
-    id_el.text = str(uuid.uuid4())
-    xml_name_el = ET.SubElement(chapter, "XmlName")
-    name_el = ET.SubElement(xml_name_el, "Name")
-    name_el.text = "Section "+str(num_chapters+1)
-    steps = ET.SubElement(chapter, "Steps")
-    is_active_el = ET.SubElement(chapter, "IsActive")
-    is_active_el.text = "true"
-    click_anywhere_el = ET.SubElement(chapter, "ClickAnywhere")
-    click_anywhere_el.text = "false"
+    # num_chapters = len(chapters.findall("Chapter"))
+    # chapter = ET.ElementBase(chapters, "Chapter")
+    # id_el = ET.ElementBase(chapter, "ID")
+    # id_el.text = str(uuid.uuid4())
+    # xml_name_el = ET.ElementBase(chapter, "XmlName")
+    # name_el = ET.ElementBase(xml_name_el, "Name")
+    # name_el.text = "Section "+str(num_chapters+1)
+    # steps = ET.ElementBase(chapter, "Steps")
+    # is_active_el = ET.ElementBase(chapter, "IsActive")
+    # is_active_el.text = "true"
+    # click_anywhere_el = ET.ElementBase(chapter, "ClickAnywhere")
+    # click_anywhere_el.text = "false"
 
 def append_step(chapter, step):
     steps_el = chapter.find("Steps")
@@ -787,3 +784,21 @@ class DemoStepIterator:
         # if item.tp.text != "":
         #     print(self.sect_idx, self.step_idx, item.tp.text)
         return item
+
+
+class DemoBuilder(QObject):
+
+    xml: ET.TreeBuilder = ET.TreeBuilder()
+
+    def flush_xml(self) -> ET.ElementBase:
+        res: ET.ElementBase = self.xml.close()
+        return res
+
+    def xml_to_str(self, close: bool = False) -> str:
+        match close:
+            case True: return ET.tostring(self.xml.close())
+            case False:
+                xml: ET.ElementBase = deepcopy(self.xml).close()
+                return ET.tostring(xml)
+
+        self.xml.close()
