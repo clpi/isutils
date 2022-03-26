@@ -7,7 +7,7 @@ from PySide6.QtGui import QAction, QGuiApplication, QActionEvent, QEnterEvent, Q
 from PySide6.QtWidgets import QApplication, QWidget, QComboBox
 from PySide6.QtCore import Slot, Signal, QEnum, QFlag, QObject, QMetaObject
 from enum import Enum, Flag, auto
-from isu.context import Context
+from isu.data import Context
 from isu.operation import Op
 from isu.models.demo import Demo
 

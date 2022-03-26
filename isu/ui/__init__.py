@@ -1,4 +1,4 @@
-"""
+﻿"""
 
 """
 from typing import Any, List, NoReturn, TypeVar, Type
@@ -24,8 +24,8 @@ class UiLoad(QObject):
     finished = Signal()
     widget = QWidget()
 
-    def __init__(self, 
-                 name: str, 
+    def __init__(self,
+                 name: str,
                  dir: QDir,
                  parent: Any = QCoreApplication.instance()) -> None:
         """ NOTE: path is relative to <root>/ui """
@@ -39,12 +39,12 @@ class UiLoad(QObject):
     def load_ui(self) -> QWidget:
         self.ldr: QUiLoader = QUiLoader(parent=self.parent)
         widget: QWidget = self.ldr.load(self.ui_file, parentWidget=self.parent)
-        if self.ui_file.isOpen():  
+        if self.ui_file.isOpen():
             self.ui_file.close()
         return widget
 
     def show_ui(self) -> None:
-        try: 
+        try:
             self.widget.show()
         except Exception as e:
             print(f"ERROR: {self.uiload.errorString()} {e}")
@@ -78,7 +78,7 @@ class UiLoad(QObject):
 
     @Slot()
     def new(parent: Any):
-        return 
+        return
 
 
 def load_ui(widget: QWidget, parent: Any):

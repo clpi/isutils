@@ -2,13 +2,15 @@
 """Get the main loaded data"""
 
 from pathlib import Path
+from PySide6.QtStateMachine import QState, QAbstractState, QStateMachine, QFinalState, QKeyEventTransition
 from abc import abstractmethod, abstractproperty, ABC, ABCMeta
 import traceback, sys, enum
 from isu.ui import UiLoad 
 from enum import Enum, auto, unique, Flag
 from typing import Literal, Tuple, Optional, List, TypeAlias, Union, Type, Any, Dict, Iterable, overload
 from collections.abc import MutableSequence, Sequence, MutableMapping
-from dataclasses import dataclass,  field
+from collections import ChainMap, deque
+from dataclasses import dataclass,  field, asdict, astuple, Field 
 from isu.models.demo import Demo, section as sect
 from PySide6.QtCore import QAbstractItemModel, QObject, QMetaObject, QMetaMethod, Signal, Slot, QEnum, QAbstractTableModel
 from PySide6.QtWidgets import *
@@ -24,9 +26,12 @@ class OpList(QAbstractListModel):
 OpSeq: TypeAlias = MutableSequence[Type[Op]]
 
 # @dataclass
-class OpData(OpSeq, QRunnable):
+class Context(OpSeq, QRunnable):
 
     idx: int = 0
+    executing: bool = False
+    demo_list: List[Demo] = []
+    script_list: List[Script] = []
     ops: MutableSequence[Type[Op]] = field(default_factory=list)
     ui: QWidget | None = None
 
@@ -195,23 +200,3 @@ class ScriptList(List, QAbstractListModel):
 class OpsSeq(MutableSequence[Op]):
     ops: MutableSequence[Op] = []
     idx: int = 0
-
-@dataclass
-class Context(QObject):
-    executing: bool = False
-
-    class Ops(QRunnable):
-        """
-        Class containing globally necessary data to perfrom the core functionality of the app,
-        the various available operations, on demos loaded into memory.
-        Args:
-            QRunnable (_type_): _description_
-        """
-        
-    #     class Asset(QObject, enum.Enum):
-    #         DemoPath: pathlib.Path 
-    #         ScriptPath: pathlib.Path
-    #         AudioPath: pathlib.Path
-
-    # # op: Ops.Assets.DemoPath | Ops.Assets.ScriptPath| Ops.Assets.AudioPath
-    # LoadType = Demo | Script | Audio

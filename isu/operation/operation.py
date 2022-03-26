@@ -5,19 +5,16 @@ from pathlib import Path
 from abc import abstractmethod, abstractproperty, ABC, ABCMeta
 import traceback, sys, enum
 from enum import Enum, auto
-from typing import Literal, Tuple, Optional, List, Union, Type, Any, Dict, Sequence, MutableSequence, Iterable, overload
+from typing import Literal, Tuple, Optional, List, Union, Any, Dict, Sequence, MutableSequence, Iterable, overload, TypeVar, Type
 from dataclasses import dataclass
+from collections import deque
 from isu.models.demo import Demo, section as sect
 from PySide6.QtCore import QRunnable, QThread, QThreadPool,QEnum, QMetaEnum, Signal, Slot, QObject
-from PySide6.QtStateMachine import *
-from PySide6.QtUiTools import QUiLoader
+from PySide6.QtStateMachine import QState, QAbstractState, QStateMachine, QFinalState, QKeyEventTransition
 from PySide6.QtMultimedia import QAudio, QVideoFrame, QVideoFrameFormat, QVideoSink
 from PySide6.QtQml import QQmlEngine, QQmlFile, QQmlContext, QQmlComponent
 from PySide6.QtMultimediaWidgets import QVideoWidget
 from PySide6.QtConcurrent import QtConcurrent, QFutureVoid, QFutureQString
-from PyQt6.QtWidgets import *
-from isu import operation
-
 from isu.models.section import Section
 #from ui.comp.op import OpWidget
 
@@ -38,6 +35,7 @@ class Status(QMetaEnum):
             case [InProgress, Queued]: return False
         return False
 
+_Op = TypeVar('_Op', bound="Op")
 
 class Op(QObject):
 
@@ -69,6 +67,13 @@ class Op(QObject):
     def finished(self) -> None:
         self.status.emit(Status.Done)
         self.prog.emit(100)
+
+    # def __new__(cls: Type[_Op], op: str | None) -> _Op:
+    #     match type(op):
+    #         case Op: return op
+
+    #     return super().__new__()
+
 
     @Slot()
     def run(self, demo: Demo) -> None:

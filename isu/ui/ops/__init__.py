@@ -20,7 +20,7 @@ OpUiKind = ShellOp | InsertOp | CropOp | SectionOp | AudioOp | PaceOp | TextOp |
 OpKind = shell.Shell | insert.Insert | crop.Crop | section.Section | audio.Audio| pace.Pace | text.Text | render.Render
 
 @QEnum
-class OpType(QMetaEnum):
+class OpType(Enum, QMetaEnum):
     ShellOp = shell.Shell,
     InsertOp = insert.Insert,
     CropOp = crop.Crop,

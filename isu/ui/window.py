@@ -13,7 +13,7 @@ from pathlib import Path
 from isu.ui.ops.tab import OpUi
 from typing import List, Tuple, Dict, Optional, Type, Any
 from PySide6.QtUiTools import QUiLoader
-from PySide6.QtCore import ( 
+from PySide6.QtCore import (  QDir,
     QPoint, QAbstractItemModel, QCoreApplication, QEnum, QFlag, Signal,
     QObject, Slot, QFileSelector, QSaveFile, QFileSelector, QTemporaryDir, 
     QTemporaryFile, QAbstractItemModel, QAbstractListModel, QModelIndex,
@@ -46,7 +46,7 @@ from ..operation import Op, Shell, Insert, Section, Audio, Crop, Pace, Text, Ren
 from isu.ui.ops.tab import TabOp
 from isu.ui.ops.tabs import OpTabs
 from isu.ui.comp.prefs import Prefs
-from isu.ui.data import Context
+from isu.data import Context
 
 # from PySide6.QtUiTools import QUiLoader
 
@@ -56,7 +56,8 @@ class MainWindow(QMainWindow):
 
     def __init__(self, parent = QApplication, *args, **kwargs) -> None:
         super(MainWindow, self).__init__(parent=parent)
-        self.ui = UiLoad("window.ui", parent=parent)
+        dir=QDir(os.path.dirname(os.path.realpath(__file__)))
+        self.ui = UiLoad(name="window.ui", dir=dir, parent=parent)
         self.parent = parent
         self.ctx = Context()
         self.load_windows()
@@ -145,7 +146,7 @@ class MainWindow(QMainWindow):
         home_dir = str(Path.home()) + "\\Documents\\My Demos"
         demo_path, ok = QFileDialog.getOpenFileName(self,"Browse for .demo files", "","Demo files (*.demo);;All Files (*)")
         if ok:
-            # self.cx.load.demo.append(demo_path)
+            # self.ctx.demo_list.append(demo_path)
             self.load_demo(demo_path)
             if len(self.stepsTreeWidget.__dict__) == 0: self.add_step()
         else:
@@ -158,7 +159,7 @@ class MainWindow(QMainWindow):
             if self.demoListTreeWidget.topLevelItemCount() > 0:
                 self.reload_sel_demo(script_path=script_path)
         except:
-            msg("Must select a script file", "Error while selecting script", "Must select script")
+            self.msg("Must select a script file", "Error while selecting script", "Must select script")
 
     #TODO Implement correctly
     def browse_audio(self):
@@ -167,11 +168,11 @@ class MainWindow(QMainWindow):
             if self.demoListTreeWidget.topLevelItemCount() > 0:
                 self.reload_sel_demo(audio_dir=audio_dir)
         except:
-            msg("Must select a script file", "Error while selecting script", "Must select script")
+            self.msg("Must select a script file", "Error while selecting script", "Must select script")
 
     def browse_demo_next(self):
         try:
-            if self.cx.load.demo[-1] is not None:
+            if self.ctx.load.demo[-1] is not None:
                 print("Loaded demo")
             else:
                 print("Demo not loaded")
@@ -184,7 +185,7 @@ class MainWindow(QMainWindow):
         demo = Demo(path=demo_path) 
         demo_item = QTreeWidgetItem([demo.title, str(False), str(False)])
         self.demoListTreeWidget.addTopLevelItem(demo_item)
-        self.cx.load.demo.append(demo)
+        self.ctx.demo_list.append(demo)
         for i in range(self.stepsTreeWidget.topLevelItemCount()):
             self.stepTabs.widget(i).demoTargetCombo.clear() # type: ignore
             self.stepTabs.widget(i).demoTargetCombo.addItems(self.cx.get_demo_list_items()) # type: ignore
@@ -196,14 +197,14 @@ class MainWindow(QMainWindow):
         print("BEGIN reload_sel_demo")
         sel_demo_idx: int = self.demoListTreeWidget.currentIndex().row()
         print(sel_demo_idx)
-        curr_demo: Demo = self.cx.load.demo[sel_demo_idx]
-        curr_demo_path: str = self.cx.load.demo[sel_demo_idx].file
+        curr_demo: Demo = self.ctx.demo_list[sel_demo_idx]
+        curr_demo_path: str = self.ctx.demo_list[sel_demo_idx].file
         curr_demo_script_path: str = curr_demo.script_path
         curr_demo_audio_dir: str = curr_demo.audio_dir
         if curr_demo.script_path == "" and script_path != "":
             print("ADDING SCRIPT reload_sel_demo")
             new = Demo(path=curr_demo_path, script_path=script_path, audio_dir=curr_demo_audio_dir)
-            self.cx.load.demo[sel_demo_idx] = new
+            self.ctx.demo_list[sel_demo_idx] = new
             print(new.path.name)
             self.demoListTreeWidget.topLevelItem(sel_demo_idx).setData(0, 0, new.path.name)
             self.demoListTreeWidget.topLevelItem(sel_demo_idx).setData(1, 0, str(new.audio_dir != ""))
@@ -216,7 +217,7 @@ class MainWindow(QMainWindow):
         if curr_demo.audio_dir == "" and audio_dir != "":
             print("ADDING AUDIO reload_sel_demo")
             new = Demo(path=curr_demo_path, script_path=curr_demo_script_path, audio_dir=audio_dir)
-            self.cx.load.demo[sel_demo_idx] = new
+            self.ctx.demo_list[sel_demo_idx] = new
             self.demoListTreeWidget.topLevelItem(sel_demo_idx).setData(0, 0, new.path.name)
             self.demoListTreeWidget.topLevelItem(sel_demo_idx).setData(1, 0, str(True))
             self.demoListTreeWidget.topLevelItem(sel_demo_idx).setData(2, 0, str(new.script_path != ""))
@@ -263,13 +264,13 @@ class MainWindow(QMainWindow):
             self.step: TabOp = self.stepTabs.widget(i)
             self.optype: Type[Op] = self.step.curr_optype()
             self.opprog.set_optype(self.optype)
-            demo = self.cx.load.demo[self.step.demoTargetCombo.currentIndex()]
+            demo = self.ctx.demo_list[self.step.demoTargetCombo.currentIndex()]
             op: Op = self.step.curr_op()
             op.updated.connect(self.opprog.progress)
             op.finished.connect(self.update_progress)
             op.run(demo)
             if self.step.opCombo.currentIndex() == 2: #section -> destructive to script - demo connection
-                self.cx.load.demo[self.step.demoTargetCombo.currentIndex()] = Demo(path=demo.file, audio_dir=demo.audio_dir, script_path=demo.script_path)
+                self.ctx.demo_list[self.step.demoTargetCombo.currentIndex()] = Demo(path=demo.file, audio_dir=demo.audio_dir, script_path=demo.script_path)
         msg(txt="[Window.run_ops] Finished running operations", inf=out, title="Finished")
         print("[Window.run_ops] END run_ops")
 
@@ -319,7 +320,7 @@ class MainWindow(QMainWindow):
         curr_step: QModelIndex = self.stepsTreeWidget.currentIndex()
         wid=self.stepTabs.widget(curr_step.row())
         self.stepTabs.setCurrentIndex(curr_step.row())
-        if len(self.cx.load.demo) > 0:
+        if len(self.ctx.demo_list) > 0:
             curr_demo: int = wid.demoTargetCombo.currentIndex() # type: ignore
             self.set_demo_tree(curr_demo)
 
@@ -327,13 +328,14 @@ class MainWindow(QMainWindow):
         curr_tab: int = self.stepTabs.currentIndex()
         wid = self.stepTabs.widget(curr_tab)
         self.stepsTreeWidget.setCurrentItem(self.stepsTreeWidget.topLevelItem(curr_tab))
-        if len(self.cx.load.demo) > 0:
+        if len(self.ctx.load.demo) > 0:
             curr_demo: int = wid.demoTargetCombo.currentIndex() # type: ignore
             self.set_demo_tree(curr_demo)
         #self.stepsTreeWidget.setCurrentIndex(curr_tab)
 
     @Slot(int)
     def get_selected_demo(self):
+        pass
 
 
     def update_step_op(self, op_idx: int, step_num: int):
@@ -347,7 +349,7 @@ class MainWindow(QMainWindow):
         pass
 
     def set_demo_tree(self, demo_idx: int) -> None:
-        curr_demo = self.cx.load.demo[demo_idx]
+        curr_demo = self.ctx.demo_list[demo_idx]
         self.demoTreeWidget.clear()
         self.demoTreeBox.setTitle(curr_demo.title)
         def Q(ls: List[Any]): return [QStandardItem(q) for q in ls]
@@ -394,6 +396,20 @@ class MainWindow(QMainWindow):
         path = data.urls()[0].toLocalFile()
         self.load_demo(path)
 
+    @staticmethod
+    @Slot(str, str, str, str)
+    def msg(self, txt: str, inf: str, title: str, det: str = "") -> None:
+        msg = QMessageBox()
+        msg.setIcon(QMessageBox.Icon.Information)
+        msg.setWindowTitle(title)
+        msg.setText(txt)
+        msg.setInformativeText(inf)
+        if det != "":
+            msg.setDetailedText(det)
+        msg.setDefaultButton(QMessageBox.StandardButton.Ok)
+        msg.setStandardButtons(buttons=QMessageBox.StandardButtons())
+        msg.exec()
+
     # def err(self, err):
     #     exctype, value, traceback = err
     #     self.prog.update_progress(1)  # Reset the Pez bar.
@@ -404,19 +420,8 @@ class MainWindow(QMainWindow):
         
 class AboutDialog(QDialog):
     def __init__(self, *args, **kwargs):
-        super(AboutDialog, self).__init__(*args, **kwargs)
+        super(QDialog, self).__init__(*args, **kwargs)
 
-@pyqtSlot(MainWindow)
-def msg(txt: str, inf: str, title: str, det: str = "") -> None:
-    msg = QMessageBox()
-    # msg.setIcon(QMessageBox.Information)
-    msg.setText(txt)
-    msg.setInformativeText(inf)
-    msg.setWindowTitle(title)
-    if det != "":
-        msg.setDetailedText(det)
-    # msg.setStandardButtons(QMessageBox.Ok | QMessageBox.Cancel)
-    msg.exec()
 
 
 class OpsModel(QAbstractItemModel):
@@ -441,12 +446,12 @@ class DemoModel(QStandardItemModel):
     def __init__(self, demo: Demo):
         pass
 
-class DemoTreeWidget(QTreeWidget):
+# class DemoTreeWidget(QTreeWidget):
 
-    def __init__(self, demo_model: DemoModel):
-        signal_mapper = QSignalMapper(self)
-        # self.model = demo_model
-        pass
+#     def __init__(self, demo_model: DemoModel):
+#         signal_mapper = QSignalMapper(self)
+#         # self.model = demo_model
+#         pass
 
 class StepMetadata(QStandardItemModel):
 

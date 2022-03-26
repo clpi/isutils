@@ -1,11 +1,11 @@
 from dataclasses import dataclass
-from lxml.etree import find, CDATA, Element, cleanup_namespaces, Entity, open, parse
+from lxml.etree import CDATA, Element, cleanup_namespaces, Entity, open, parse, ElementTree as ETree
 from lxml.objectify import parse, ObjectifiedElement, E, dump, IntElement, StringElement, FloatElement, XML
 from PIL import Image
 import lxml.etree as ET
 import numpy as np
 # from uuid import uuid4
-from typing import List, Tuple, Dict, Optional, Any, Iterable, Union
+from typing import List, Tuple, Dict, Optional, Any, Iterable, Union, TypeVar
 from pathlib import WindowsPath, Path
 import isu.models.demo_tags as dt
 from isu.models.audio import SoundBite
@@ -16,6 +16,7 @@ from copy import deepcopy
 from PySide6 import QtUiTools
 from PySide6.QtCore import QObject, QEasingCurve, Signal, Property, Slot, QPointF, QPoint
 
+_Step = TypeVar("_Step", bound="Step")
 
 # class StepXml(ET.)
 class Step(QObject):
@@ -53,7 +54,7 @@ class Step(QObject):
 
     def __init__(
             self,
-            root: ET.ElementBase,
+            root: ET._Element,
             idx: int = 0,
             copy_root: bool = False,
             demo_dir: str = "",
@@ -63,13 +64,13 @@ class Step(QObject):
             talking_pt: str = "",
             last_of_sect: bool = False,
             delay: float = 1.0):
-        self.root: ET.ElementBase
+        self.root: ET._Element
         match copy_root:
             case True: self.root = deepcopy(root)
             case False: self.root = root
             # ET.ElementTre
-        self.sp_el: ET.ElementBase = self.root.find("StartPicture",namespaces=None)
-        self.mp_el: ET.ElementBase = self.root.find("MouseEnterPicture",namespaces=None)
+        self.sp_el: ET._Element = self.root.find("StartPicture",namespaces=None)
+        self.mp_el: ET._Element = self.root.find("MouseEnterPicture",namespaces=None)
         self.demo_dir: str = demo_dir
         self.last_of_sect: bool = last_of_sect
         match demo_dir:
@@ -85,50 +86,46 @@ class Step(QObject):
         self.tp, self.ci = TextBox(talking_pt), TextBox(click_instr)
         self.load()
 
-    def find_root(self, prop: str, namespaces: None | str = None) -> ET.ElementBase | None:
+    def find_root(self, prop: str, namespaces: None | str = None) -> ET._SubElement:
         " Search under the root XML element"
         return self.root.find(prop, namespaces=namespaces)
 
-    def find_sp(self, prop: str, ns: None | str = None) -> ET.ElementBase:
+    def find_startpic(self, prop: str, ns: None | str = None) -> ET._SubElement:
         " Search under the 'StartPicture' XML element"
         return self.sp_el.find(prop, namespaces=ns)
 
-    def find_mp(self, prop: str, ns: None | str = None) -> ET.ElementBase:
+    def find_mouseenter(self, prop: str, ns: None | str = None) -> ET._SubElement:
         " Search under the 'MouseEnterPicture' XML element"
         return self.mp_el.find(prop, namespaces=ns)
 
-    @classmethod
     def load(self):
         self.boxes: Dict[str, Dict[str, List[int]]]
         for k, v in dt.BOX_PROPS.items():
             self.boxes[k] = dict.fromkeys({*v["props"], *dt.DIRS}, None)
-        # asset_rel = Path(self.sp_el.find("AssetsDirectory").text)
-        # image_rel = Path(self.sp_el.find("PictureFile").text)
-        ast_rel = Path(self.find_sp(prop="PictureFile").text)
-        img_rel = Path(self.find_sp("PictureFile").text)
-        self.assets = Path(self.demo_dir / ast_rel)
+        asset_rel = Path(self.find_startpic(prop="AssetsDirectory").text)
+        img_rel = Path(self.find_startpic(prop="PictureFile").text)
+        self.assets = Path(self.demo_dir / asset_rel)
         self.img = Path(self.assets / img_rel)
         print(f"IMAGE: {self.img}")
-        self.time = self.find_mep("Time").text
-        self.hover_root = self.find_mep("MouseEnterPicture")
-        self.time = time
+        hover = self.find_mouseenter("MouseEnterPicture")
+        self.time = self.find_mouseenter("Time").text
         self.mouse_enter = hover
         if hover is not None and hover.text is not None:
             print("self.mouse_enter is not NOne")
-            self.hover = PurePath(self.assets, hover.find("PictureFile").text)
-            if (hover_time := hover.find("Time").text):
+            self.hover = Path(self.assets, hover.find("PictureFile", None).text)
+            if (hover_time := hover.find("Time", None).text):
                 self.hover_time = hover_time
             else:
                 self.hover_time = ""
-            self.mhovx = float(hover.find(dt.MOUSE_X).text)
-            self.mhovy = float(hover.find(dt.MOUSE_Y).text)
+            self.mhovx = float(hover.find(dt.MOUSE_X, namespaces=None).text)
+            self.mhovy = float(hover.find(dt.MOUSE_Y, namespaces=None).text)
             self.mouse_hover = (self.mhovx, self.mhovy)
         else:
             self.hover = None
-        self.mouse_x = float(self.sp_el.find(dt.MOUSE_X).text)
-        self.mouse_y = float(self.sp_el.find(dt.MOUSE_Y).text)
+        self.mouse_x = float(self.sp_el.find(dt.MOUSE_X, namespaces=None).text)
+        self.mouse_y = float(self.sp_el.find(dt.MOUSE_Y, namespaces=None).text)
         self.mouse = self.mouse_x, self.mouse_y
-        if (soundbite := self.root.find("SoundBite")) is not None:
+        if (soundbite := self.root.find("SoundBite", namespaces=None)) is not None:
             if self.verbose:
                 print(f"SOUNDBITE: {soundbite}")
             self.audio = SoundBite(elem=soundbite, asset_path=str(self.assets))
@@ -137,7 +134,7 @@ class Step(QObject):
         for prop, prop_dict in dt.STEP_PROPS.items():
             prop_tag, prop_type = prop_dict["tag"], prop_dict["type"]
             try:
-                setattr(self, prop, prop_type(self.root.find(prop_tag).text))
+                setattr(self, prop, prop_type(self.root.find(prop_tag, namespaces=None).text))
             except Exception as e:
                 print(e)
                 setattr(self, prop, None)
@@ -145,7 +142,7 @@ class Step(QObject):
         for box_key, box_dict in dt.BOX_PROPS.items():
             box_props = {**box_dict["props"], **dt.DIRS}
             tag = box_dict["tag"]
-            props = (self.sp_el.findall(tag+"/"+tag[:-1]))
+            props = self.sp_el.findall(tag+"/"+tag[:-1], namespaces=None)
             if props is not None:
                 for prop, propv in box_props.items():
                     self.boxes[box_key][prop] = []
@@ -181,18 +178,18 @@ class Step(QObject):
 
     def set_mouse(self, x: float, y: float):
         self.mouse = (x, y)
-        self.sp_el.find(dt.MOUSE_X).text = str(x)
-        self.sp_el.find(dt.MOUSE_Y).text = str(y)
+        self.sp_el.find(dt.MOUSE_X, namespaces=None).text = str(x)
+        self.sp_el.find(dt.MOUSE_Y, namespaces=None).text = str(y)
 
     def set_mouse_hover(self, x: float, y: float):
         self.mouse_hover = (x, y)
-        self.sp_el.find("MouseEnterPicture/"+dt.MOUSE_X).text = str(x)
-        self.sp_el.find("MouseEnterPicture/"+dt.MOUSE_X).text = str(y)
+        self.sp_el.find("MouseEnterPicture/"+dt.MOUSE_X, namespaces=None).text = str(x)
+        self.sp_el.find("MouseEnterPicture/"+dt.MOUSE_X, namespaces=None).text = str(y)
 
     def set_video_dims(self, x: int, y: int):
-        self.sp_el.find("VideoRects/VideoRect/Video/VideoHeight").text = str(y)
-        self.sp_el.find("VideoRects/VideoRect/Video/VideoWidth").text = str(x)
-        self.boxes["video"]["width"], self.boxes["video"]["height"] = x, y
+        self.sp_el.find("VideoRects/VideoRect/Video/VideoHeight", namespaces=None).text = str(y)
+        self.sp_el.find("VideoRects/VideoRect/Video/VideoWidth", namespaces=None).text = str(x)
+        self.boxes["video"]["width"][0], self.boxes["video"]["height"][0] = x, y
 
     def set_box_dims(self, box: str, coords):
         """
@@ -200,7 +197,7 @@ class Step(QObject):
         Output: None. Sets step.box["prop"][dimension] to input value.
         """
         tag = str(dt.BOX_PROPS[box]["tag"])
-        xmlbox = self.sp_el.find(tag+"/"+tag[:-1])
+        xmlbox = self.sp_el.find(tag+"/"+tag[:-1],namespaces=None)
         for i in range(len(self.boxes[box]["x1"])):
             for j, dim in enumerate(coords):
                 d = dt.DIR_KEYS[j]
@@ -263,7 +260,7 @@ class Step(QObject):
                 if box == "text":
                     tag = "TextRects/TextRect/FontSize"
                     self.boxes[box]["size"][i] *= (rx*ry + 1)  # type: ignore
-                    self.sp_el.find(tag).text = str(
+                    self.sp_el.find(tag, namespaces=None).text = str(
                         box_props["size"][i])  # type: ignore
         self.set_mouse(self.mouse[0]*rx+ox, self.mouse[1]*ry+oy)
         if self.hover is not None:
@@ -288,9 +285,9 @@ class Step(QObject):
 
     def set_delay(self, length: float = 1.0, off: bool = False):
         if off:
-            self.root.find("StepDelay").attributes["xsi:nil"] = "true"
+            self.find_root("StepDelay").attributes["xsi:nil"] = "true"
         else:
-            self.root.find("StepDelay").text = str(length)
+            self.find_root("StepDelay").text = str(length)
         setattr(self, "delay", length)
 
     def key_ci_phrase_match(self, phrase: str):
@@ -318,10 +315,9 @@ class Step(QObject):
             self.assets.mkdir()
         if not dest.exists():
             shutil.copy(str(source), str(dest))
-        index = self.root.index(self.root.find("StepFlavor"))+1
+        index = self.root.index(child=self.find_root("StepFlavor"), start=None, stop=None)+1
         self.root.insert(index, soundbite.get_root())
-        self.audio = SoundBite(self.root.find(
-            "SoundBite"), asset_path=str(self.assets))
+        self.audio = SoundBite(self.find_root("SoundBite"), asset_path=str(self.assets))
 
     def set_image(self, img_path: str):
         # BACK UP IMAGE TO ANOTHER FOLDER BEFORE SAVING
@@ -338,10 +334,9 @@ class Step(QObject):
     def set_animated(self):
         self.set_box_dims('hotspot', (0, 0, dt.DEMO_RES[0], dt.DEMO_RES[1]))
         for dir_key, ddict in dt.DIRS.items():
-            hspot = self.sp_el.find(
-                f"Hotspots/Hotspot/{ddict[dir_key]['tag']}")
+            hspot = self.find_startpic(f"Hotspots/Hotspot/{ddict[dir_key]['tag']}")
             hspot.text = str(getattr(self, 'hotspot')[dir_key][0])
-        self.root.find(dt.STEP_PROPS['has_mouse']['tag']).text = 'false'
+        self.find_root(dt.STEP_PROPS['has_mouse']['tag']).text = 'false'
         self.has_mouse = False
 
     def iter_box_props(self):

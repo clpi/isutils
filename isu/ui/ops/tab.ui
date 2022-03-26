@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>484</width>
-    <height>788</height>
+    <height>779</height>
    </rect>
   </property>
   <layout class="QVBoxLayout" name="opLayout">
@@ -199,7 +199,7 @@
          </widget>
         </item>
         <item row="0" column="1">
-         <widget class="QComboBox" name="demoCombo"/>
+         <widget class="QComboBox" name="demoTargetCombo"/>
         </item>
        </layout>
       </item>

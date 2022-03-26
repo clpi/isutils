@@ -1,10 +1,23 @@
 #TODO; add default values for each
 
+from collections import defaultdict
+from typing import TypedDict, Type, TypeGuard, DefaultDict
+
 DEBUG = True
 
 DEMO_RES = (0, 0)
 
 STEP_IMG = "StartPicture"
+
+# class PropKeys =  defaultdict(
+#     "id": "ID",
+#     "guided": "IsGuided",
+#     "tp_xml": "XmlInstruction",
+    
+# )
+
+class Props(TypedDict):
+    id: str
 
 STEP_PROPS = {
     "id": {
