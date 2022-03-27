@@ -1,4 +1,4 @@
-import os.path
+import os.path as path
 __author__ = "chris pecunies"
 __email__ = "chris.pecunies@impresys.com"
 __version__ = "0.1.0"
@@ -8,4 +8,4 @@ __dbg__ = True
 # from isu.app import MainApp
 # from isu.ui.window import MainWindow
 
-based = os.path.dirname(os.path.realpath(__file__))
+ISU_DIR = path.dirname(path.realpath(__file__))

@@ -57,7 +57,7 @@ class Section(QObject):
         demo_parent = str(Path(self.demo_dir).parent)
         # self.steps = deque()
         for i, step in enumerate(self.root.findall('Steps/Step')):#  type: ignore
-            sect_step = Step(elem=step, idx=i, demo_idx=i+self.demo_idx, demo_dir=demo_parent)
+            sect_step = Step(root=step, idx=i, demo_idx=i+self.demo_idx, demo_dir=demo_parent)
             self.steps.append(sect_step)
             self.length += 1
         self.loaded = True

@@ -2,10 +2,11 @@ from isu.ui.comp.prefs import Prefs
 from isu.ui.comp.prog import Progress
 from isu.ui.window import MainWindow
 import sys, os, argparse
+from typing import TypeVar
 from PySide6 import QtGui, QtWidgets, QtCore, QtUiTools
 from PySide6.QtGui import QAction, QGuiApplication, QActionEvent, QEnterEvent, QColor, QPen, QFont
 from PySide6.QtWidgets import QApplication, QWidget, QComboBox
-from PySide6.QtCore import Slot, Signal, QEnum, QFlag, QObject, QMetaObject
+from PySide6.QtCore import Slot, Signal, QEnum, QFlag, QObject, QMetaObject, QSignalMapper
 from enum import Enum, Flag, auto
 from isu.data import Context
 from isu.operation import Op
@@ -13,13 +14,23 @@ from isu.models.demo import Demo
 
 __dbg__ = True
 
+_MainApp = TypeVar("_MainApp", bound="MainApp")
+
+
 class MainApp(QApplication):
 
     def __init__(self, *args): 
-       super(MainApp, self).__init__(*args)
+       super(QApplication, self).__init__(*args)
        self.ctx = Context()
-       self.window = MainWindow(self, args)
+       self.window: MainWindow = MainWindow(parent=self)
        self.window.show()
+
+    @Slot()
+    def quit_app(self):
+        self.quit()
+
+    def instance(self) -> QApplication:
+        return self.instance()
 
     def run(self):
         self.window.show()

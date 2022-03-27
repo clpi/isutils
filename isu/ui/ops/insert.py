@@ -73,8 +73,4 @@ class InsertOp(OpUi):
             self.insertImgPath.setText(fileName)
             img_tmp = Image.open(fileName)
             iwidth, iheight = img_tmp.size
-            # if self.demo is not None:
-            #     if iwidth > self.demo.res[0] or iheight > self.demo.res[1]:
-            #         pass
-            #set op img path, def dims
         except: pass

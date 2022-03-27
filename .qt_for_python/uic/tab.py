@@ -123,10 +123,10 @@ class Ui_opsWidget(object):
 
         self.formLayout.setWidget(0, QFormLayout.LabelRole, self.applyDemoLabel)
 
-        self.demoTargetCombo = QComboBox(self.operationSelect)
-        self.demoTargetCombo.setObjectName(u"demoTargetCombo")
+        self.demoCombo = QComboBox(self.operationSelect)
+        self.demoCombo.setObjectName(u"demoCombo")
 
-        self.formLayout.setWidget(0, QFormLayout.FieldRole, self.demoTargetCombo)
+        self.formLayout.setWidget(0, QFormLayout.FieldRole, self.demoCombo)
 
 
         self.verticalLayout_3.addLayout(self.formLayout)

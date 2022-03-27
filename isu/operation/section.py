@@ -1,8 +1,8 @@
-import lxml.etree as ET
+﻿import lxml.etree as ET
 from typing import Optional, List, Dict, Any, Tuple
 from PyQt6.QtCore import *
 from dataclasses import dataclass
-from ..operation import Op
+from ..operation import Op, Status
 from isu.models.demo import Demo
 from PIL import Image
 import os, glob
@@ -14,7 +14,7 @@ def sect_test(xml_path: str):
 class Section(Op):
     section_rules: Optional[List[str]] = None
 
-    status = pyqtSignal(Op.Status)
+    status = pyqtSignal(Status)
     prog = pyqtSignal(int)
     qmsg = pyqtSignal(str)
 

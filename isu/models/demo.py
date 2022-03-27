@@ -1,7 +1,5 @@
 import sys, os
 import lxml.etree as ET
-import uuid
-import copy
 import cv2,re,ffmpeg
 from typing import List, Tuple, Dict, Union, Optional, Iterable, Any
 from pathlib import Path, PurePath
@@ -14,11 +12,24 @@ from isu.models.audio import Audio,SoundBite
 import isu.models.demo_tags as dt
 from collections import deque, namedtuple
 from PIL import Image
-import shutil
+import shutil, uuid, copy, logging, asyncio.log
 import ffmpeg as ff
 from PySide6.QtWidgets import QApplication
 from PySide6.QtCore import Signal ,Slot,QCoreApplication,QObject,QAbstractEventDispatcher,QAbstractItemModel
 #----------------------------DEMO------------------------------------#
+
+
+def parse(path: str) -> ET._ElementTree:
+    try:
+        parser = ET.XMLParser(strip_cdata=False, remove_blank_text=False)
+        return ET.parse(source=path, parser=parser)
+    except Exception as e:
+        logging.error(f"Error in loading demo path: {e}")
+        sys.exit(-1)
+
+class DemoLoad(object):
+    path: str | None = None
+    root: ET._ElementTree | None = None
 
 class Demo(QAbstractItemModel):
 
@@ -28,14 +39,17 @@ class Demo(QAbstractItemModel):
     added_script = Signal(Script)
 
     def __init__(self,
-                path: str = "",
+                path: str,
                 script_path: str = "",
                 audio_dir: str = "",
                 verbose: bool = False,
                 is_sectioned: bool = False,
                 audio_attached: bool = False,
                 parent: Any = QCoreApplication.instance()):
-        super().__init__(parent)
+
+        super(QAbstractItemModel, self).__init__(parent)
+        self.tree: ET._ElementTree = parse(path)
+        self.root: ET._Element = self.tree.getroot()
         self.file: str = path
         self.verbose = verbose
         self.script_path: str = script_path
@@ -56,44 +70,45 @@ class Demo(QAbstractItemModel):
             # logger.error("Demo failed to import. %s", str(exc))
             self.loaded = False
 
-    def load(self, path: str = "", root = None): #w/o dq: 584ms, dq:
+    def load_root(self, root: ET._ElementTree):
+        self.tree = root
+
+    def find_all_root(self, prop: str, namespaces: None | str = None) -> ET._Element:
+        " Search under the root XML element"
+        return self.root.findall(prop, namespaces=namespaces)
+
+    def find_root(self, prop: str, namespaces: None | str = None) -> ET._Element:
+        " Search under the root XML element"
+        return self.root.find(prop, namespaces=namespaces)
+        
+
+    def load(self, path: str = ""): #w/o dq: 584ms, dq:
         """
         Takes a directory path pointing to a DemoMate script .doc file as input
         Returns a list of tuples for each step in demo, where first element of pair contains
         section #, click instructions, and secon element contains talking points (where applicable)
         """
-        self.path = Path(path)
-        parser = ET.XMLParser(strip_cdata=False, remove_blank_text=False)
-        try:
-            if root is None:
-                self.tree = ET.parse(path, parser)
-                self.root = self.tree.getroot()
-            else:
-                self.root = root
-        except:
-            print("Demo failed to import. Demo file might be corrupted or in use.")
-            return
-        else:
-            self.dir = str(Path(path).parent)
-            self.assets = Path(path + "_Assets")
-            self.sections = []
-            self.id = self.root.find("ID").text
-            self.title = self.root.find("DemoName").text
-            sect_xml = self.root.findall('Chapters/Chapter')
-            for i, sect in enumerate(sect_xml):
-                if self.verbose: print(f"SECTION {i+1}: Processing...")
-                self.lstep.append([])
-                self.lstepprops.append([])
-                self.lsect.append(sect)
-                for j, step in enumerate(sect.findall("Steps/Step")):
-                    if self.verbose: print(f"SECTION {i+1} STEP {j+1}: Processing...")
-                    self.lstep[i].append(step)
-                    self.lstepprops[i].append(step.find("StartPicture"))
-                section = Section(section_base=sect, demo_dir=self.file, idx=i, demo_idx=self.len)
-                self.len += len(section)
-                self.sections.append(section)
-            self.steps =[step for sect in self for step in sect]
-            if self.verbose: print(f"Imported demo with {len(self.sections)} sections and {len(self.steps)} steps.")
+        self.dir = str(Path(path).parent)
+        self.assets = Path(path + "_Assets")
+        self.sections = []
+        self.id = self.find_root("ID").text
+        self.title = self.find_root("DemoName").text
+        sect_xml = self.find_root('Chapters/Chapter')
+        for i, sect in enumerate(sect_xml.getchildren()):
+            if self.verbose: print(f"SECTION {i+1}: Processing...")
+            self.lstep.append([])
+            self.lstepprops.append([])
+            self.lsect.append(sect)
+            for j, step in enumerate(sect.findall("Steps/Step")):
+                if self.verbose: print(f"SECTION {i+1} STEP {j+1}: Processing...")
+                self.lstep[i].append(step)
+                self.lstepprops[i].append(step.find("StartPicture"))
+            section = Section(section_base=sect, demo_dir=self.file, idx=i, demo_idx=self.len)
+            self.len += len(section)
+            self.sections.append(section)
+        self.steps =[step for sect in self for step in sect]
+        if self.verbose: 
+            print(f"Imported demo with {len(self.sections)} sections and {len(self.steps)} steps.")
         self.script = Script(self.script_path)
         if self.script.loaded:
             if self.matches_script(self.script):
@@ -371,7 +386,7 @@ class Demo(QAbstractItemModel):
     #     return super().insertRows(row, count, parent)
 
     def search(self, phrase: str, action: None|str = None):
-        return self.root.findtext(phrase)
+        self.root.findtext(path=phrase, default=None, namespaces=None)
 
     def search_click_instructions(self, phrase: str, action: None|str = None):
         pass
@@ -659,17 +674,17 @@ def write(root, path: str = ""):
     tree = ET.ElementTree(root)
     tree.write(path, pretty_print=True, xml_declaration=True, encoding='utf-8')
 
-def section(d: Demo, add_intro_outro=False):
-    root_c = copy.deepcopy(d.root)
-    orig_sect = list(d.root.findall("Chapters/Chapter"))
-    orig_step = [step for sect in d.root.findall("Chapters/Chapter") for step in sect.findall("Steps/Step")]
+def section(self, add_intro_outro=False):
+    root_c = copy.deepcopy(self.root)
+    orig_sect = list(self.root.findall("Chapters/Chapter"))
+    orig_step = [step for sect in self.root.findall("Chapters/Chapter") for step in sect.findall("Steps/Step")]
     sect_num = 0
     new_sect_num = -1
     new_step_idx = 0
     cons = 0
-    steps = list(d.iter_step())
-    root = d.root
-    root_c = copy.deepcopy(d.root)
+    steps = list(self.iter_step())
+    root = self.root
+    root_c = copy.deepcopy(self.root)
     clear_sects(root_c)
 
     for i, step in enumerate(steps):
@@ -722,7 +737,7 @@ def section(d: Demo, add_intro_outro=False):
             insert_sect(root_c) #"Now it's your turn to try..."
             append_step(root_c.findall("Chapters/Chapter")[-1], copy.deepcopy(step_el))
         """
-        write(root_c, d.file)
+        write(root_c, self.file)
 # -------------------------------- DEMO LIST ----------------------------#
 
 class DemoList(QObject):

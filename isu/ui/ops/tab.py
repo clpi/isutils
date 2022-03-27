@@ -6,9 +6,9 @@ from typing import Optional, List, Dict, Any, Type, Tuple
 from PIL import Image
 from pathlib import Path
 from PySide6.QtUiTools import QUiLoader
-from PySide6.QtCore import (Qt, QObject, Slot, Signal, QFile)
+from PySide6.QtCore import (Qt, QObject, Slot, Signal, QFile, QDir)
 from PySide6.QtWidgets import (QWidget, QDialog, QListWidget, QPushButton,
-    QComboBox, QListWidgetItem, QTreeWidget, QTreeWidgetItem, 
+    QComboBox, QListWidgetItem, QTreeWidget, QTreeWidgetItem, QTabWidget,
     QApplication, QLineEdit, QSpinBox, QStackedWidget, QFileDialog, QCheckBox)
 from isu.operation import OP_TYPES, Shell, Insert, Section, Audio, Crop, Render , Pace, Text
 from isu.operation.operation import Op
@@ -16,6 +16,16 @@ from isu.models.demo import Demo
 from isu.ui import UiLoad
 from isu.ui.ops import OpType, ops, shell, section, insert, crop, audio, render, pace, text #  ShellOp, SectionOp, InsertOp, CropOp, AudioOp, RenderOp, PaceOp, TextOp, OP_UI_TYPES
 from isu.ui.ops.ops import OpUi, to_op_type, to_ui_type
+
+class OpTabs(QTabWidget):
+
+    def __init__(self, parent: Any | None = None) -> None:
+        QTabWidget.__init__(self)
+        self.setTabsClosable(True)
+        self.setMovable(True)
+        self.setWindowOpacity(0.5)
+        self.setCurrentIndex(0)
+        
 
 class TabOp(QWidget):
     """_summary_
@@ -34,7 +44,8 @@ class TabOp(QWidget):
         self.demo_idx: int = 0 # NOTE: index of currently selected demo
         self.apply_to_demo: Optional[Demo] = None #Stores in memory the demo which the operation will be performed on
         self.apply_to_mask: Optional[List[List[bool]]] = None #Maps every step in every section to True/false value to apply op to
-        self.ui = UiLoad(name="tab.ui", parent=parent)
+        dirui: QDir = QDir(os.path.dirname(__file__))
+        self.ui = UiLoad(name="tab.ui", dir=dirui, parent=parent).load_ui()
         self.load_btn(parent=parent)
         self.load_stack_data(parent=parent)
         self.load_data(parent=parent)
@@ -107,11 +118,11 @@ class TabOp(QWidget):
 
         # self.applyToTreeWidget: QTreeWidget
 
-        self.demoCombo.connect()
-        self.demoCombo.currentIndexChanged.connect(self.demo_changed)
-        self.opCombo.currentIndexChanged.connect(self.op_changed)
+        # self.demoCombo.connect()
+        self.demoCombo.currentIndex.connect(self.demo_changed)
+        # self.opCombo.currentIndex.connect(self.op_changed)
 
-    @pyqtSlot(int)
+    @Slot(int)
     def demo_changed(self, d_idx: int):
         self.demo_idx = d_idx
         # self.demoCombo.set
@@ -141,20 +152,6 @@ class TabOp(QWidget):
 
     def get_apply_to(self) -> List[List[bool]]:
         return [[]]
-
-    def browse_insert(self):
-        try:
-            fileName, _ = QFileDialog.getOpenFileName(self,"Browse for image files", "","All Files (*);;PNG files (*.png)")
-            self.insertImgPath.setText(fileName)
-            img_tmp = Image.open(fileName)
-            iwidth, iheight = img_tmp.size
-            if self.demo is not None:
-                if iwidth > self.demo.res[0] or iheight > self.demo.res[1]:
-                    pass
-            #set op img path, def dims
-        except:
-            pass
-
 
     def save_step_params(self):
         pass

@@ -1,3 +1,0 @@
-ListModeL {
-    id: sectionModel
-}

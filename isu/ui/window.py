@@ -5,15 +5,20 @@ TODO: Add op_type indicator for qtreewidgetitems in step list
 TODO: Make separate model / item classes for step list OR sep. QTreeWidget for stepsListTreeWidget
 TODO: Figure out script/audio/demo association functionality
 """
+from isu.data.context import OpSeq, DemoList, ScriptList
+from isu.ui.tabs import CentralWidget
+from isu.ui.views.demo import DemoTreeView
+from isu.ui.data.steps import StepsTabs
 import sys
 import os
 # import functools
 from pathlib import Path
 # from dataclasses import dataclass, field
 from isu.ui.ops.tab import OpUi
-from typing import List, Tuple, Dict, Optional, Type, Any
+from typing import List, MutableSequence, Tuple, Dict, Optional, Type, Any
 from PySide6.QtUiTools import QUiLoader
 from PySide6.QtCore import (  QDir,
+    Signal, Slot,
     QPoint, QAbstractItemModel, QCoreApplication, QEnum, QFlag, Signal,
     QObject, Slot, QFileSelector, QSaveFile, QFileSelector, QTemporaryDir, 
     QTemporaryFile, QAbstractItemModel, QAbstractListModel, QModelIndex,
@@ -54,23 +59,35 @@ from isu.data import Context
 #     and attaches appropriate functions/functionality
 class MainWindow(QMainWindow):
 
-    def __init__(self, parent = QApplication, *args, **kwargs) -> None:
-        super(MainWindow, self).__init__(parent=parent)
+    execute_ops = Signal()
+    centralWidget: QWidget 
+
+    def __init__(self, parent: Any | None = None) -> None:
+        QMainWindow.__init__(self, parent)
         dir=QDir(os.path.dirname(os.path.realpath(__file__)))
-        self.ui = UiLoad(name="window.ui", dir=dir, parent=parent)
-        self.parent = parent
+        self.ui = UiLoad(name="window.ui", dir=dir, parent=parent).load_ui()
+
+        self.centralWidget = CentralWidget(parent=self)
+        self.setCentralWidget(self.centralTabs)
+        self.setup_data()
+        # self.ui.setup_ui(self)
+
+    def setup_ui(self, ui: QWidget):
+        pass
+
+    def set_central_widget(self, widget: QWidget):
+        self.setCentralWidget(widget=widget)
+    
+    def setup_data(self):
         self.ctx = Context()
         self.load_windows()
         self.load_btn()
         self.load_actions()
         self.load_data()
-        self.menubar.setVisible(True) #type: ignore
-        self.setAcceptDrops(True)
+        self.ui.menubar.setVisible(True) #type: ignore
+        self.ui.setAcceptDrops(True)
 
     def load_btn(self) -> None:
-        self.runBtn: QPushButton # type: ignore
-        self.addStepBtn: QPushButton # type: ignore
-        self.removeStepBtn: QPushButton # type: ignore
         self.browseDemoBtn: QPushButton # type: ignore
         self.browseAudioBtn: QPushButton # type: ignore
         self.browseScriptBtn: QPushButton # type: ignore
@@ -79,13 +96,10 @@ class MainWindow(QMainWindow):
         self.infoBtn: QPushButton # type: ignore
         self.addDemoBtn: QPushButton # type: ignore
         self.removeDemoBtn: QPushButton # type: ignore
-        self.stepUpBtn: QPushButton # type: ignore
-        self.stepDownBtn: QPushButton # type: ignore
-
 
         self.loadScriptBtn.setEnabled(False)
         self.loadAudioBtn.setEnabled(False)
-        self.runBtn.setEnabled(False)
+        # self.runBtn.setEnabled(False)
 
         self.runBtn.clicked.connect(self.run_ops) # type: ignore
         self.addStepBtn.clicked.connect(self.add_step) # type: ignore
@@ -117,16 +131,17 @@ class MainWindow(QMainWindow):
         self.demoSumTitle: QLabel
         self.centralWidget: QWidget
 
-        self.stepTabs: QTabWidget
+        self.stepTabs: QWidget = StepsTabs(parent=self)
 
-        self.stepsTreeWidget.currentChanged.connect(self.changed_op)
+        # self.stepsTreeWidget.currentChanged.connect(self.changed_op)
         # self.stepTabs.currentChanged.
 
     def load_windows(self):
-        self.preferences = Prefs(parent=self)
+        self.preferences = Prefs(self)
         self.browseDemoDialog: QFileDialog
         self.browseScriptDialog: QFileDialog
         self.browseAudioDialog: QFileDialog
+
 
     def load_actions(self):
         self.actionPreferences: QAction
@@ -189,7 +204,7 @@ class MainWindow(QMainWindow):
         for i in range(self.stepsTreeWidget.topLevelItemCount()):
             self.stepTabs.widget(i).demoTargetCombo.clear() # type: ignore
             self.stepTabs.widget(i).demoTargetCombo.addItems(self.cx.get_demo_list_items()) # type: ignore
-        self.update_steps()
+        # self.update_steps()
         self.loadScriptBtn.setEnabled(True)
         self.loadAudioBtn.setEnabled(True)
 
@@ -230,7 +245,7 @@ class MainWindow(QMainWindow):
         print("END reload_sel_demo")
 
     def get_demo_info(self):
-        msg("Hello", "hi", "hello")
+        self.msg("Hello", "hi", "hello")
 
     def load_demo_tree(self):
         """
@@ -254,92 +269,6 @@ class MainWindow(QMainWindow):
     def save_state(self):
         print("BEGIN save_state")
         print("END save_state")
-
-    def run_ops(self):
-        print("[Window.run_ops] BEGIN run_ops")
-        out = ""
-        self.opprog = Progress(parent=self, len=len(self.cx.ops))
-        self.opprog.show()
-        for i in range(self.stepsTreeWidget.topLevelItemCount()):
-            self.step: TabOp = self.stepTabs.widget(i)
-            self.optype: Type[Op] = self.step.curr_optype()
-            self.opprog.set_optype(self.optype)
-            demo = self.ctx.demo_list[self.step.demoTargetCombo.currentIndex()]
-            op: Op = self.step.curr_op()
-            op.updated.connect(self.opprog.progress)
-            op.finished.connect(self.update_progress)
-            op.run(demo)
-            if self.step.opCombo.currentIndex() == 2: #section -> destructive to script - demo connection
-                self.ctx.demo_list[self.step.demoTargetCombo.currentIndex()] = Demo(path=demo.file, audio_dir=demo.audio_dir, script_path=demo.script_path)
-        msg(txt="[Window.run_ops] Finished running operations", inf=out, title="Finished")
-        print("[Window.run_ops] END run_ops")
-
-
-    def add_step(self):
-        #TODO create model for new steps QTreeWidgetItem
-        #TODO create model for list of steps 
-        print("BEGIN add_step")
-        step_num: int = len(self.cx.ops) + 1
-        tab = TabOp(parent=self, index=step_num)
-        self.cx.ops.append(tab)
-        op = QTreeWidgetItem([str(step_num), str(OP_TYPES[0]), str(OP_TYPES[0])])
-        self.stepsTreeWidget.addTopLevelItem(op)
-        self.stepTabs.addTab(self.cx.ops[-1], "Step " + str(step_num))
-        self.stepTabs.setCurrentIndex(step_num)
-        self.stepsTreeWidget.setCurrentItem(self.stepsTreeWidget.topLevelItem(step_num-1))
-        self.update_steps()
-        self.stepTabs.widget(step_num-1).opCombo.currentIndexChanged.connect(self.update_steps)
-        self.stepTabs.widget(step_num-1).demoTargetCombo.currentIndexChanged.connect(self.update_steps)
-        self.stepTabs.widget(step_num-1).demoTargetCombo.addItems(self.cx.demo_list_titles())
-        #self.stepsTreeWidget.currentItem().
-        self.update_steps()
-        self.runBtn.setEnabled(True)
-        print("END add_step")
-
-    #TODO fix this
-    def remove_step(self):
-        print("BEGIN remove_step")
-        sel_step: QModelIndex = self.stepsTreeWidget.currentIndex()
-        self.stepTabs.removeTab(sel_step.row())
-        self.stepsTreeWidget.takeTopLevelItem(sel_step.row())
-        self.cx.ops.ops.remove()
-        self.update_steps()
-        for i in range(self.stepsTreeWidget.topLevelItemCount()):
-            self.stepsTreeWidget.topLevelItem(i).setData(0,0,i+1)
-            self.stepTabs.setTabText(i, "Step " + str(i+1))
-        #self.stepsTreeWidget.setCurrentIndex(sel_step.siblingAtRow(sel_step.row()-1))
-        #self.opsStack.setCurrentIndex(sel_step.row()-1)
-        print("END remove_step")
-
-
-    def add_demo_row(self):
-        # checkif sect or step
-        row = ""
-
-    def changed_op(self):
-        curr_step: QModelIndex = self.stepsTreeWidget.currentIndex()
-        wid=self.stepTabs.widget(curr_step.row())
-        self.stepTabs.setCurrentIndex(curr_step.row())
-        if len(self.ctx.demo_list) > 0:
-            curr_demo: int = wid.demoTargetCombo.currentIndex() # type: ignore
-            self.set_demo_tree(curr_demo)
-
-    def changed_step_tab(self):
-        curr_tab: int = self.stepTabs.currentIndex()
-        wid = self.stepTabs.widget(curr_tab)
-        self.stepsTreeWidget.setCurrentItem(self.stepsTreeWidget.topLevelItem(curr_tab))
-        if len(self.ctx.load.demo) > 0:
-            curr_demo: int = wid.demoTargetCombo.currentIndex() # type: ignore
-            self.set_demo_tree(curr_demo)
-        #self.stepsTreeWidget.setCurrentIndex(curr_tab)
-
-    @Slot(int)
-    def get_selected_demo(self):
-        pass
-
-
-    def update_step_op(self, op_idx: int, step_num: int):
-        self.stepsTreeWidget.topLevelItem(step_num).setData(1, 0, str(OP_TYPES[op_idx]()))
 
     def new_central_tab(self, tab_idx: int):
         if tab_idx == self.centralTabs.count()-1:

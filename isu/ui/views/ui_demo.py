@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 
 ################################################################################
-## Form generated from reading UI file 'demo.ui'
+## Form generated from reading UI file 'demoKrSzmt.ui'
 ##
 ## Created by: Qt User Interface Compiler version 6.2.3
 ##
@@ -16,17 +16,26 @@ from PySide6.QtGui import (QBrush, QColor, QConicalGradient, QCursor,
     QImage, QKeySequence, QLinearGradient, QPainter,
     QPalette, QPixmap, QRadialGradient, QTransform)
 from PySide6.QtWidgets import (QApplication, QGroupBox, QHBoxLayout, QHeaderView,
-    QPushButton, QSizePolicy, QStackedWidget, QToolButton,
-    QTreeWidget, QTreeWidgetItem, QVBoxLayout, QWidget)
+    QPushButton, QSizePolicy, QStackedWidget, QTabWidget,
+    QToolButton, QTreeWidget, QTreeWidgetItem, QVBoxLayout,
+    QWidget)
 
-class Ui_demoView(object):
-    def setupUi(self, demoView):
-        if not demoView.objectName():
-            demoView.setObjectName(u"demoView")
-        demoView.resize(570, 550)
-        self.verticalLayout_2 = QVBoxLayout(demoView)
-        self.verticalLayout_2.setObjectName(u"verticalLayout_2")
-        self.demoViewGroupBox = QGroupBox(demoView)
+class Ui_Form(object):
+    def setupUi(self, Form):
+        if not Form.objectName():
+            Form.setObjectName(u"Form")
+        Form.resize(403, 803)
+        self.verticalLayout = QVBoxLayout(Form)
+        self.verticalLayout.setObjectName(u"verticalLayout")
+        self.viewTabs = QTabWidget(Form)
+        self.viewTabs.setObjectName(u"viewTabs")
+        self.viewTabs.setDocumentMode(False)
+        self.viewTabs.setMovable(True)
+        self.demoView = QWidget()
+        self.demoView.setObjectName(u"demoView")
+        self.verticalLayout_9 = QVBoxLayout(self.demoView)
+        self.verticalLayout_9.setObjectName(u"verticalLayout_9")
+        self.demoViewGroupBox = QGroupBox(self.demoView)
         self.demoViewGroupBox.setObjectName(u"demoViewGroupBox")
         self.demoViewGroupBox.setFlat(True)
         self.verticalLayout_6 = QVBoxLayout(self.demoViewGroupBox)
@@ -71,17 +80,17 @@ class Ui_demoView(object):
         self.verticalLayout_6.addLayout(self.horizontalLayout_5)
 
 
-        self.verticalLayout_2.addWidget(self.demoViewGroupBox)
+        self.verticalLayout_9.addWidget(self.demoViewGroupBox)
 
-        self.metadataGroupBox = QGroupBox(demoView)
-        self.metadataGroupBox.setObjectName(u"metadataGroupBox")
-        self.metadataGroupBox.setMaximumSize(QSize(16777215, 300))
-        self.metadataGroupBox.setFlat(True)
-        self.metadataGroupBox.setCheckable(False)
-        self.verticalLayout_8 = QVBoxLayout(self.metadataGroupBox)
+        self.dataFrame = QGroupBox(self.demoView)
+        self.dataFrame.setObjectName(u"dataFrame")
+        self.dataFrame.setMaximumSize(QSize(16777215, 300))
+        self.dataFrame.setFlat(True)
+        self.dataFrame.setCheckable(False)
+        self.verticalLayout_8 = QVBoxLayout(self.dataFrame)
         self.verticalLayout_8.setObjectName(u"verticalLayout_8")
         self.verticalLayout_8.setContentsMargins(4, 4, 4, 4)
-        self.dataStack = QStackedWidget(self.metadataGroupBox)
+        self.dataStack = QStackedWidget(self.dataFrame)
         self.dataStack.setObjectName(u"dataStack")
         self.stepDataL = QWidget()
         self.stepDataL.setObjectName(u"stepDataL")
@@ -152,41 +161,51 @@ class Ui_demoView(object):
         self.verticalLayout_8.addWidget(self.dataStack)
 
 
-        self.verticalLayout_2.addWidget(self.metadataGroupBox)
+        self.verticalLayout_9.addWidget(self.dataFrame)
+
+        self.viewTabs.addTab(self.demoView, "")
+        self.objectViewTabWPage2_2 = QWidget()
+        self.objectViewTabWPage2_2.setObjectName(u"objectViewTabWPage2_2")
+        self.viewTabs.addTab(self.objectViewTabWPage2_2, "")
+
+        self.verticalLayout.addWidget(self.viewTabs)
 
 
-        self.retranslateUi(demoView)
+        self.retranslateUi(Form)
 
-        self.dataStack.setCurrentIndex(1)
+        self.viewTabs.setCurrentIndex(0)
+        self.dataStack.setCurrentIndex(0)
 
 
-        QMetaObject.connectSlotsByName(demoView)
+        QMetaObject.connectSlotsByName(Form)
     # setupUi
 
-    def retranslateUi(self, demoView):
-        demoView.setWindowTitle(QCoreApplication.translate("demoView", u"Form", None))
-        self.demoViewGroupBox.setTitle(QCoreApplication.translate("demoView", u"Demo (None loaded)", None))
+    def retranslateUi(self, Form):
+        Form.setWindowTitle(QCoreApplication.translate("Form", u"Form", None))
+        self.demoViewGroupBox.setTitle(QCoreApplication.translate("Form", u"Demo (None loaded)", None))
         ___qtreewidgetitem = self.demoTreeView.headerItem()
-        ___qtreewidgetitem.setText(2, QCoreApplication.translate("demoView", u"CI", None));
-        ___qtreewidgetitem.setText(1, QCoreApplication.translate("demoView", u"TP", None));
-        self.demoDuplicateBtn.setText(QCoreApplication.translate("demoView", u"Duplicate", None))
-        self.demoInsertSectionBtn.setText(QCoreApplication.translate("demoView", u"Insert section", None))
-        self.demoDeleteBtn.setText(QCoreApplication.translate("demoView", u"-", None))
-        self.demoAddStepBtn.setText(QCoreApplication.translate("demoView", u"+", None))
-        self.demoOverflowBtn.setText(QCoreApplication.translate("demoView", u"...", None))
-        self.metadataGroupBox.setTitle(QCoreApplication.translate("demoView", u"Metadata", None))
+        ___qtreewidgetitem.setText(2, QCoreApplication.translate("Form", u"CI", None));
+        ___qtreewidgetitem.setText(1, QCoreApplication.translate("Form", u"TP", None));
+        self.demoDuplicateBtn.setText(QCoreApplication.translate("Form", u"Duplicate", None))
+        self.demoInsertSectionBtn.setText(QCoreApplication.translate("Form", u"Insert section", None))
+        self.demoDeleteBtn.setText(QCoreApplication.translate("Form", u"-", None))
+        self.demoAddStepBtn.setText(QCoreApplication.translate("Form", u"+", None))
+        self.demoOverflowBtn.setText(QCoreApplication.translate("Form", u"...", None))
+        self.dataFrame.setTitle(QCoreApplication.translate("Form", u"Metadata", None))
         ___qtreewidgetitem1 = self.metadataTreeWidget.headerItem()
-        ___qtreewidgetitem1.setText(1, QCoreApplication.translate("demoView", u"Value", None));
-        ___qtreewidgetitem1.setText(0, QCoreApplication.translate("demoView", u"Property", None));
-        self.pushButton_2.setText(QCoreApplication.translate("demoView", u"Set animated", None))
-        self.pushButton.setText(QCoreApplication.translate("demoView", u"Add highlight", None))
-        self.toolButton.setText(QCoreApplication.translate("demoView", u"...", None))
+        ___qtreewidgetitem1.setText(1, QCoreApplication.translate("Form", u"Value", None));
+        ___qtreewidgetitem1.setText(0, QCoreApplication.translate("Form", u"Property", None));
+        self.pushButton_2.setText(QCoreApplication.translate("Form", u"Set animated", None))
+        self.pushButton.setText(QCoreApplication.translate("Form", u"Add highlight", None))
+        self.toolButton.setText(QCoreApplication.translate("Form", u"...", None))
         ___qtreewidgetitem2 = self.sectionDataTreeW.headerItem()
-        ___qtreewidgetitem2.setText(1, QCoreApplication.translate("demoView", u"Value", None));
-        ___qtreewidgetitem2.setText(0, QCoreApplication.translate("demoView", u"Property", None));
-        self.pushButton_4.setText(QCoreApplication.translate("demoView", u"Set Animated", None))
-        self.pushButton_3.setText(QCoreApplication.translate("demoView", u"Set Guided", None))
-        self.pushButton_5.setText(QCoreApplication.translate("demoView", u"Set Scroll", None))
-        self.toolButton_2.setText(QCoreApplication.translate("demoView", u"...", None))
+        ___qtreewidgetitem2.setText(1, QCoreApplication.translate("Form", u"Value", None));
+        ___qtreewidgetitem2.setText(0, QCoreApplication.translate("Form", u"Property", None));
+        self.pushButton_4.setText(QCoreApplication.translate("Form", u"Set Animated", None))
+        self.pushButton_3.setText(QCoreApplication.translate("Form", u"Set Guided", None))
+        self.pushButton_5.setText(QCoreApplication.translate("Form", u"Set Scroll", None))
+        self.toolButton_2.setText(QCoreApplication.translate("Form", u"...", None))
+        self.viewTabs.setTabText(self.viewTabs.indexOf(self.demoView), QCoreApplication.translate("Form", u"Info", None))
+        self.viewTabs.setTabText(self.viewTabs.indexOf(self.objectViewTabWPage2_2), QCoreApplication.translate("Form", u"Preview", None))
     # retranslateUi
 

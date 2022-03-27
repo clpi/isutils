@@ -1,25 +1,35 @@
-# -*- coding: utf-8 -*-
+﻿import os, sys
 
-################################################################################
-## Form generated from reading UI file 'tabseDweSr.ui'
-##
-## Created by: Qt User Interface Compiler version 6.2.3
-##
-## WARNING! All changes made in this file will be lost when recompiling UI file!
-################################################################################
-
-import os, sys
+from typing import Any
 from PySide6.QtCore import (QCoreApplication, QDate, QDateTime, QLocale,
     QMetaObject, QObject, QPoint, QRect,
+    QDir,
     QSize, QTime, QUrl, Qt)
 from PySide6.QtGui import (QBrush, QColor, QConicalGradient, QCursor,
     QFont, QFontDatabase, QGradient, QIcon,
     QImage, QKeySequence, QLinearGradient, QPainter,
     QPalette, QPixmap, QRadialGradient, QTransform)
 from PySide6.QtWidgets import (QApplication, QComboBox, QHBoxLayout, QLayout,
+    QMainWindow,
     QSizePolicy, QTabWidget, QVBoxLayout, QWidget)
+from ..ui import UiLoad
 
-class CentralTabs(object):
+class CentralWidget(QWidget):
+    ui: QWidget
+    centralTabs: QTabWidget
+    scriptsPage: QWidget
+    productionPage: QWidget
+    demoPage: QWidget
+
+    def __init__(self, parent: Any):
+        QWidget.__init__(parent)
+        uidir = QDir(os.path.dirname(__file__))
+        uiload = UiLoad(name="tabs.ui",dir=uidir, parent=parent)
+        self.ui: QWidget = uiload.load_ui()
+        self.setupUi(parent)
+
+
+
     def setupUi(self, centralWiget):
         if not centralWiget.objectName():
             centralWiget.setObjectName(u"centralWiget")
@@ -81,7 +91,9 @@ class CentralTabs(object):
 
 if __name__ == "__main__":
     QApplication(sys.argv)
-    c = CentralTabs()
+    nw = QMainWindow()
+    c = CentralWidget(nw)
+    nw.setCentralWidget(widget=c)
     c.show()
     QApplication.exec()
     # setupUi

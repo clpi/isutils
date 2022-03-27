@@ -1,109 +1,174 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <ui version="4.0">
-<widget class="QWidget" name="stepsTab">
-  <property name="sizePolicy">
-    <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
-    <horstretch>0</horstretch>
-    <verstretch>0</verstretch>
-    </sizepolicy>
-    </property>
-    <property name="minimumSize">
-    <size>
-    <width>200</width>
-    <height>278</height>
-    </size>
-    </property>
-    <property name="autoFillBackground">
-    <bool>false</bool>
-    </property>
-    <attribute name="title">
-    <string>Steps</string>
-    </attribute>
-    <layout class="QVBoxLayout" name="verticalLayout_2">
-    <property name="topMargin">
-    <number>11</number>
-    </property>
-    <item>
-    <widget class="QTreeWidget" name="stepsTreeWidget">
-    <column>
-        <property name="text">
-        <string>#</string>
-        </property>
-    </column>
-    <column>
-        <property name="text">
-        <string>Operation</string>
-        </property>
-    </column>
-    <column>
-        <property name="text">
-        <string>Target</string>
-        </property>
-    </column>
-    </widget>
-    </item>
-    <item>
-    <layout class="QHBoxLayout" name="horizontalLayout_3">
-    <item>
-        <widget class="QPushButton" name="stepDownBtn">
-        <property name="text">
-        <string>&lt;</string>
-        </property>
-        </widget>
-    </item>
-    <item>
-        <widget class="QPushButton" name="stepUpBtn">
-        <property name="text">
-        <string>&gt;</string>
-        </property>
-        </widget>
-    </item>
-    <item>
-        <widget class="QPushButton" name="removeStepBtn">
-        <property name="text">
-        <string>-</string>
-        </property>
-        </widget>
-    </item>
-    <item>
-        <widget class="QPushButton" name="addStepBtn">
-        <property name="text">
-        <string>+</string>
-        </property>
-        </widget>
-    </item>
-    <item>
-        <widget class="QPushButton" name="runBtn">
-        <property name="sizePolicy">
-        <sizepolicy hsizetype="MinimumExpanding" vsizetype="Fixed">
+ <class>Form</class>
+ <widget class="QWidget" name="Form">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>517</width>
+    <height>412</height>
+   </rect>
+  </property>
+  <property name="windowTitle">
+   <string>Form</string>
+  </property>
+  <layout class="QVBoxLayout" name="verticalLayout">
+   <item>
+    <widget class="QTabWidget" name="stepData">
+     <property name="enabled">
+      <bool>true</bool>
+     </property>
+     <property name="maximumSize">
+      <size>
+       <width>410</width>
+       <height>16777215</height>
+      </size>
+     </property>
+     <property name="currentIndex">
+      <number>2</number>
+     </property>
+     <widget class="QWidget" name="stepsTab">
+      <property name="sizePolicy">
+       <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
         <horstretch>0</horstretch>
         <verstretch>0</verstretch>
-        </sizepolicy>
-        </property>
-        <property name="minimumSize">
-        <size>
-        <width>0</width>
-        <height>0</height>
-        </size>
-        </property>
-        <property name="font">
-        <font>
-        <bold>false</bold>
-        </font>
-        </property>
-        <property name="text">
-        <string>Run</string>
-        </property>
-        <property name="checkable">
-        <bool>false</bool>
-        </property>
-        <property name="flat">
-        <bool>false</bool>
-        </property>
+       </sizepolicy>
+      </property>
+      <property name="minimumSize">
+       <size>
+        <width>200</width>
+        <height>278</height>
+       </size>
+      </property>
+      <property name="autoFillBackground">
+       <bool>false</bool>
+      </property>
+      <attribute name="title">
+       <string>Steps</string>
+      </attribute>
+      <layout class="QVBoxLayout" name="verticalLayout_2">
+       <property name="topMargin">
+        <number>11</number>
+       </property>
+       <item>
+        <widget class="QTableWidget" name="stepsTable"/>
+       </item>
+       <item>
+        <layout class="QHBoxLayout" name="stepButtons">
+         <item>
+          <widget class="QPushButton" name="stepDownBtn">
+           <property name="text">
+            <string>&lt;</string>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="QPushButton" name="stepUpBtn">
+           <property name="text">
+            <string>&gt;</string>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="QPushButton" name="removeStepBtn">
+           <property name="text">
+            <string>-</string>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="QPushButton" name="addStepBtn">
+           <property name="text">
+            <string>+</string>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="QPushButton" name="runBtn">
+           <property name="sizePolicy">
+            <sizepolicy hsizetype="MinimumExpanding" vsizetype="Fixed">
+             <horstretch>0</horstretch>
+             <verstretch>0</verstretch>
+            </sizepolicy>
+           </property>
+           <property name="minimumSize">
+            <size>
+             <width>0</width>
+             <height>0</height>
+            </size>
+           </property>
+           <property name="font">
+            <font>
+             <bold>false</bold>
+            </font>
+           </property>
+           <property name="text">
+            <string>Run</string>
+           </property>
+           <property name="checkable">
+            <bool>false</bool>
+           </property>
+           <property name="flat">
+            <bool>false</bool>
+           </property>
+          </widget>
+         </item>
+        </layout>
+       </item>
+      </layout>
+     </widget>
+     <widget class="QWidget" name="templatesTab">
+      <property name="sizePolicy">
+       <sizepolicy hsizetype="Maximum" vsizetype="Preferred">
+        <horstretch>0</horstretch>
+        <verstretch>0</verstretch>
+       </sizepolicy>
+      </property>
+      <attribute name="title">
+       <string>Templates</string>
+      </attribute>
+      <layout class="QVBoxLayout" name="verticalLayout_19">
+       <item>
+        <widget class="QTreeWidget" name="treeWidget">
+         <property name="sizePolicy">
+          <sizepolicy hsizetype="Maximum" vsizetype="Expanding">
+           <horstretch>0</horstretch>
+           <verstretch>0</verstretch>
+          </sizepolicy>
+         </property>
+         <column>
+          <property name="text">
+           <string notr="true">1</string>
+          </property>
+         </column>
         </widget>
-        </item>
-    </layout>
-    </item>
-    </layout>
-  </widget>
+       </item>
+      </layout>
+     </widget>
+     <widget class="QWidget" name="optionsTab">
+      <property name="sizePolicy">
+       <sizepolicy hsizetype="Expanding" vsizetype="Preferred">
+        <horstretch>0</horstretch>
+        <verstretch>0</verstretch>
+       </sizepolicy>
+      </property>
+      <property name="autoFillBackground">
+       <bool>true</bool>
+      </property>
+      <attribute name="title">
+       <string>Options</string>
+      </attribute>
+      <layout class="QVBoxLayout" name="verticalLayout_17">
+       <item>
+        <widget class="QTableWidget" name="stepOptionsTable"/>
+       </item>
+      </layout>
+     </widget>
+    </widget>
+   </item>
+  </layout>
+ </widget>
+ <resources/>
+ <connections/>
 </ui>

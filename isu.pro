@@ -25,13 +25,10 @@ FORMS      += ./isu/ui/window.ui \
               ./isu/ui/ops/crop.ui \
               ./isu/ui/comp/op.ui \
               ./isu/ui/tabs.ui \
-              # ./isu/ui/comp/main.qml\
               ./isu/ui/comp/prefs.ui\
               ./isu/ui/data/steps.ui \
               ./isu/ui/views/demo.ui \
-              # ./isu/qml/ops.qml \
-              # ./isu/qml/win.qml \
-              isu/ui/c/main.ui
+              ./isu/ui/c/main.ui
 
 INCLUDEPATH += $$pwd \
                res
@@ -74,6 +71,7 @@ SOURCES  += isu/__init__.py \
             isu/ui/__init__.py \
             isu/ui/window.py \
             isu/ui/comp/__init__.py \
+            isu/ui/tabs.py \
             isu/ui/comp/op.py \
             isu/ui/comp/prog.py \
             isu/ui/comp/prefs.py \

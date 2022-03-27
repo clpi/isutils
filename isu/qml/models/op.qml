@@ -1,3 +1,0 @@
-OperationModel {
-    id: opModel
-}

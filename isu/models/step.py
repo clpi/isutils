@@ -10,8 +10,7 @@ from pathlib import WindowsPath, Path
 import isu.models.demo_tags as dt
 from isu.models.audio import SoundBite
 from isu.models.script import TextBox
-import shutil
-import re
+import shutil, re
 from copy import deepcopy
 from PySide6 import QtUiTools
 from PySide6.QtCore import QObject, QEasingCurve, Signal, Property, Slot, QPointF, QPoint
@@ -55,7 +54,8 @@ class Step(QObject):
     def __init__(
             self,
             root: ET._Element,
-            idx: int = 0,
+            idx: int = 0,      # index relative to start of section
+            demo_idx: int = 0, # the index relative to the whole demo
             copy_root: bool = False,
             demo_dir: str = "",
             verbose: bool = False,
@@ -80,21 +80,23 @@ class Step(QObject):
         # self.has_mouse: bool = has_mouse
         # self.is_animated: bool = is_animated
         # self.hover: HoverImg = Hover(hover_img_path)
+        self.step_delay: float
         self.has_audio: bool
+        self.demo_idx: int = demo_idx
         self.idx: int = idx
         self.verbose: bool = verbose
         self.tp, self.ci = TextBox(talking_pt), TextBox(click_instr)
         self.load()
 
-    def find_root(self, prop: str, namespaces: None | str = None) -> ET._SubElement:
+    def find_root(self, prop: str, namespaces: None | str = None) -> ET._Element:
         " Search under the root XML element"
         return self.root.find(prop, namespaces=namespaces)
 
-    def find_startpic(self, prop: str, ns: None | str = None) -> ET._SubElement:
+    def find_startpic(self, prop: str, ns: None | str = None) -> ET._Element:
         " Search under the 'StartPicture' XML element"
         return self.sp_el.find(prop, namespaces=ns)
 
-    def find_mouseenter(self, prop: str, ns: None | str = None) -> ET._SubElement:
+    def find_mouseenter(self, prop: str, ns: None | str = None) -> ET._Element:
         " Search under the 'MouseEnterPicture' XML element"
         return self.mp_el.find(prop, namespaces=ns)
 
@@ -175,6 +177,9 @@ class Step(QObject):
         return self.animated
 
     # TODO Sometimes mouse coords are ints, sometimes floats, in XML. check it out
+
+    def get_stepdelay(self):
+        self.find_root("")
 
     def set_mouse(self, x: float, y: float):
         self.mouse = (x, y)
@@ -283,12 +288,16 @@ class Step(QObject):
         # else:
         # return 1.0
 
+    def find_step_delay(self) -> float:
+        dl: ET._Element = self.find_root("StepDelay", namespaces=None) 
+        return float(dl.text)
+        
     def set_delay(self, length: float = 1.0, off: bool = False):
         if off:
             self.find_root("StepDelay").attributes["xsi:nil"] = "true"
         else:
-            self.find_root("StepDelay").text = str(length)
-        setattr(self, "delay", length)
+            self.find_root("StepDelay").set(key="StepDelay", value=str(length))
+        self.delay = float(length)
 
     def key_ci_phrase_match(self, phrase: str):
         pass
@@ -335,8 +344,9 @@ class Step(QObject):
         self.set_box_dims('hotspot', (0, 0, dt.DEMO_RES[0], dt.DEMO_RES[1]))
         for dir_key, ddict in dt.DIRS.items():
             hspot = self.find_startpic(f"Hotspots/Hotspot/{ddict[dir_key]['tag']}")
-            hspot.text = str(getattr(self, 'hotspot')[dir_key][0])
-        self.find_root(dt.STEP_PROPS['has_mouse']['tag']).text = 'false'
+            # hspot.text = str(getattr(self, 'hotspot')[dir_key][0])
+        # hspot.text.__setattr__("")
+        # self.find_root(dt.STEP_PROPS['has_mouse']['tag']).text = 'false'
         self.has_mouse = False
 
     def iter_box_props(self):
