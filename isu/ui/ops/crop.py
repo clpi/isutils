@@ -22,19 +22,16 @@ from isu.ui import UiLoad
 
 class CropOp(OpUi, QWidget):
 
-    ui: QWidget
+    uifile = QDir(os.path.dirname(os.path.realpath(__file__)))
 
-    def __init__(self, index: int, parent: Any):
-        super(OpUi, self).__init__(parent)
-        self.index = index
-        self.parent = parent
+    def __init__(self, parent: QWidget | None) -> None:
+        QWidget.__init__(self, parent)
+        UiLoad().loadUi("crop.ui", self, parent)
         self.load_ui()
         self.load_widgets()
 
     def load_ui(self):
-        dir = QDir(os.path.dirname(__file__))
-        ldr = UiLoad(name="crop.ui", dir=dir, parent=self.parent)
-        self.ui: QWidget = ldr.load_ui()
+        pass
 
     def load_widgets(self):
         self.cropSpinX: QSpinBox

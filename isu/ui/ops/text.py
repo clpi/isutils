@@ -17,16 +17,16 @@ from PySide6.QtWidgets import (
     QSpinBox, QStackedLayout, QStackedWidget, QFileDialog
     )
 from PySide6 import QtUiTools
+from isu.ui import UiLoad
 from isu.ui.ops import OpUi
 from isu.models.demo import Demo
 from isu.operation.text import Text
-class TextOp(OpUi):
+
+class TextOp(OpUi, QWidget):
 
     def __init__(self, parent: Optional[QWidget] = None, index: int = 0):
-        super().__init__(index=index, parent=parent)
-        path = os.path.join(os.path.dirname(__file__), "text.ui")
-        self.index = index
-        uic.loadUi(path, self)
+        QWidget.__init__(self, parent)
+        UiLoad().loadUi("tab.ui", self, parent)
         self.loadUi()
 
     def loadUi(self):

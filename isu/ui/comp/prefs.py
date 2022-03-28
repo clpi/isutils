@@ -3,38 +3,25 @@ from dataclasses import dataclass
 from pathlib import Path
 from typing import Optional, List, Dict, Any
 from PySide6.QtUiTools import QUiLoader
-from PySide6.QtCore import (Qt, QObject, Slot, Signal, QFile)
+from PySide6.QtCore import (Qt, QObject, Slot, Signal, QFile, QDir)
 from PySide6.QtWidgets import (QMainWindow, QWidget, QDialog, QListWidget, QComboBox, QListWidgetItem, QTreeWidget, QTreeWidgetItem, QApplication)
-
+from isu.ui import UiLoad
 
 @dataclass
 class Prefs(QDialog):
 
-    def __init__(self, parent: Optional[QMainWindow] = None):
-        super(Prefs, self).__init__(parent)
-        self.load_ui(parent=parent)
+    def __init__(self, parent: Any | None = None):
+        QDialog.__init__(self, parent)
+        UiLoad().loadUi("prefs.ui", self, parent)
+        self.load_ui()
 
-    def load_ui(self, parent: Any):
-        uifile = QFile(os.path.dirname(__file__) / Path("prefs.ui"))
-        loader = QUiLoader(parent = parent)
-        self.ui = loader.load(uifile, parentWidget=parent)
-        uifile.close()
-        if not self.ui:
-            print(f"ERROR LOADING UI FILE: {loader.errorString()}")
-            sys.exit(-1)
-        else:
-            self.ui.show()
+    def load_ui(self):
         pass
 
     @Slot()
-    def open(self, parent: QWidget|None=None) -> None:
+    def show(self):
         self.show()
 
-
-
-if __name__ == "__main__":
-
-    app = QApplication(sys.argv)
-    prefs = Prefs()
-    prefs.show()
-    app.exec()
+    @Slot()
+    def close(self):
+        self.close()

@@ -21,17 +21,10 @@ from PySide6.QtWidgets import QWidget
 
 class PaceOp(OpUi, QWidget):
 
-    def __init__(self, index: int = 4, parent: Any = QCoreApplication.instance()):
-        super(OpUi, self).__init__(parent)
-        self.index = index
-        self.parent = parent
-        self.load_ui()
+    def __init__(self, parent: QWidget | None) -> None:
+        QWidget.__init__(self, parent)
+        UiLoad().loadUi("pace.ui", self, parent)
         self.load_widgets()
-
-    def load_ui(self):
-        dir: QDir = QDir(os.path.dirname(__file__))
-        ldr = UiLoad(name="pace.ui", dir=dir, parent=self.parent)
-        self.ui = ldr.load_ui()
 
     def load_widgets(self):
         pass

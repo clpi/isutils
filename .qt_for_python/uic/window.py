@@ -3,7 +3,7 @@
 ################################################################################
 ## Form generated from reading UI file 'window.ui'
 ##
-## Created by: Qt User Interface Compiler version 6.2.3
+## Created by: Qt User Interface Compiler version 6.2.4
 ##
 ## WARNING! All changes made in this file will be lost when recompiling UI file!
 ################################################################################
@@ -16,9 +16,8 @@ from PySide6.QtGui import (QAction, QBrush, QColor, QConicalGradient,
     QIcon, QImage, QKeySequence, QLinearGradient,
     QPainter, QPalette, QPixmap, QRadialGradient,
     QTransform)
-from PySide6.QtWidgets import (QApplication, QHBoxLayout, QMainWindow, QMenu,
-    QMenuBar, QSizePolicy, QStatusBar, QTabWidget,
-    QVBoxLayout, QWidget)
+from PySide6.QtWidgets import (QApplication, QMainWindow, QMenu, QMenuBar,
+    QSizePolicy, QStatusBar, QWidget)
 
 class Ui_IscApp(object):
     def setupUi(self, IscApp):
@@ -327,51 +326,6 @@ class Ui_IscApp(object):
         self.actionNewStep.setObjectName(u"actionNewStep")
         self.actionOpenDemo = QAction(IscApp)
         self.actionOpenDemo.setObjectName(u"actionOpenDemo")
-        self.centralwidget = QWidget(IscApp)
-        self.centralwidget.setObjectName(u"centralwidget")
-        self.verticalLayout_10 = QVBoxLayout(self.centralwidget)
-        self.verticalLayout_10.setObjectName(u"verticalLayout_10")
-        self.centralTabs = QTabWidget(self.centralwidget)
-        self.centralTabs.setObjectName(u"centralTabs")
-        self.centralTabs.setEnabled(True)
-        sizePolicy = QSizePolicy(QSizePolicy.Ignored, QSizePolicy.Expanding)
-        sizePolicy.setHorizontalStretch(0)
-        sizePolicy.setVerticalStretch(0)
-        sizePolicy.setHeightForWidth(self.centralTabs.sizePolicy().hasHeightForWidth())
-        self.centralTabs.setSizePolicy(sizePolicy)
-        self.centralTabs.setAcceptDrops(True)
-        self.centralTabs.setAutoFillBackground(False)
-        self.centralTabs.setDocumentMode(True)
-        self.centralTabs.setTabsClosable(False)
-        self.centralTabs.setMovable(True)
-        self.centralTabs.setTabBarAutoHide(False)
-        self.centralDemoTab = QWidget()
-        self.centralDemoTab.setObjectName(u"centralDemoTab")
-        self.horizontalLayout_2 = QHBoxLayout(self.centralDemoTab)
-        self.horizontalLayout_2.setObjectName(u"horizontalLayout_2")
-        self.stepTabs = QTabWidget(self.centralDemoTab)
-        self.stepTabs.setObjectName(u"stepTabs")
-        self.stepTabs.setDocumentMode(False)
-        self.stepTabs.setTabsClosable(True)
-        self.stepTabs.setMovable(True)
-        self.stepTabs.setTabBarAutoHide(False)
-
-        self.horizontalLayout_2.addWidget(self.stepTabs)
-
-        self.centralTabs.addTab(self.centralDemoTab, "")
-        self.centralTabsPage2_2 = QWidget()
-        self.centralTabsPage2_2.setObjectName(u"centralTabsPage2_2")
-        self.centralTabs.addTab(self.centralTabsPage2_2, "")
-        self.centralTabsPage3 = QWidget()
-        self.centralTabsPage3.setObjectName(u"centralTabsPage3")
-        self.centralTabs.addTab(self.centralTabsPage3, "")
-        self.tab = QWidget()
-        self.tab.setObjectName(u"tab")
-        self.centralTabs.addTab(self.tab, "")
-
-        self.verticalLayout_10.addWidget(self.centralTabs)
-
-        IscApp.setCentralWidget(self.centralwidget)
         self.menubar = QMenuBar(IscApp)
         self.menubar.setObjectName(u"menubar")
         self.menubar.setGeometry(QRect(0, 0, 1440, 22))
@@ -587,9 +541,6 @@ class Ui_IscApp(object):
 
         self.retranslateUi(IscApp)
 
-        self.centralTabs.setCurrentIndex(0)
-
-
         QMetaObject.connectSlotsByName(IscApp)
     # setupUi
 
@@ -751,10 +702,6 @@ class Ui_IscApp(object):
         self.actionReset_zoom.setText(QCoreApplication.translate("IscApp", u"Reset zoom", None))
         self.actionNewStep.setText(QCoreApplication.translate("IscApp", u"Step", None))
         self.actionOpenDemo.setText(QCoreApplication.translate("IscApp", u"Demo", None))
-        self.centralTabs.setTabText(self.centralTabs.indexOf(self.centralDemoTab), QCoreApplication.translate("IscApp", u"Demo Utilities", None))
-        self.centralTabs.setTabText(self.centralTabs.indexOf(self.centralTabsPage2_2), QCoreApplication.translate("IscApp", u"Script Studio", None))
-        self.centralTabs.setTabText(self.centralTabs.indexOf(self.centralTabsPage3), QCoreApplication.translate("IscApp", u"Production", None))
-        self.centralTabs.setTabText(self.centralTabs.indexOf(self.tab), QCoreApplication.translate("IscApp", u"Page", None))
         self.menuFile.setTitle(QCoreApplication.translate("IscApp", u"File", None))
         self.menuExport_2.setTitle(QCoreApplication.translate("IscApp", u"Export...", None))
         self.menuNew.setTitle(QCoreApplication.translate("IscApp", u"New...", None))

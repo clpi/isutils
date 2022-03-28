@@ -19,13 +19,14 @@ from PySide6.QtWidgets import (
     )
 from isu.operation import Audio
 from isu.ui.ops.ops import OpUi
+from isu.ui import UiLoad
 
 class AudioOp(OpUi, QWidget):
+    uifile = QDir(os.path.dirname(os.path.realpath(__file__)))
 
-    def __init__(self, index: int = 4, parent: Any = QCoreApplication.instance()):
-        super(AudioOp, self).__init__(parent)
-        self.index = index
-        self.parent = parent
+    def __init__(self, parent: QWidget | None) -> None:
+        QWidget.__init__(self, parent)
+        UiLoad().loadUi("audio.ui", self, parent)
         self.load_ui()
         self.load_widgets()
 
@@ -33,9 +34,7 @@ class AudioOp(OpUi, QWidget):
         return Audio()
 
     def load_ui(self):
-        dr = QDir(os.path.dirname(__file__))
-        ldr = UiLoad(name="audio.ui", dir=dr, parent=self.parent)
-        self.ui = ldr.load_ui()
+        pass
 
     def load_widgets(self):
         # self.opsParamsStack.addWidget(self)

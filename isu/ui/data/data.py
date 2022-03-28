@@ -1,15 +1,5 @@
-# -*- coding: utf-8 -*-
-
-################################################################################
-## Form generated from reading UI file 'datavRXSaF.ui'
-##
-## Created by: Qt User Interface Compiler version 6.2.3
-##
-## WARNING! All changes made in this file will be lost when recompiling UI file!
-################################################################################
-
 from PySide6.QtCore import (QCoreApplication, QDate, QDateTime, QLocale,
-    QMetaObject, QObject, QPoint, QRect,
+    QMetaObject, QObject, QPoint, QRect, QDir,
     QSize, QTime, QUrl, Qt)
 from PySide6.QtGui import (QBrush, QColor, QConicalGradient, QCursor,
     QFont, QFontDatabase, QGradient, QIcon,
@@ -18,9 +8,12 @@ from PySide6.QtGui import (QBrush, QColor, QConicalGradient, QCursor,
 from PySide6.QtWidgets import (QApplication, QLayout, QSizePolicy, QVBoxLayout,
     QWidget)
 from isu.ui.data.loaded import DataLoaded
-from isu.ui.data.steps import StepsView
+from isu.ui.data.steps import StepData
+import sys, os
 
-class DataPane(object):
+class DataView(object):
+    uifile = QDir(os.path.dirname(os.path.realpath(__file__)))
+
     def setupUi(self, Form):
         if not Form.objectName():
             Form.setObjectName(u"Form")
@@ -41,7 +34,7 @@ class DataPane(object):
         QMetaObject.connectSlotsByName(Form)
     # setupUi
 
-    def retranslateUi(self, Form):
-        Form.setWindowTitle(QCoreApplication.translate("Form", u"Form", None))
+    def retranslateUi(self, form):
+        form.setWindowTitle(QCoreApplication.translate(b"dataPane", b"dataPane", None))
     # retranslateUi
 

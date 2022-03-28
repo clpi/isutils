@@ -26,18 +26,15 @@ class InsertOp(OpUi):
     index: int
     ui: QWidget
 
-    def __init__(self, index: int = 1, parent: Any = QCoreApplication.instance()):
-        super(OpUi, self).__init__(parent)
-        self.parent = parent
-        self.index = index
+    def __init__(self, parent: QWidget | None) -> None:
+        QWidget.__init__(self, parent)
+        UiLoad().loadUi("insert.ui", self, parent)
         self.load_ui()
         self.load_widgets()
         
 
     def load_ui(self):
-        dir = QDir(os.path.join(os.path.dirname(__file__), "insert.ui"))
-        loader: UiLoad = UiLoad(name="insert.ui", dir=dir, parent=self)
-        self.ui: QWidget = loader.load_ui()
+        pass
         
     def load_widgets(self):
         pass

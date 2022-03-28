@@ -21,21 +21,13 @@ class RenderOp(OpUi, QWidget):
 
     started = Signal(Render)
 
-    def __init__(self, parent: Any, index:int):
-        super(OpUi, self).__init__(parent)
-        self.title = "Demo" # TODO get from global curr sel demo
-        self.fps = 24.0
-        self.index = index
-        self.parent = parent
-        self.load_ui()
+    def __init__(self, parent: QWidget | None) -> None:
+        QWidget.__init__(self, parent)
+        UiLoad().loadUi("render.ui", self, parent)
         self.load_tabs()
 
     def load_tabs(self):
         self.load_data_tab()
-
-    def load_ui(self):
-        self.dir = QDir(pathlib.Path(QDir.homePath()) / "Videos")
-        ldr = UiLoad(name="render.ui", dir=self.dir, parent=self.parent)
 
     def load_data_tab(self):
         self.renderTabTabs: QTabWidget

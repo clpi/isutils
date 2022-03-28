@@ -19,17 +19,12 @@ from PySide6.QtWidgets import (QApplication, QHBoxLayout, QHeaderView, QPushButt
     QSizePolicy, QTabWidget, QTableWidget, QTableWidgetItem,
     QTreeWidget, QTreeWidgetItem, QVBoxLayout, QWidget)
 
-class Ui_Form(object):
-    def setupUi(self, Form):
-        if not Form.objectName():
-            Form.setObjectName(u"Form")
-        Form.resize(517, 412)
-        self.verticalLayout = QVBoxLayout(Form)
-        self.verticalLayout.setObjectName(u"verticalLayout")
-        self.stepData = QTabWidget(Form)
-        self.stepData.setObjectName(u"stepData")
-        self.stepData.setEnabled(True)
-        self.stepData.setMaximumSize(QSize(410, 16777215))
+class Ui_StepData(object):
+    def setupUi(self, stepData):
+        if not stepData.objectName():
+            stepData.setObjectName(u"stepData")
+        stepData.setEnabled(True)
+        stepData.setMaximumSize(QSize(410, 16777215))
         self.stepsTab = QWidget()
         self.stepsTab.setObjectName(u"stepsTab")
         sizePolicy = QSizePolicy(QSizePolicy.Expanding, QSizePolicy.Expanding)
@@ -88,7 +83,7 @@ class Ui_Form(object):
 
         self.verticalLayout_2.addLayout(self.stepButtons)
 
-        self.stepData.addTab(self.stepsTab, "")
+        stepData.addTab(self.stepsTab, "")
         self.templatesTab = QWidget()
         self.templatesTab.setObjectName(u"templatesTab")
         sizePolicy2 = QSizePolicy(QSizePolicy.Maximum, QSizePolicy.Preferred)
@@ -111,7 +106,7 @@ class Ui_Form(object):
 
         self.verticalLayout_19.addWidget(self.treeWidget)
 
-        self.stepData.addTab(self.templatesTab, "")
+        stepData.addTab(self.templatesTab, "")
         self.optionsTab = QWidget()
         self.optionsTab.setObjectName(u"optionsTab")
         sizePolicy4 = QSizePolicy(QSizePolicy.Expanding, QSizePolicy.Preferred)
@@ -127,28 +122,25 @@ class Ui_Form(object):
 
         self.verticalLayout_17.addWidget(self.stepOptionsTable)
 
-        self.stepData.addTab(self.optionsTab, "")
+        stepData.addTab(self.optionsTab, "")
 
-        self.verticalLayout.addWidget(self.stepData)
+        self.retranslateUi(stepData)
 
-
-        self.retranslateUi(Form)
-
-        self.stepData.setCurrentIndex(2)
+        stepData.setCurrentIndex(2)
 
 
-        QMetaObject.connectSlotsByName(Form)
+        QMetaObject.connectSlotsByName(stepData)
     # setupUi
 
-    def retranslateUi(self, Form):
-        Form.setWindowTitle(QCoreApplication.translate("Form", u"Form", None))
-        self.stepDownBtn.setText(QCoreApplication.translate("Form", u"<", None))
-        self.stepUpBtn.setText(QCoreApplication.translate("Form", u">", None))
-        self.removeStepBtn.setText(QCoreApplication.translate("Form", u"-", None))
-        self.addStepBtn.setText(QCoreApplication.translate("Form", u"+", None))
-        self.runBtn.setText(QCoreApplication.translate("Form", u"Run", None))
-        self.stepData.setTabText(self.stepData.indexOf(self.stepsTab), QCoreApplication.translate("Form", u"Steps", None))
-        self.stepData.setTabText(self.stepData.indexOf(self.templatesTab), QCoreApplication.translate("Form", u"Templates", None))
-        self.stepData.setTabText(self.stepData.indexOf(self.optionsTab), QCoreApplication.translate("Form", u"Options", None))
+    def retranslateUi(self, stepData):
+        self.stepDownBtn.setText(QCoreApplication.translate("StepData", u"<", None))
+        self.stepUpBtn.setText(QCoreApplication.translate("StepData", u">", None))
+        self.removeStepBtn.setText(QCoreApplication.translate("StepData", u"-", None))
+        self.addStepBtn.setText(QCoreApplication.translate("StepData", u"+", None))
+        self.runBtn.setText(QCoreApplication.translate("StepData", u"Run", None))
+        stepData.setTabText(stepData.indexOf(self.stepsTab), QCoreApplication.translate("StepData", u"Steps", None))
+        stepData.setTabText(stepData.indexOf(self.templatesTab), QCoreApplication.translate("StepData", u"Templates", None))
+        stepData.setTabText(stepData.indexOf(self.optionsTab), QCoreApplication.translate("StepData", u"Options", None))
+        pass
     # retranslateUi
 

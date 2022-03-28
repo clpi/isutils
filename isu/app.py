@@ -20,20 +20,23 @@ _MainApp = TypeVar("_MainApp", bound="MainApp")
 class MainApp(QApplication):
 
     def __init__(self, *args): 
-       super(QApplication, self).__init__(*args)
+       QApplication.__init__(self)
        self.ctx = Context()
-       self.window: MainWindow = MainWindow(parent=self)
-       self.window.show()
+       self.main_window: MainWindow = MainWindow(parent=self)
+       self.run()
 
     @Slot()
     def quit_app(self):
         self.quit()
 
+    @Slot()
     def instance(self) -> QApplication:
-        return self.instance()
+        match QApplication.instance():
+            case None: return self
+            case a: return MainApp(a)
 
     def run(self):
-        self.window.show()
+        self.main_window.ui.show()
 
     @staticmethod
     def open(q: QWidget):
@@ -41,17 +44,9 @@ class MainApp(QApplication):
 
     @Slot()
     def run_ops(self):
-        self.window.show()
         sys.exit(self.exec())
 
-    @Slot()
-    def show_prefs(self):
-        prefs = Prefs(parent=self.window)
-        prefs.show()
 
-    @Slot()
-    def show_prog(self):
-        prog = Progress(parent=self.window)
     # @pyqtSlot(QApplication, name="mainApp")
     # def main_app(self):
         

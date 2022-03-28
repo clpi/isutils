@@ -20,12 +20,11 @@ from isu.ui.ops.ops import OpUi
 from typing import Optional, Sequence, Dict
 from PySide6.QtUiTools import QUiLoader
 
-class ShellOp(OpUi):
+class ShellOp(OpUi, QWidget):
 
-    def __init__(self, index:int = 0, parent: Any = QCoreApplication.instance() ):
-        super(ShellOp, self).__init__(parent=parent)
-        self.index = index
-        self.ui = UiLoad("shell.ui", parent=parent)
+    def __init__(self, parent: QWidget | None) -> None:
+        QWidget.__init__(self, parent)
+        UiLoad().loadUi("render.ui", self, parent)
         self.load_ui(parent)
 
     def load_ui(self, parent: Any):

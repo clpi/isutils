@@ -17,16 +17,6 @@ from isu.ui import UiLoad
 from isu.ui.ops import OpType, ops, shell, section, insert, crop, audio, render, pace, text #  ShellOp, SectionOp, InsertOp, CropOp, AudioOp, RenderOp, PaceOp, TextOp, OP_UI_TYPES
 from isu.ui.ops.ops import OpUi, to_op_type, to_ui_type
 
-class OpTabs(QTabWidget):
-
-    def __init__(self, parent: Any | None = None) -> None:
-        QTabWidget.__init__(self)
-        self.setTabsClosable(True)
-        self.setMovable(True)
-        self.setWindowOpacity(0.5)
-        self.setCurrentIndex(0)
-        
-
 class TabOp(QWidget):
     """_summary_
     Represents a single step in a multi-demo multi-operation pipeline.
@@ -39,16 +29,18 @@ class TabOp(QWidget):
     op_index = Signal(int)
 
     def __init__(self, parent: Optional[QWidget] = None, index: int = 0):
-        super(QWidget, self).__init__(parent)
+        QWidget.__init__(self, parent)
+        UiLoad().loadUi("tab.ui", self, parent)
         self.index: int = index # NOTE: index of the currently selected step
         self.demo_idx: int = 0 # NOTE: index of currently selected demo
         self.apply_to_demo: Optional[Demo] = None #Stores in memory the demo which the operation will be performed on
         self.apply_to_mask: Optional[List[List[bool]]] = None #Maps every step in every section to True/false value to apply op to
-        dirui: QDir = QDir(os.path.dirname(__file__))
-        self.ui = UiLoad(name="tab.ui", dir=dirui, parent=parent).load_ui()
-        self.load_btn(parent=parent)
-        self.load_stack_data(parent=parent)
-        self.load_data(parent=parent)
+        self.load_ui()
+
+    def load_ui(self):
+        self.load_btn()
+        self.load_stack_data()
+        self.load_data()
 
     def broadcast_demo_idx(self):
         self.demo_index.emit(self.demoCombo.currentIndex())
@@ -76,16 +68,16 @@ class TabOp(QWidget):
     def on_op_update(self) -> None:
         pass
 
-    def load_stack_data(self, parent: Any):
+    def load_stack_data(self):
         self.ops = [
-            shell.ShellOp(parent=self, index=self.index),
-            insert.InsertOp(parent=self, index=self.index),
-            crop.CropOp(parent=self, index=self.index),
-            section.SectionOp(parent=self, index=self.index),
-            audio.AudioOp(parent=self, index=self.index),
-            pace.PaceOp(parent=self, index=self.index),
-            text.TextOp(parent=self, index=self.index),
-            render.RenderOp(parent=self, index=self.index),
+            shell.ShellOp(parent=self),
+            insert.InsertOp(parent=self),
+            crop.CropOp(parent=self),
+            section.SectionOp(parent=self),
+            audio.AudioOp(parent=self),
+            pace.PaceOp(parent=self),
+            text.TextOp(parent=self),
+            render.RenderOp(parent=self),
         ]
         self.shellOp: shell.ShellOp = self.ops[0]
         self.insertOp: insert.InsertOp = self.ops[1]
@@ -102,14 +94,14 @@ class TabOp(QWidget):
         self.opCombo.setCurrentIndex(0)
         self.op=self.curr_opui()
 
-    def load_btn(self, parent: None | QWidget = None):
+    def load_btn(self):
         self.resetStepParamsBtn: QPushButton
         self.saveStepParamsBtn: QPushButton
 
         self.resetStepParamsBtn.toggle.connect(self.reset_step_params)
         self.saveStepParamsBtn.toggle.connect(self.save_step_params)
 
-    def load_data(self, parent: None | QWidget = None):
+    def load_data(self):
         self.opsParamsStack: QStackedWidget
         self.opCombo: QComboBox
         self.demoCombo: QComboBox

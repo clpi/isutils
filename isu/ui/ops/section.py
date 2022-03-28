@@ -18,22 +18,16 @@ from isu.models.demo import Demo
 from isu.ui.ops.ops import OpUi
 from isu.operation.section import Section
 
-class SectionOp(QObject, OpUi):
+class SectionOp(OpUi, QWidget):
 
     ui: QWidget | None = None
     parent: Any = QCoreApplication.instance()
     index: int
     path: str
 
-    def __init__(self, index:int = 0, parent: Any = QCoreApplication.instance() ):
-        super(SectionOp, self).__init__(parent)
-        self.index = index
-        self.path = os.path.join(os.path.dirname(__file__), "section.ui")
-        self.loadUi(parent=parent)
-
-    @staticmethod
-    def cbidx() -> int:
-        return 3
+    def __init__(self, parent: QWidget | None) -> None:
+        QWidget.__init__(self, parent)
+        UiLoad().loadUi("render.ui", self, parent)
 
     def loadUi(self):
         pass

@@ -15,7 +15,12 @@ class OpTabs(QTabWidget):
     ops_stack: QStackedWidget
 
     def __init__(self, parent: Any):
-        super(OpTabs, self).__init__(parent)
+        QTabWidget.__init__(self, parent)
+        UiLoad().loadUi("tabs.ui", self, parent)
+        self.setTabsClosable(True)
+        self.setMovable(True)
+        self.setWindowOpacity(1.0)
+        self.setCurrentIndex(0)
         self.setAutoFillBackground(True)
         self.setTabShape(QTabWidget.TabShape.Rounded)
         self.setElideMode(Qt.TextElideMode.ElideRight)
