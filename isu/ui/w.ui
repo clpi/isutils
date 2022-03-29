@@ -163,7 +163,7 @@
            </attribute>
            <layout class="QVBoxLayout" name="verticalLayout_8">
             <property name="spacing">
-             <number>2</number>
+             <number>1</number>
             </property>
             <property name="leftMargin">
              <number>4</number>

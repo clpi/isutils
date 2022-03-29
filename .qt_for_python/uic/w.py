@@ -125,7 +125,7 @@ class Ui_MainWindow(object):
         self.demoViewTab = QWidget()
         self.demoViewTab.setObjectName(u"demoViewTab")
         self.verticalLayout_8 = QVBoxLayout(self.demoViewTab)
-        self.verticalLayout_8.setSpacing(2)
+        self.verticalLayout_8.setSpacing(1)
         self.verticalLayout_8.setObjectName(u"verticalLayout_8")
         self.verticalLayout_8.setContentsMargins(4, 4, 4, 4)
         self.groupBox = QGroupBox(self.demoViewTab)
