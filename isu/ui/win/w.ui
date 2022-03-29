@@ -27,17 +27,17 @@
   </property>
   <layout class="QVBoxLayout" name="verticalLayout">
    <item>
-    <widget class="QStackedWidget" name="centralTabs">
+    <widget class="QTabWidget" name="centralTabs">
      <property name="mouseTracking">
       <bool>true</bool>
      </property>
      <property name="acceptDrops">
       <bool>true</bool>
      </property>
-     <property name="lineWidth">
-      <number>0</number>
-     </property>
-     <widget class="QWidget" name="editStackPage_2">
+     <widget class="QWidget" name="centralTabsPage1" native="true">
+      <attribute name="title">
+       <string/>
+      </attribute>
       <layout class="QHBoxLayout" name="horizontalLayout_4">
        <item>
         <widget class="QTabWidget" name="dataView_2">
@@ -54,7 +54,7 @@
           </size>
          </property>
          <property name="currentIndex">
-          <number>0</number>
+          <number>1</number>
          </property>
          <widget class="DemoPage" name="demoDataPage_2">
           <attribute name="title">
@@ -115,18 +115,17 @@
           <attribute name="title">
            <string>Overview</string>
           </attribute>
-          <layout class="QVBoxLayout" name="verticalLayout_9">
+          <layout class="QVBoxLayout" name="verticalLayout_5">
            <item>
             <widget class="QGroupBox" name="groupBox_3">
+             <property name="minimumSize">
+              <size>
+               <width>0</width>
+               <height>300</height>
+              </size>
+             </property>
              <property name="title">
               <string>Demo Overview</string>
-             </property>
-            </widget>
-           </item>
-           <item>
-            <widget class="QGroupBox" name="groupBox_4">
-             <property name="title">
-              <string>Step Overview</string>
              </property>
             </widget>
            </item>
@@ -141,7 +140,10 @@
        </item>
       </layout>
      </widget>
-     <widget class="QWidget" name="centralTabsPage2_2">
+     <widget class="QWidget" name="centralTabsPage2_3" native="true">
+      <attribute name="title">
+       <string/>
+      </attribute>
       <layout class="QHBoxLayout" name="horizontalLayout_5">
        <item>
         <layout class="QHBoxLayout" name="horizontalLayout_6"/>
