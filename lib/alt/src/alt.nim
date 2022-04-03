@@ -3,6 +3,6 @@
 # but you can remove it if you wish.
 
 proc add*(x, y: int): int =
-  
+
   ## Adds two files together.
   return x + y

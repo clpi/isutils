@@ -1,8 +1,7 @@
-import QtQuick 2.12
+﻿import QtQuick 2.12
 import QtQml.Models 2.12
 import QtQuick.Controls 2.12
 import QtQuick.Dialogs 1.3
-import QtGraphicalEffects 1.12
 import QtQuick.Window 2.12
 import QtQuick.Layouts 1.12
 // import Shotcut.Controls 1.0 as Shotcut
@@ -33,7 +32,7 @@ Rectangle {
     Timer {
         id: scrollZoomTimer
         interval: 100
-        onTriggered: {
+        onTriggered:
             Logic.scrollIfNeeded(true)
         }
     }
@@ -422,7 +421,7 @@ Rectangle {
                         anchors.bottomMargin: -16
                         background: Rectangle { color: parent.palette.alternateBase }
                     }
-        
+
                     MouseArea {
                         anchors.fill: parent
                         acceptedButtons: Qt.NoButton
@@ -793,7 +792,7 @@ Rectangle {
             }
         }
     }
-    
+
     Connections {
         target: timeline
         onPositionChanged: if (!stopScrolling) Logic.scrollIfNeeded()

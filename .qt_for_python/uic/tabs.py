@@ -23,7 +23,7 @@ class Ui_centralTabs(object):
         if not centralTabs.objectName():
             centralTabs.setObjectName(u"centralTabs")
         centralTabs.setEnabled(True)
-        centralTabs.resize(342, 286)
+        centralTabs.resize(342, 289)
         sizePolicy = QSizePolicy(QSizePolicy.Ignored, QSizePolicy.Expanding)
         sizePolicy.setHorizontalStretch(0)
         sizePolicy.setVerticalStretch(0)

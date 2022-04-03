@@ -458,7 +458,7 @@ class Ui_TitleWidget_UI(object):
         self.scrollArea.setWidgetResizable(True)
         self.scrollAreaWidgetContents = QWidget()
         self.scrollAreaWidgetContents.setObjectName(u"scrollAreaWidgetContents")
-        self.scrollAreaWidgetContents.setGeometry(QRect(0, 0, 388, 542))
+        self.scrollAreaWidgetContents.setGeometry(QRect(0, 0, 397, 526))
         self.gridLayout_9 = QGridLayout(self.scrollAreaWidgetContents)
         self.gridLayout_9.setSpacing(4)
         self.gridLayout_9.setObjectName(u"gridLayout_9")

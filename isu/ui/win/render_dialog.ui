@@ -54,7 +54,7 @@
        <item row="4" column="0" colspan="2">
         <widget class="QTabWidget" name="tabWidget">
          <property name="currentIndex">
-          <number>2</number>
+          <number>1</number>
          </property>
          <widget class="QWidget" name="video_tab">
           <attribute name="title">
@@ -776,8 +776,8 @@
    <slot>reject()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>316</x>
-     <y>260</y>
+     <x>325</x>
+     <y>620</y>
     </hint>
     <hint type="destinationlabel">
      <x>286</x>

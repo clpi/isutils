@@ -28,13 +28,16 @@ FORMS      += ./isu/ui/window.ui \
               ./isu/ui/comp/prefs.ui\
               ./isu/ui/data/steps.ui \
               ./isu/ui/views/demo.ui \
-              ./isu/ui/c/main.ui
+              ./isu/ui/c/main.ui \
+              isu/ui/dialogs/demodialog.ui
 
 INCLUDEPATH += $$pwd \
                res
 
 HEADERS    += view/demo.h \
               isu/ui/c/main.h \
+              isu/ui/dialogs/demodialog.h \
+              isu/ui/models/tasks.h \
               view/main.cpp
 
 SOURCES  += isu/__init__.py \
@@ -69,6 +72,8 @@ SOURCES  += isu/__init__.py \
             isu/operation/render.py\
             isu/operation/text.py\
             isu/ui/__init__.py \
+    isu/ui/dialogs/demodialog.cpp \
+    isu/ui/models/tasks.cpp \
             isu/ui/window.py \
             isu/ui/comp/__init__.py \
             isu/ui/tabs.py \
