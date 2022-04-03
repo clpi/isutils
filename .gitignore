@@ -77,3 +77,8 @@ build/
 src/build/
 **build/
 **node_modules
+
+# Added by cargo
+
+/target
+Cargo.lock

@@ -33,15 +33,54 @@ class Ui_opsWidget(object):
         self.verticalGroupBox_3 = QGroupBox(opsWidget)
         self.verticalGroupBox_3.setObjectName(u"verticalGroupBox_3")
         self.verticalGroupBox_3.setContextMenuPolicy(Qt.ActionsContextMenu)
-        self.verticalLayout_6 = QVBoxLayout(self.verticalGroupBox_3)
-        self.verticalLayout_6.setObjectName(u"verticalLayout_6")
+        self.verticalLayout_2 = QVBoxLayout(self.verticalGroupBox_3)
+        self.verticalLayout_2.setObjectName(u"verticalLayout_2")
+        self.horizontalLayout_2 = QHBoxLayout()
+        self.horizontalLayout_2.setObjectName(u"horizontalLayout_2")
+        self.label_3 = QLabel(self.verticalGroupBox_3)
+        self.label_3.setObjectName(u"label_3")
+        sizePolicy = QSizePolicy(QSizePolicy.Preferred, QSizePolicy.Minimum)
+        sizePolicy.setHorizontalStretch(0)
+        sizePolicy.setVerticalStretch(0)
+        sizePolicy.setHeightForWidth(self.label_3.sizePolicy().hasHeightForWidth())
+        self.label_3.setSizePolicy(sizePolicy)
+
+        self.horizontalLayout_2.addWidget(self.label_3)
+
+        self.horizontalSpacer_3 = QSpacerItem(463, 20, QSizePolicy.Expanding, QSizePolicy.Minimum)
+
+        self.horizontalLayout_2.addItem(self.horizontalSpacer_3)
+
+        self.label_6 = QLabel(self.verticalGroupBox_3)
+        self.label_6.setObjectName(u"label_6")
+
+        self.horizontalLayout_2.addWidget(self.label_6)
+
+        self.comboBox_3 = QComboBox(self.verticalGroupBox_3)
+        self.comboBox_3.addItem("")
+        self.comboBox_3.addItem("")
+        self.comboBox_3.addItem("")
+        self.comboBox_3.addItem("")
+        self.comboBox_3.addItem("")
+        self.comboBox_3.addItem("")
+        self.comboBox_3.addItem("")
+        self.comboBox_3.addItem("")
+        self.comboBox_3.setObjectName(u"comboBox_3")
+
+        self.horizontalLayout_2.addWidget(self.comboBox_3)
+
+        self.toolButton_3 = QToolButton(self.verticalGroupBox_3)
+        self.toolButton_3.setObjectName(u"toolButton_3")
+
+        self.horizontalLayout_2.addWidget(self.toolButton_3)
+
+
+        self.verticalLayout_2.addLayout(self.horizontalLayout_2)
+
         self.horizontalLayout = QHBoxLayout()
         self.horizontalLayout.setObjectName(u"horizontalLayout")
         self.label_2 = QLabel(self.verticalGroupBox_3)
         self.label_2.setObjectName(u"label_2")
-        sizePolicy = QSizePolicy(QSizePolicy.Preferred, QSizePolicy.Minimum)
-        sizePolicy.setHorizontalStretch(0)
-        sizePolicy.setVerticalStretch(0)
         sizePolicy.setHeightForWidth(self.label_2.sizePolicy().hasHeightForWidth())
         self.label_2.setSizePolicy(sizePolicy)
 
@@ -75,7 +114,7 @@ class Ui_opsWidget(object):
         self.horizontalLayout.addWidget(self.toolButton)
 
 
-        self.verticalLayout_6.addLayout(self.horizontalLayout)
+        self.verticalLayout_2.addLayout(self.horizontalLayout)
 
         self.targetLayout = QHBoxLayout()
         self.targetLayout.setObjectName(u"targetLayout")
@@ -104,7 +143,7 @@ class Ui_opsWidget(object):
         self.targetLayout.addWidget(self.toolButton_2)
 
 
-        self.verticalLayout_6.addLayout(self.targetLayout)
+        self.verticalLayout_2.addLayout(self.targetLayout)
 
 
         self.horizontalLayout_5.addWidget(self.verticalGroupBox_3)
@@ -165,20 +204,15 @@ class Ui_opsWidget(object):
         self.groupBox.setObjectName(u"groupBox")
         self.verticalLayout = QVBoxLayout(self.groupBox)
         self.verticalLayout.setObjectName(u"verticalLayout")
-        self.stackedWidget = QStackedWidget(self.groupBox)
-        self.stackedWidget.setObjectName(u"stackedWidget")
-        self.page = QWidget()
-        self.page.setObjectName(u"page")
-        self.verticalLayout_7 = QVBoxLayout(self.page)
+        self.stepParams = QStackedWidget(self.groupBox)
+        self.stepParams.setObjectName(u"stepParams")
+        self.stepParamsVl = QWidget()
+        self.stepParamsVl.setObjectName(u"stepParamsVl")
+        self.verticalLayout_7 = QVBoxLayout(self.stepParamsVl)
         self.verticalLayout_7.setObjectName(u"verticalLayout_7")
-        self.verticalLayout_3 = QVBoxLayout()
-        self.verticalLayout_3.setObjectName(u"verticalLayout_3")
+        self.stepParams.addWidget(self.stepParamsVl)
 
-        self.verticalLayout_7.addLayout(self.verticalLayout_3)
-
-        self.stackedWidget.addWidget(self.page)
-
-        self.verticalLayout.addWidget(self.stackedWidget)
+        self.verticalLayout.addWidget(self.stepParams)
 
 
         self.verticalLayout_4.addWidget(self.groupBox)
@@ -191,6 +225,18 @@ class Ui_opsWidget(object):
 
     def retranslateUi(self, opsWidget):
         self.verticalGroupBox_3.setTitle(QCoreApplication.translate("opsWidget", u"Task Info", None))
+        self.label_3.setText(QCoreApplication.translate("opsWidget", u"Index", None))
+        self.label_6.setText(QCoreApplication.translate("opsWidget", u"Index:", None))
+        self.comboBox_3.setItemText(0, QCoreApplication.translate("opsWidget", u"Shell", None))
+        self.comboBox_3.setItemText(1, QCoreApplication.translate("opsWidget", u"Insert", None))
+        self.comboBox_3.setItemText(2, QCoreApplication.translate("opsWidget", u"Crop", None))
+        self.comboBox_3.setItemText(3, QCoreApplication.translate("opsWidget", u"Section", None))
+        self.comboBox_3.setItemText(4, QCoreApplication.translate("opsWidget", u"Add Audio", None))
+        self.comboBox_3.setItemText(5, QCoreApplication.translate("opsWidget", u"Pacing", None))
+        self.comboBox_3.setItemText(6, QCoreApplication.translate("opsWidget", u"Add Text", None))
+        self.comboBox_3.setItemText(7, QCoreApplication.translate("opsWidget", u"Render", None))
+
+        self.toolButton_3.setText(QCoreApplication.translate("opsWidget", u"...", None))
         self.label_2.setText(QCoreApplication.translate("opsWidget", u"Task", None))
         self.label_4.setText(QCoreApplication.translate("opsWidget", u"Current:", None))
         self.comboBox_2.setItemText(0, QCoreApplication.translate("opsWidget", u"Shell", None))

@@ -579,7 +579,7 @@ class Ui_MainWindow(object):
         self.verticalLayout_20.setObjectName(u"verticalLayout_20")
         self.stepTabs = QTabWidget(self.opsLayout)
         self.stepTabs.setObjectName(u"stepTabs")
-        self.stepTabs.setEnabled(False)
+        self.stepTabs.setEnabled(True)
         self.stepTabs.setMinimumSize(QSize(350, 0))
         self.stepTabs.setContextMenuPolicy(Qt.CustomContextMenu)
         self.stepTabs.setElideMode(Qt.ElideMiddle)
@@ -1071,7 +1071,6 @@ class Ui_MainWindow(object):
         self.actionOpen_Demo.toggled.connect(MainWindow.raise)
         self.browseButton.clicked.connect(self.browseButton.showMenu)
         self.actionFull_Screen.triggered.connect(MainWindow.showFullScreen)
-        self.actionQuit.triggered.connect(MainWindow.close)
 
         self.centralTabs.setCurrentIndex(0)
         self.tabWidget.setCurrentIndex(1)
